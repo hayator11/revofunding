@@ -50,6 +50,7 @@ GitHub画面から行う場合は、リポジトリの `Add file` から `Upload
 - おのくんライセンス: `/license.html`
 - 認定デザイナー: `/designers.html`
 - 運営ダッシュボード風: `/dashboard.html`
+- 資金の流れ: `/money-flow.html`
 - マイページ風: `/mypage.html`
 - 紹介リンク発行: `/referral.html`
 - 活動レポート詳細: `/report-detail.html`

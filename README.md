@@ -12,6 +12,7 @@
 - `designers.html`: 認定デザイナー募集・紹介ページ
 - `challenger.html`: 起案者向け登録ページ
 - `dashboard.html`: 運営ダッシュボード風ページ
+- `money-flow.html`: 資金の流れ説明ページ
 - `mypage.html`: 応援者マイページ風ページ
 - `referral.html`: 紹介リンク・QR発行ページ
 - `report-detail.html`: 活動レポート詳細ページ
