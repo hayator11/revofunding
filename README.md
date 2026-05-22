@@ -40,6 +40,7 @@
 - `BASE_商品登録手順.md`: BASEへの商品登録手順
 - `Canva_SNS素材テンプレート設計.md`: Canvaで作るSNS素材の設計
 - `運営ルール_誤解防止.md`: 配当なし、起案者還元、参加範囲の説明ルール
+- `法務情報_正式差し替えチェック.md`: 販売者情報、返品、発送、個人情報の差し替え管理
 - `Google_Sheets_起案者申請管理表_運用設計.md`: 起案者申請管理表の運用設計
 - `outputs/revo_challenge_application_management.xlsx`: Google Sheetsに取り込める管理表テンプレート
 - `google_sheets_auto_transfer_to_management.gs`: フォーム回答から管理表への自動転記スクリプト

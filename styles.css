@@ -1722,6 +1722,17 @@ details p {
   overflow-wrap: anywhere;
 }
 
+.todo-label {
+  display: inline-block;
+  margin-right: 6px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: #fff3cd;
+  color: #7a4d00;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
 .toast {
   position: fixed;
   right: 18px;
