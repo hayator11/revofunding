@@ -27,11 +27,13 @@ body {
   background: var(--paper);
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   line-height: 1.65;
+  overflow-x: hidden;
 }
 
 a {
   color: inherit;
   text-decoration: none;
+  overflow-wrap: anywhere;
 }
 
 button,
@@ -39,6 +41,12 @@ input,
 textarea,
 select {
   font: inherit;
+}
+
+img,
+svg,
+video {
+  max-width: 100%;
 }
 
 .site-header {
@@ -162,12 +170,15 @@ h3 {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  max-width: 100%;
   min-height: 46px;
   padding: 12px 18px;
   border: 1px solid transparent;
   border-radius: 8px;
   cursor: pointer;
   font-weight: 700;
+  text-align: center;
+  overflow-wrap: anywhere;
   transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
 }
 
@@ -858,6 +869,7 @@ h3 {
   align-items: center;
   justify-content: center;
   gap: 8px;
+  max-width: 100%;
   min-height: 42px;
   padding: 9px 13px;
   border: 1px solid var(--line);
@@ -865,6 +877,8 @@ h3 {
   color: #fff;
   cursor: pointer;
   font-weight: 800;
+  text-align: center;
+  overflow-wrap: anywhere;
 }
 
 .share-button svg {
@@ -1672,7 +1686,7 @@ details p {
 .footer-links {
   display: grid;
   gap: 4px;
-  min-width: 210px;
+  min-width: min(210px, 100%);
   font-size: 13px;
 }
 
@@ -1797,15 +1811,29 @@ details p {
 }
 
 @media (max-width: 720px) {
+  h1 {
+    font-size: clamp(34px, 12vw, 48px);
+  }
+
+  h2 {
+    font-size: clamp(25px, 8vw, 34px);
+  }
+
   .site-header {
     align-items: flex-start;
     flex-direction: column;
+    gap: 12px;
+  }
+
+  .brand {
+    min-width: 0;
   }
 
   .nav {
     width: 100%;
     overflow-x: auto;
     padding-bottom: 4px;
+    scrollbar-width: thin;
   }
 
   .ticker,
@@ -1872,5 +1900,26 @@ details p {
 
   .legal-table div {
     grid-template-columns: 1fr;
+    gap: 6px;
+    padding: 16px;
+  }
+
+  .share-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .social-format-grid,
+  .canva-preview {
+    grid-template-columns: 1fr;
+  }
+
+  .canva-preview span,
+  .canva-preview span:nth-child(2) {
+    min-height: 86px;
+  }
+
+  .embed-card pre {
+    font-size: 12px;
   }
 }
