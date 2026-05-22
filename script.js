@@ -15,6 +15,7 @@ const rankSortButtons = document.querySelectorAll(".rank-sort");
 const categoryFilter = document.querySelector(".category-filter");
 const publicBaseUrl = "https://hayator11.github.io/revofunding/";
 const counterDataUrl = window.REVO_COUNTER_DATA_URL || "https://docs.google.com/spreadsheets/d/e/2PACX-1vRcKmEgg9vkR0RHr8i1dbqnjOCZS7Julyl54k9tqUEBGxEejykf3X5eS4iZOKnsowGrtwiGZ7b7vRBN/pub?gid=403200930&single=true&output=csv";
+const projectsDataUrl = window.REVO_PROJECTS_DATA_URL || "projects-data.json";
 let activeStatusFilter = "all";
 let activeSort = "active";
 let activeCategory = "all";
@@ -113,6 +114,59 @@ function parseCounterCsv(text) {
       return items;
     }, {})
     : {};
+}
+
+function parseProjectCsv(text) {
+  const rows = [];
+  let row = [];
+  let cell = "";
+  let inQuotes = false;
+
+  for (let index = 0; index < text.length; index += 1) {
+    const char = text[index];
+    const nextChar = text[index + 1];
+
+    if (char === '"' && inQuotes && nextChar === '"') {
+      cell += '"';
+      index += 1;
+      continue;
+    }
+
+    if (char === '"') {
+      inQuotes = !inQuotes;
+      continue;
+    }
+
+    if (char === "," && !inQuotes) {
+      row.push(cell);
+      cell = "";
+      continue;
+    }
+
+    if ((char === "\n" || char === "\r") && !inQuotes) {
+      if (char === "\r" && nextChar === "\n") {
+        index += 1;
+      }
+      row.push(cell);
+      rows.push(row);
+      row = [];
+      cell = "";
+      continue;
+    }
+
+    cell += char;
+  }
+
+  if (cell || row.length) {
+    row.push(cell);
+    rows.push(row);
+  }
+
+  const headers = rows[0] || [];
+  return rows.slice(1).map((columns) => headers.reduce((project, header, index) => {
+    project[header] = columns[index] || "";
+    return project;
+  }, {}));
 }
 
 function normalizeCounterData(data) {
@@ -278,6 +332,55 @@ function updateRanking() {
     });
 }
 
+function normalizeProject(project) {
+  return {
+    id: project.id || project.projectId || "",
+    status: project.status || "open",
+    category: project.category || "",
+    supporters: Number(project.supporters || 0),
+    fans: Number(project.fans || 0),
+    sales: Number(project.sales || 0),
+    money: Number(project.money || 0),
+    updated: String(project.updated || "").replaceAll("-", ""),
+  };
+}
+
+function applyProjectData(projects) {
+  projects.forEach((project) => {
+    const normalized = normalizeProject(project);
+    if (!normalized.id) return;
+
+    const card = document.querySelector(`[data-project="${normalized.id}"]`);
+    if (!card) return;
+
+    card.dataset.status = normalized.status;
+    card.dataset.category = normalized.category;
+    card.dataset.supporters = String(normalized.supporters);
+    card.dataset.fans = String(normalized.fans);
+    card.dataset.sales = String(normalized.sales);
+    card.dataset.money = String(normalized.money);
+    card.dataset.updated = normalized.updated;
+  });
+
+  updateRanking();
+}
+
+async function loadProjectData() {
+  if (!rankingList) return;
+
+  try {
+    const response = await fetch(projectsDataUrl, { cache: "no-store" });
+    if (!response.ok) return;
+
+    const contentType = response.headers.get("content-type") || "";
+    const isCsv = projectsDataUrl.endsWith(".csv") || projectsDataUrl.includes("output=csv") || contentType.includes("text/csv");
+    const projects = isCsv ? parseProjectCsv(await response.text()) : (await response.json()).projects;
+    applyProjectData(projects || []);
+  } catch (error) {
+    updateRanking();
+  }
+}
+
 rankSortButtons.forEach((button) => {
   button.addEventListener("click", () => {
     activeSort = button.dataset.sort || "active";
@@ -295,6 +398,7 @@ if (categoryFilter) {
 }
 
 updateRanking();
+loadProjectData();
 
 shareButtons.forEach((button) => {
   button.addEventListener("click", async () => {

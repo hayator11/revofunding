@@ -1,0 +1,43 @@
+{
+  "projects": [
+    {
+      "id": "bousai",
+      "title": "防災×帽祭 Tシャツプロジェクト",
+      "status": "open",
+      "category": "防災 グッズ",
+      "supporters": 32,
+      "fans": 118,
+      "sales": 64,
+      "money": 320000,
+      "updated": "2026-05-22",
+      "nextAction": "次の制作まであと18枚",
+      "summary": "防災をもっと身近に、楽しく、かぶれる形で広げるレボチャレンジ。"
+    },
+    {
+      "id": "revolinks",
+      "title": "レボリンクス 広告スポンサー実験",
+      "status": "next",
+      "category": "広告 地域",
+      "supporters": 21,
+      "fans": 44,
+      "sales": 8,
+      "money": 180000,
+      "updated": "2026-05-18",
+      "nextAction": "二次募集開始まであと3チェック",
+      "summary": "広告収入型のスポンサー導線を、地域・防災・挑戦の応援へつなげる実験。"
+    },
+    {
+      "id": "onokun",
+      "title": "おのくん 持ち寄り応援グッズ",
+      "status": "open",
+      "category": "地域 グッズ 防災",
+      "supporters": 28,
+      "fans": 72,
+      "sales": 36,
+      "money": 145000,
+      "updated": "2026-05-20",
+      "nextAction": "認定デザイナー相談中",
+      "summary": "持ち寄り文化を見える形にして、地域と防災の応援を広げるグッズ展開。"
+    }
+  ]
+}
