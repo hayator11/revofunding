@@ -46,6 +46,10 @@
 - `法務情報_正式差し替えチェック.md`: 販売者情報、返品、発送、個人情報の差し替え管理
 - `スマホ表示確認メモ.md`: スマホ表示で確認する項目
 - `Google_Sheets_起案者申請管理表_運用設計.md`: 起案者申請管理表の運用設計
+- `Google_Sheets_公開カウンター連携設計.md`: 公開用カウンター値をサイトに反映する設計
+- `Google_Sheets_公開カウンター作成手順.md`: 公開カウンターシートの作成手順
+- `google_sheets_create_public_counters.gs`: 公開カウンターシート作成スクリプト
+- `counter-data.json`: サイトに表示する公開カウンター値
 - `outputs/revo_challenge_application_management.xlsx`: Google Sheetsに取り込める管理表テンプレート
 - `google_sheets_auto_transfer_to_management.gs`: フォーム回答から管理表への自動転記スクリプト
 - `Google_Sheets_自動転記スクリプト手順.md`: 自動転記の設定手順

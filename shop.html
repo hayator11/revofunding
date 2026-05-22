@@ -81,9 +81,9 @@
             <small>税込想定 / 送料別想定</small>
           </div>
           <div class="product-meta">
-            <span>販売 64枚</span>
-            <span>残り 18枚</span>
-            <span>次回制作まで あと18枚</span>
+            <span>販売 <strong data-counter="soldCount">64枚</strong></span>
+            <span>残り <strong data-counter="remainingCount">18枚</strong></span>
+            <span>次回制作まで あと<strong data-counter="remainingCount">18枚</strong></span>
           </div>
           <div class="progress" aria-label="初回ロット販売率 64%"><span style="width: 64%"></span></div>
 
@@ -357,10 +357,10 @@
           <p class="eyebrow">Stock</p>
           <h2>在庫と次回ロット</h2>
           <div class="report-grid compact-report">
-            <div class="report-cell"><span>初回制作</span><strong>100枚</strong></div>
-            <div class="report-cell"><span>販売済み</span><strong>64枚</strong></div>
-            <div class="report-cell"><span>在庫</span><strong>18枚</strong></div>
-            <div class="report-cell"><span>予約枠</span><strong>18枚</strong></div>
+            <div class="report-cell"><span>初回制作</span><strong data-counter="firstLot">100枚</strong></div>
+            <div class="report-cell"><span>販売済み</span><strong data-counter="soldCount">64枚</strong></div>
+            <div class="report-cell"><span>在庫</span><strong data-counter="stockCount">18枚</strong></div>
+            <div class="report-cell"><span>予約枠</span><strong data-counter="reservedCount">18枚</strong></div>
           </div>
         </div>
       </section>

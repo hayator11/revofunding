@@ -11,6 +11,7 @@ const dynamicShareLinks = document.querySelectorAll(".dynamic-share-link");
 const referralLinkOutput = document.querySelector(".referral-link-output");
 const siteFooter = document.querySelector(".site-footer");
 const publicBaseUrl = "https://hayator11.github.io/revofunding/";
+const counterDataUrl = window.REVO_COUNTER_DATA_URL || "counter-data.json";
 
 function pageUrl(path = window.location.pathname.split("/").pop() || "index.html") {
   return new URL(path, publicBaseUrl).href;
@@ -48,6 +49,73 @@ function showToast(message) {
   toast.classList.add("visible");
   window.setTimeout(() => toast.classList.remove("visible"), 2200);
 }
+
+function parseCounterCsv(text) {
+  return text
+    .trim()
+    .split(/\r?\n/)
+    .slice(1)
+    .reduce((items, line) => {
+      const [key, ...rest] = line.split(",");
+      const value = rest.join(",").trim();
+      if (key && value) {
+        items[key.trim()] = value;
+      }
+      return items;
+    }, {});
+}
+
+function normalizeCounterData(data) {
+  if (data?.counters) {
+    return data.counters;
+  }
+
+  if (Array.isArray(data)) {
+    return data.reduce((items, row) => {
+      if (row.key && row.value) {
+        items[row.key] = row.value;
+      }
+      return items;
+    }, {});
+  }
+
+  return data || {};
+}
+
+function applyCounterData(counters) {
+  document.querySelectorAll("[data-counter]").forEach((item) => {
+    const value = counters[item.dataset.counter];
+    if (value !== undefined) {
+      item.textContent = value;
+    }
+  });
+
+  document.querySelectorAll("[data-counter-small]").forEach((item) => {
+    const value = counters[item.dataset.counterSmall];
+    if (value !== undefined) {
+      item.textContent = value;
+    }
+  });
+}
+
+async function loadCounterData() {
+  try {
+    const response = await fetch(counterDataUrl, { cache: "no-store" });
+    if (!response.ok) return;
+
+    const contentType = response.headers.get("content-type") || "";
+    const isCsv = counterDataUrl.endsWith(".csv") || contentType.includes("text/csv");
+    const counters = isCsv
+      ? parseCounterCsv(await response.text())
+      : normalizeCounterData(await response.json());
+
+    applyCounterData(counters);
+  } catch (error) {
+    // カウンター取得に失敗しても、HTMLに書いた初期値をそのまま表示します。
+  }
+}
+
+loadCounterData();
 
 if (siteFooter && !siteFooter.querySelector('a[href="legal.html"]')) {
   const footerLinks = document.createElement("p");
