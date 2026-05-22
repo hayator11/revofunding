@@ -18,9 +18,8 @@
 - `report-detail.html`: 活動レポート詳細ページ
 - `legal.html`: 特定商取引法、返品、発送、個人情報の扱い
 - `404.html`: 存在しないURLからトップへ戻すページ
-- `assets/onokun.jpeg`: 基本のおのくん画像
-- `assets/onokun-a.jpeg`: 通常版おのくん画像
-- `assets/onokun-b.jpeg`: クリスタル版おのくん画像
+- `キャラA.jpeg`: 通常版おのくん画像
+- `キャラB.jpeg`: クリスタル版おのくん画像
 - `Google_Forms_起案者申請フォーム設計.md`: 起案者申請フォームの質問設計
 - `Google_Forms_起案者申請フォーム作成手順.md`: Google Formsでの作成手順
 - `google_forms_create_challenger_form.gs`: Google Forms自動作成スクリプト
