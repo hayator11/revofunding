@@ -11,7 +11,7 @@ const dynamicShareLinks = document.querySelectorAll(".dynamic-share-link");
 const referralLinkOutput = document.querySelector(".referral-link-output");
 const siteFooter = document.querySelector(".site-footer");
 const publicBaseUrl = "https://hayator11.github.io/revofunding/";
-const counterDataUrl = window.REVO_COUNTER_DATA_URL || "counter-data.json";
+const counterDataUrl = window.REVO_COUNTER_DATA_URL || "https://docs.google.com/spreadsheets/d/e/2PACX-1vRcKmEgg9vkR0RHr8i1dbqnjOCZS7Julyl54k9tqUEBGxEejykf3X5eS4iZOKnsowGrtwiGZ7b7vRBN/pub?gid=403200930&single=true&output=csv";
 
 function pageUrl(path = window.location.pathname.split("/").pop() || "index.html") {
   return new URL(path, publicBaseUrl).href;
@@ -51,18 +51,62 @@ function showToast(message) {
 }
 
 function parseCounterCsv(text) {
+  const rows = [];
+  let row = [];
+  let cell = "";
+  let inQuotes = false;
+
+  for (let index = 0; index < text.length; index += 1) {
+    const char = text[index];
+    const nextChar = text[index + 1];
+
+    if (char === '"' && inQuotes && nextChar === '"') {
+      cell += '"';
+      index += 1;
+      continue;
+    }
+
+    if (char === '"') {
+      inQuotes = !inQuotes;
+      continue;
+    }
+
+    if (char === "," && !inQuotes) {
+      row.push(cell);
+      cell = "";
+      continue;
+    }
+
+    if ((char === "\n" || char === "\r") && !inQuotes) {
+      if (char === "\r" && nextChar === "\n") {
+        index += 1;
+      }
+      row.push(cell);
+      rows.push(row);
+      row = [];
+      cell = "";
+      continue;
+    }
+
+    cell += char;
+  }
+
+  if (cell || row.length) {
+    row.push(cell);
+    rows.push(row);
+  }
+
   return text
-    .trim()
-    .split(/\r?\n/)
+    ? rows
     .slice(1)
-    .reduce((items, line) => {
-      const [key, ...rest] = line.split(",");
-      const value = rest.join(",").trim();
+    .reduce((items, columns) => {
+      const [key, value] = columns;
       if (key && value) {
         items[key.trim()] = value;
       }
       return items;
-    }, {});
+    }, {})
+    : {};
 }
 
 function normalizeCounterData(data) {
@@ -104,7 +148,7 @@ async function loadCounterData() {
     if (!response.ok) return;
 
     const contentType = response.headers.get("content-type") || "";
-    const isCsv = counterDataUrl.endsWith(".csv") || contentType.includes("text/csv");
+    const isCsv = counterDataUrl.endsWith(".csv") || counterDataUrl.includes("output=csv") || contentType.includes("text/csv");
     const counters = isCsv
       ? parseCounterCsv(await response.text())
       : normalizeCounterData(await response.json());
