@@ -21,8 +21,7 @@ function currentPublicPageUrl() {
   return pageUrl(fileName);
 }
 
-function buildShareUrl(platform, targetUrl) {
-  const shareText = "防災×帽祭 応援Tシャツを応援しています";
+function buildShareUrl(platform, targetUrl, shareText = "防災×帽祭 応援Tシャツを応援しています") {
   const threadsText = `${shareText}。${targetUrl}`;
 
   if (platform === "x") {
@@ -58,8 +57,9 @@ if (siteFooter && !siteFooter.querySelector('a[href="legal.html"]')) {
 }
 
 dynamicShareLinks.forEach((link) => {
-  const targetUrl = pageUrl("shop.html");
-  link.href = buildShareUrl(link.dataset.platform, targetUrl);
+  const targetUrl = pageUrl(link.dataset.url || window.location.pathname.split("/").pop() || "index.html");
+  const shareText = link.dataset.text || "レボファンディングを応援しています";
+  link.href = buildShareUrl(link.dataset.platform, targetUrl, shareText);
 });
 
 if (referralLinkOutput || copyReferral) {
@@ -103,10 +103,11 @@ shareButtons.forEach((button) => {
   button.addEventListener("click", async () => {
     const title = button.dataset.share || "レボファンディング";
     const text = `${title}を応援しています。応援者とファンで挑戦を次の展開へ育てるレボファンディングです。`;
+    const targetUrl = pageUrl(button.dataset.url || window.location.pathname.split("/").pop() || "index.html");
     const shareData = {
       title,
       text,
-      url: currentPublicPageUrl(),
+      url: targetUrl,
     };
 
     if (navigator.share) {
@@ -120,7 +121,7 @@ shareButtons.forEach((button) => {
     }
 
     try {
-      await navigator.clipboard.writeText(`${text}\n${currentPublicPageUrl()}`);
+      await navigator.clipboard.writeText(`${text}\n${targetUrl}`);
       showToast("共有文をコピーしました");
     } catch (error) {
       showToast("共有文: " + text);
@@ -161,10 +162,11 @@ if (copyEmbed) {
 
 instagramButtons.forEach((button) => {
   button.addEventListener("click", async () => {
-    const text = `防災×帽祭 応援Tシャツを応援しています。
+    const targetUrl = pageUrl(button.dataset.url || window.location.pathname.split("/").pop() || "shop.html");
+    const text = button.dataset.instagramText || `防災×帽祭 応援Tシャツを応援しています。
 おのくんのビジュアルをきっかけに、防災をもっと身近に広げるレボチャレンジです。
 購入やシェアが、次回ロットとファン化につながります。
-${pageUrl("shop.html")}
+${targetUrl}
 
 #防災 #帽祭 #おのくん #レボファンディング`;
 
