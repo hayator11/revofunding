@@ -29,6 +29,16 @@
 - `Google_Sheets_応援者自動転記スクリプト手順.md`: 応援者自動転記の設定手順
 - `LINE_オープンチャット運用テンプレート.md`: LINE OC案内文、固定メッセージ、ステータス運用
 - `無料通知運用設計.md`: LINE公式に頼らない初期通知設計
+- `Google_Forms_ファン案内登録フォーム設計.md`: ファン案内登録フォームの質問設計
+- `google_forms_create_fan_notice_form.gs`: ファン案内登録フォーム自動作成スクリプト
+- `Google_Forms_ファン案内登録フォーム作成手順.md`: ファン案内登録フォームの作成手順
+- `Google_Forms_認定デザイナー応募フォーム設計.md`: 認定デザイナー応募フォームの質問設計
+- `google_forms_create_designer_form.gs`: 認定デザイナー応募フォーム自動作成スクリプト
+- `Google_Forms_認定デザイナー応募フォーム作成手順.md`: 認定デザイナー応募フォームの作成手順
+- `BASE_商品販売ページ設計.md`: BASE商品ページに入れる内容
+- `BASE_商品登録手順.md`: BASEへの商品登録手順
+- `Canva_SNS素材テンプレート設計.md`: Canvaで作るSNS素材の設計
+- `運営ルール_誤解防止.md`: 配当なし、起案者還元、参加範囲の説明ルール
 - `Google_Sheets_起案者申請管理表_運用設計.md`: 起案者申請管理表の運用設計
 - `outputs/revo_challenge_application_management.xlsx`: Google Sheetsに取り込める管理表テンプレート
 - `google_sheets_auto_transfer_to_management.gs`: フォーム回答から管理表への自動転記スクリプト
