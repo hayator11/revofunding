@@ -17,6 +17,22 @@
 - `referral.html`: 紹介リンク・QR発行ページ
 - `report-detail.html`: 活動レポート詳細ページ
 - `404.html`: 存在しないURLからトップへ戻すページ
+- `Google_Forms_起案者申請フォーム設計.md`: 起案者申請フォームの質問設計
+- `Google_Forms_起案者申請フォーム作成手順.md`: Google Formsでの作成手順
+- `google_forms_create_challenger_form.gs`: Google Forms自動作成スクリプト
+- `Google_Forms_自動作成スクリプト手順.md`: 自動作成スクリプトの使い方
+- `Google_Forms_応援者参加フォーム設計.md`: 応援者参加フォームの質問設計
+- `google_forms_create_supporter_form.gs`: 応援者参加フォーム自動作成スクリプト
+- `Google_Forms_応援者参加フォーム作成手順.md`: 応援者参加フォームの作成手順
+- `Google_Sheets_応援者参加管理表_運用設計.md`: 応援者管理表の運用設計
+- `google_sheets_auto_transfer_supporters.gs`: 応援者フォーム回答の自動転記スクリプト
+- `Google_Sheets_応援者自動転記スクリプト手順.md`: 応援者自動転記の設定手順
+- `LINE_オープンチャット運用テンプレート.md`: LINE OC案内文、固定メッセージ、ステータス運用
+- `無料通知運用設計.md`: LINE公式に頼らない初期通知設計
+- `Google_Sheets_起案者申請管理表_運用設計.md`: 起案者申請管理表の運用設計
+- `outputs/revo_challenge_application_management.xlsx`: Google Sheetsに取り込める管理表テンプレート
+- `google_sheets_auto_transfer_to_management.gs`: フォーム回答から管理表への自動転記スクリプト
+- `Google_Sheets_自動転記スクリプト手順.md`: 自動転記の設定手順
 
 ## 使用予定の無料・低コストツール
 
@@ -24,7 +40,8 @@
 - Google Forms: 起案者、応援者、デザイナー、ファン登録
 - Google Sheets: 申請・在庫・売上・活動管理
 - BASE: 商品販売、注文管理
-- LINE公式: 再販、二次募集、活動報告の通知
+- LINEオープンチャット: 応援者交流、共有依頼、活動案内
+- LINE公式: 初期は必須にせず、必要になった段階で検討
 - Canva: SNS投稿素材、グッズデザイン案、告知画像
 
 ## GitHub Pagesで公開する流れ
@@ -43,7 +60,8 @@
 
 - Google Formsの申請リンク
 - BASEの商品販売リンク
-- LINE公式の登録リンク
+- LINEオープンチャットの案内リンク
+- LINE公式を使う場合は登録リンク
 - Canva素材リンク
 - 運営者名、問い合わせ先、利用条件
 - おのくんライセンスの利用範囲と表記
