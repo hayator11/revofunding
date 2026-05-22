@@ -10,9 +10,15 @@ const copyReferral = document.querySelector(".copy-referral");
 const dynamicShareLinks = document.querySelectorAll(".dynamic-share-link");
 const referralLinkOutput = document.querySelector(".referral-link-output");
 const siteFooter = document.querySelector(".site-footer");
+const publicBaseUrl = "https://hayator11.github.io/revofunding/";
 
 function pageUrl(path = window.location.pathname.split("/").pop() || "index.html") {
-  return new URL(path, window.location.href).href;
+  return new URL(path, publicBaseUrl).href;
+}
+
+function currentPublicPageUrl() {
+  const fileName = window.location.pathname.split("/").pop() || "index.html";
+  return pageUrl(fileName);
 }
 
 function buildShareUrl(platform, targetUrl) {
@@ -100,7 +106,7 @@ shareButtons.forEach((button) => {
     const shareData = {
       title,
       text,
-      url: window.location.href,
+      url: currentPublicPageUrl(),
     };
 
     if (navigator.share) {
@@ -114,7 +120,7 @@ shareButtons.forEach((button) => {
     }
 
     try {
-      await navigator.clipboard.writeText(`${text}\n${window.location.href}`);
+      await navigator.clipboard.writeText(`${text}\n${currentPublicPageUrl()}`);
       showToast("共有文をコピーしました");
     } catch (error) {
       showToast("共有文: " + text);
@@ -158,6 +164,7 @@ instagramButtons.forEach((button) => {
     const text = `防災×帽祭 応援Tシャツを応援しています。
 おのくんのビジュアルをきっかけに、防災をもっと身近に広げるレボチャレンジです。
 購入やシェアが、次回ロットとファン化につながります。
+${pageUrl("shop.html")}
 
 #防災 #帽祭 #おのくん #レボファンディング`;
 
