@@ -10,8 +10,14 @@ const copyReferral = document.querySelector(".copy-referral");
 const dynamicShareLinks = document.querySelectorAll(".dynamic-share-link");
 const referralLinkOutput = document.querySelector(".referral-link-output");
 const siteFooter = document.querySelector(".site-footer");
+const rankingList = document.querySelector(".ranking-list");
+const rankSortButtons = document.querySelectorAll(".rank-sort");
+const categoryFilter = document.querySelector(".category-filter");
 const publicBaseUrl = "https://hayator11.github.io/revofunding/";
 const counterDataUrl = window.REVO_COUNTER_DATA_URL || "https://docs.google.com/spreadsheets/d/e/2PACX-1vRcKmEgg9vkR0RHr8i1dbqnjOCZS7Julyl54k9tqUEBGxEejykf3X5eS4iZOKnsowGrtwiGZ7b7vRBN/pub?gid=403200930&single=true&output=csv";
+let activeStatusFilter = "all";
+let activeSort = "active";
+let activeCategory = "all";
 
 function pageUrl(path = window.location.pathname.split("/").pop() || "index.html") {
   return new URL(path, publicBaseUrl).href;
@@ -164,6 +170,16 @@ function applyCounterData(counters) {
       item.textContent = value;
     }
   });
+
+  const bousaiCard = document.querySelector('[data-project="bousai"]');
+  if (bousaiCard) {
+    if (counters.supportersNumber) bousaiCard.dataset.supporters = numberOnly(counters.supportersNumber);
+    if (counters.fansNumber) bousaiCard.dataset.fans = numberOnly(counters.fansNumber);
+    if (counters.soldNumber) bousaiCard.dataset.sales = numberOnly(counters.soldNumber);
+    if (counters.salesAmount) bousaiCard.dataset.money = numberOnly(counters.salesAmount).replace(/,/g, "");
+  }
+
+  updateRanking();
 }
 
 async function loadCounterData() {
@@ -223,17 +239,62 @@ if (copyEmbed) {
 
 filters.forEach((filter) => {
   filter.addEventListener("click", () => {
-    const selected = filter.dataset.filter;
+    activeStatusFilter = filter.dataset.filter;
 
     filters.forEach((item) => item.classList.remove("active"));
     filter.classList.add("active");
 
-    cards.forEach((card) => {
-      const shouldShow = selected === "all" || card.dataset.status === selected;
-      card.classList.toggle("hidden", !shouldShow);
-    });
+    updateRanking();
   });
 });
+
+function scoreCard(card, sortType) {
+  const supporters = Number(card.dataset.supporters || 0);
+  const fans = Number(card.dataset.fans || 0);
+  const sales = Number(card.dataset.sales || 0);
+  const money = Number(card.dataset.money || 0);
+  const updated = Number(card.dataset.updated || 0);
+
+  if (sortType === "money") return money;
+  if (sortType === "supporters") return supporters;
+  if (sortType === "sales") return sales;
+  if (sortType === "updated") return updated;
+
+  return supporters * 3 + fans * 1.5 + sales * 2 + money / 10000 + updated / 1000000;
+}
+
+function updateRanking() {
+  if (!rankingList) return;
+
+  const rankingCards = [...rankingList.querySelectorAll(".challenge-card")];
+
+  rankingCards
+    .sort((a, b) => scoreCard(b, activeSort) - scoreCard(a, activeSort))
+    .forEach((card, index) => {
+      const statusMatch = activeStatusFilter === "all" || card.dataset.status === activeStatusFilter;
+      const categoryMatch = activeCategory === "all" || (card.dataset.category || "").includes(activeCategory);
+      card.classList.toggle("hidden", !(statusMatch && categoryMatch));
+      card.style.order = String(index + 1);
+    });
+}
+
+rankSortButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    activeSort = button.dataset.sort || "active";
+    rankSortButtons.forEach((item) => item.classList.remove("active"));
+    button.classList.add("active");
+    updateRanking();
+  });
+});
+
+if (categoryFilter) {
+  categoryFilter.addEventListener("change", () => {
+    activeCategory = categoryFilter.value;
+    updateRanking();
+  });
+}
+
+updateRanking();
 
 shareButtons.forEach((button) => {
   button.addEventListener("click", async () => {

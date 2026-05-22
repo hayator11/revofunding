@@ -442,6 +442,76 @@ h3 {
   background: var(--teal);
 }
 
+.ranking-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin: -6px 0 14px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+}
+
+.ranking-group {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ranking-group span,
+.category-select {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.rank-sort {
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--ink);
+  background: var(--soft);
+  cursor: pointer;
+}
+
+.rank-sort.active {
+  border-color: var(--teal);
+  color: #fff;
+  background: var(--teal);
+}
+
+.category-select {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.category-filter {
+  min-height: 36px;
+  border-radius: 8px;
+  background: var(--soft);
+}
+
+.ranking-note {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.ranking-note strong {
+  color: var(--teal);
+  white-space: nowrap;
+}
+
 .challenge-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

@@ -40,8 +40,33 @@
           </div>
         </div>
 
-        <div class="challenge-grid">
-          <article class="challenge-card" data-status="open">
+        <div class="ranking-toolbar" aria-label="ランキングとカテゴリー">
+          <div class="ranking-group">
+            <span>表示順</span>
+            <button class="rank-sort active" type="button" data-sort="active">活発順</button>
+            <button class="rank-sort" type="button" data-sort="money">金額順</button>
+            <button class="rank-sort" type="button" data-sort="supporters">応援者順</button>
+            <button class="rank-sort" type="button" data-sort="sales">販売順</button>
+            <button class="rank-sort" type="button" data-sort="updated">更新順</button>
+          </div>
+          <label class="category-select">カテゴリー
+            <select class="category-filter" aria-label="カテゴリーで絞り込み">
+              <option value="all">すべて</option>
+              <option value="防災">防災</option>
+              <option value="広告">広告・スポンサー</option>
+              <option value="地域">地域</option>
+              <option value="グッズ">グッズ</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="ranking-note">
+          <span>ランキングは応援者数、ファン数、販売数、売上、更新日の動きから並び替えます。</span>
+          <strong>活発な挑戦ほど上に表示</strong>
+        </div>
+
+        <div class="challenge-grid ranking-list">
+          <article class="challenge-card" data-project="bousai" data-status="open" data-category="防災 グッズ" data-money="320000" data-supporters="32" data-fans="118" data-sales="64" data-updated="20260522">
             <div class="challenge-image image-bousai"><span>防災×帽祭</span></div>
             <div class="challenge-content">
               <div class="card-row"><span class="status open">初期募集</span><span class="step">Step 1</span></div>
@@ -49,12 +74,12 @@
               <p>防災をもっと身近に、楽しく、かぶれる形で広げるレボチャレンジ。</p>
               <div class="metrics"><span><strong data-counter="supportersNumber">32</strong>応援者</span><span><strong data-counter="fansNumber">118</strong>ファン</span><span><strong data-counter="soldNumber">64</strong>販売</span></div>
               <div class="progress" aria-label="初回ロット販売率 64%"><span style="width: 64%"></span></div>
-              <p class="next-note">次の制作まであと18枚</p>
+              <p class="next-note">次の制作まであと<span data-counter="remainingCount">18枚</span></p>
               <div class="card-actions"><a class="button small primary" href="#detail">詳しく見る</a><button class="button small icon share-trigger" type="button" data-share="防災×帽祭 Tシャツプロジェクト">共有</button></div>
             </div>
           </article>
 
-          <article class="challenge-card" data-status="next">
+          <article class="challenge-card" data-project="revolinks" data-status="next" data-category="広告 地域" data-money="180000" data-supporters="21" data-fans="44" data-sales="8" data-updated="20260518">
             <div class="challenge-image image-links"><span>レボリンクス</span></div>
             <div class="challenge-content">
               <div class="card-row"><span class="status next">二次募集予定</span><span class="step">Step 3</span></div>
@@ -64,6 +89,19 @@
               <div class="progress" aria-label="二次募集準備率 72%"><span style="width: 72%"></span></div>
               <p class="next-note">二次募集開始まであと3チェック</p>
               <div class="card-actions"><a class="button small primary" href="#detail">詳しく見る</a><button class="button small icon share-trigger" type="button" data-share="レボリンクス 広告スポンサー実験">共有</button></div>
+            </div>
+          </article>
+
+          <article class="challenge-card" data-project="onokun" data-status="open" data-category="地域 グッズ 防災" data-money="145000" data-supporters="28" data-fans="72" data-sales="36" data-updated="20260520">
+            <div class="challenge-image image-onokun"><span>おのくん</span></div>
+            <div class="challenge-content">
+              <div class="card-row"><span class="status open">追加募集</span><span class="step">Step 2</span></div>
+              <h3>おのくん 持ち寄り応援グッズ</h3>
+              <p>持ち寄り文化を見える形にして、地域と防災の応援を広げるグッズ展開。</p>
+              <div class="metrics"><span><strong>28</strong>応援者</span><span><strong>72</strong>ファン</span><span><strong>36</strong>販売</span></div>
+              <div class="progress" aria-label="追加募集進行率 58%"><span style="width: 58%"></span></div>
+              <p class="next-note">認定デザイナー相談中</p>
+              <div class="card-actions"><a class="button small primary" href="#detail">詳しく見る</a><button class="button small icon share-trigger" type="button" data-share="おのくん 持ち寄り応援グッズ">共有</button></div>
             </div>
           </article>
         </div>
