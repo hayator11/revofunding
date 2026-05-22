@@ -111,19 +111,43 @@ function parseCounterCsv(text) {
 
 function normalizeCounterData(data) {
   if (data?.counters) {
-    return data.counters;
+    return reconcileCounterAliases(data.counters);
   }
 
   if (Array.isArray(data)) {
-    return data.reduce((items, row) => {
+    const counters = data.reduce((items, row) => {
       if (row.key && row.value) {
         items[row.key] = row.value;
       }
       return items;
     }, {});
+    return reconcileCounterAliases(counters);
   }
 
-  return data || {};
+  return reconcileCounterAliases(data || {});
+}
+
+function numberOnly(value) {
+  const match = String(value).match(/[0-9,]+/);
+  return match ? match[0] : value;
+}
+
+function reconcileCounterAliases(counters) {
+  const mergedCounters = { ...counters };
+
+  if (mergedCounters.supportersCount) {
+    mergedCounters.supportersNumber = numberOnly(mergedCounters.supportersCount);
+  }
+
+  if (mergedCounters.fansCount) {
+    mergedCounters.fansNumber = numberOnly(mergedCounters.fansCount);
+  }
+
+  if (mergedCounters.soldCount) {
+    mergedCounters.soldNumber = numberOnly(mergedCounters.soldCount);
+  }
+
+  return mergedCounters;
 }
 
 function applyCounterData(counters) {
@@ -150,7 +174,7 @@ async function loadCounterData() {
     const contentType = response.headers.get("content-type") || "";
     const isCsv = counterDataUrl.endsWith(".csv") || counterDataUrl.includes("output=csv") || contentType.includes("text/csv");
     const counters = isCsv
-      ? parseCounterCsv(await response.text())
+      ? reconcileCounterAliases(parseCounterCsv(await response.text()))
       : normalizeCounterData(await response.json());
 
     applyCounterData(counters);
