@@ -917,6 +917,38 @@ h3 {
   text-align: center;
 }
 
+.canva-preview {
+  display: grid;
+  grid-template-columns: 1fr 0.68fr 1fr;
+  gap: 10px;
+  align-items: end;
+  margin: 18px 0;
+}
+
+.canva-preview span {
+  display: grid;
+  place-items: center;
+  min-height: 112px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(0, 122, 255, 0.14), rgba(255, 59, 48, 0.12)),
+    #fff;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.canva-preview span:nth-child(2) {
+  min-height: 150px;
+}
+
+.disabled-link,
+.disabled-link:disabled {
+  cursor: not-allowed;
+  opacity: 0.62;
+}
+
 .copy-text {
   min-height: 150px;
   margin: 8px 0 12px;
