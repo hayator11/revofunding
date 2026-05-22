@@ -957,6 +957,16 @@ h3 {
   line-height: 1.2;
 }
 
+.counter-card.link-card {
+  color: inherit;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.counter-card.link-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.1);
+}
+
 .product-section {
   display: grid;
   grid-template-columns: minmax(280px, 0.8fr) minmax(0, 1.2fr);
