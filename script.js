@@ -9,6 +9,7 @@ const instagramButtons = document.querySelectorAll(".instagram-copy");
 const copyReferral = document.querySelector(".copy-referral");
 const dynamicShareLinks = document.querySelectorAll(".dynamic-share-link");
 const referralLinkOutput = document.querySelector(".referral-link-output");
+const siteFooter = document.querySelector(".site-footer");
 
 function pageUrl(path = window.location.pathname.split("/").pop() || "index.html") {
   return new URL(path, window.location.href).href;
@@ -41,6 +42,13 @@ function showToast(message) {
   toast.textContent = message;
   toast.classList.add("visible");
   window.setTimeout(() => toast.classList.remove("visible"), 2200);
+}
+
+if (siteFooter && !siteFooter.querySelector('a[href="legal.html"]')) {
+  const footerLinks = document.createElement("p");
+  footerLinks.className = "footer-links";
+  footerLinks.innerHTML = '<a href="legal.html">法務・購入条件</a><span>特商法 / 返品 / 発送 / 個人情報</span>';
+  siteFooter.appendChild(footerLinks);
 }
 
 dynamicShareLinks.forEach((link) => {

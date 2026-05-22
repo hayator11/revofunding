@@ -16,6 +16,7 @@
 - `mypage.html`: 応援者マイページ風ページ
 - `referral.html`: 紹介リンク・QR発行ページ
 - `report-detail.html`: 活動レポート詳細ページ
+- `legal.html`: 特定商取引法、返品、発送、個人情報の扱い
 - `404.html`: 存在しないURLからトップへ戻すページ
 - `Google_Forms_起案者申請フォーム設計.md`: 起案者申請フォームの質問設計
 - `Google_Forms_起案者申請フォーム作成手順.md`: Google Formsでの作成手順

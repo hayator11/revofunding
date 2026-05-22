@@ -1669,6 +1669,59 @@ details p {
   margin-bottom: 0;
 }
 
+.footer-links {
+  display: grid;
+  gap: 4px;
+  min-width: 210px;
+  font-size: 13px;
+}
+
+.footer-links a {
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.footer-links span {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.legal-table {
+  display: grid;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.legal-table div {
+  display: grid;
+  grid-template-columns: minmax(150px, 0.28fr) minmax(0, 1fr);
+  gap: 18px;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--line);
+}
+
+.legal-table div:last-child {
+  border-bottom: 0;
+}
+
+.legal-table span {
+  color: var(--ink);
+  font-weight: 900;
+}
+
+.legal-table p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.legal-table a {
+  color: var(--teal);
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
 .toast {
   position: fixed;
   right: 18px;
@@ -1804,5 +1857,9 @@ details p {
 
   .site-footer {
     flex-direction: column;
+  }
+
+  .legal-table div {
+    grid-template-columns: 1fr;
   }
 }
