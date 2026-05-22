@@ -750,6 +750,24 @@ h3 {
   color: var(--muted);
 }
 
+.official-sns-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.official-sns-row a {
+  min-height: 38px;
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--teal);
+  background: #fff;
+  font-size: 13px;
+  font-weight: 900;
+}
+
 .challenge-content {
   display: flex;
   flex-direction: column;
