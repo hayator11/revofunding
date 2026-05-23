@@ -11,6 +11,145 @@
     <meta property="og:url" content="https://hayator11.github.io/revofunding/revolist.html" />
     <meta property="og:image" content="https://hayator11.github.io/revofunding/onokun-a.jpeg" />
     <link rel="stylesheet" href="styles.css" />
+    <style>
+      .site-diagram {
+        display: grid;
+        gap: 18px;
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: clamp(14px, 2vw, 24px);
+        border: 1px solid #d2d2d7;
+        border-radius: 8px;
+        background: #ffffff;
+      }
+
+      .diagram-node {
+        display: grid;
+        gap: 10px;
+        min-height: 170px;
+        padding: 22px;
+        border: 1px solid #d2d2d7;
+        border-radius: 8px;
+        background: #fbfbfd;
+        color: #1d1d1f;
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+      }
+
+      .diagram-node span {
+        width: fit-content;
+        padding: 4px 10px;
+        border-radius: 999px;
+        color: #ffffff;
+        background: #007aff;
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .diagram-node strong {
+        display: block;
+        font-size: clamp(24px, 3vw, 38px);
+        line-height: 1.1;
+      }
+
+      .diagram-node p {
+        margin: 0;
+        color: #5b6470;
+      }
+
+      .diagram-top {
+        min-height: 230px;
+        color: #ffffff;
+        background: #111827;
+      }
+
+      .diagram-top span {
+        color: #111827;
+        background: #ffffff;
+      }
+
+      .diagram-top p {
+        color: rgba(255, 255, 255, 0.78);
+      }
+
+      .diagram-main {
+        border: 2px solid #007aff;
+        background: #edf6ff;
+      }
+
+      .diagram-row {
+        display: grid;
+        grid-template-columns: minmax(0, 0.72fr);
+        justify-content: center;
+      }
+
+      .diagram-grid,
+      .diagram-base {
+        display: grid;
+        gap: 14px;
+      }
+
+      .diagram-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .diagram-base {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        padding-top: 18px;
+        border-top: 4px solid #111827;
+      }
+
+      .base-node {
+        background: #f5f5f7;
+      }
+
+      .diagram-connector {
+        position: relative;
+        display: grid;
+        place-items: center;
+        height: 44px;
+      }
+
+      .diagram-connector::before {
+        content: "";
+        width: 3px;
+        height: 44px;
+        border-radius: 999px;
+        background: #007aff;
+      }
+
+      .diagram-connector::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        width: 14px;
+        height: 14px;
+        border-right: 3px solid #007aff;
+        border-bottom: 3px solid #007aff;
+        transform: rotate(45deg);
+      }
+
+      .diagram-caption {
+        margin: 6px 0 0;
+        color: #6e6e73;
+        text-align: center;
+        font-weight: 800;
+      }
+
+      @media (max-width: 980px) {
+        .diagram-grid,
+        .diagram-base {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 720px) {
+        .diagram-row,
+        .diagram-grid,
+        .diagram-base {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
   </head>
   <body>
     <header class="site-header">
@@ -106,6 +245,7 @@
               <p>おのくん活動の文脈にある、防災を身近に、楽しく、日常へ届ける社会貢献型の取り組み。</p>
             </a>
           </div>
+          <p class="diagram-caption">上の仕組みを支えている土台が、おのくんの持ち寄り文化と防災×帽祭です。</p>
         </div>
       </section>
 
