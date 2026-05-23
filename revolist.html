@@ -9,11 +9,11 @@
     <meta property="og:description" content="資金と人を集めながら循環させ続ける次世代型クラウドファンディング。レボリストLab、おのくん、防災×帽祭、レボアート、レボリンク、レボソングの関係を図解します。" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://hayator11.github.io/revofunding/revolist.html" />
-    <meta property="og:image" content="https://hayator11.github.io/revofunding/RevoFunding.png" />
+    <meta property="og:image" content="https://hayator11.github.io/revofunding/revolist-lab-map.png" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="レボファンディングの全体図 | レボリストLab" />
     <meta name="twitter:description" content="レボファンディング、レボアート、レボリンク、レボソング、おのくん、防災×帽祭をつなぐ社会貢献型プロジェクトの全体図。" />
-    <meta name="twitter:image" content="https://hayator11.github.io/revofunding/RevoFunding.png" />
+    <meta name="twitter:image" content="https://hayator11.github.io/revofunding/revolist-lab-map.png" />
     <link rel="stylesheet" href="styles.css" />
     <script type="application/ld+json">
       {
@@ -21,7 +21,7 @@
         "@type": "Article",
         "headline": "レボファンディングの全体図",
         "description": "レボファンディングは、資金と人を集めながら循環させ続ける次世代型クラウドファンディングです。レボリストLab、おのくん、防災×帽祭、レボアート、レボリンク、レボソングの関係を紹介します。",
-        "image": "https://hayator11.github.io/revofunding/RevoFunding.png",
+        "image": "https://hayator11.github.io/revofunding/revolist-lab-map.png",
         "author": {
           "@type": "Person",
           "name": "@hayator",
@@ -43,6 +43,21 @@
         border-radius: 8px;
         background: #ffffff;
         box-shadow: 0 18px 45px rgba(0, 0, 0, 0.07);
+      }
+
+      .site-map-panel.full-image-map {
+        display: grid;
+        justify-items: center;
+        max-width: min(1180px, calc((100vh - 158px) * 0.71 + 44px));
+        padding: clamp(8px, 1.6vw, 18px);
+      }
+
+      .full-map-image {
+        display: block;
+        width: auto;
+        max-width: 100%;
+        max-height: min(1120px, calc(100vh - 158px));
+        object-fit: contain;
       }
 
       .site-diagram {
@@ -233,6 +248,8 @@
         display: block;
         width: 100%;
         height: auto;
+        max-height: min(1120px, calc(100vh - 158px));
+        object-fit: contain;
         border-radius: 8px;
       }
 
@@ -396,7 +413,7 @@
       <section class="section">
         <figure class="seo-figure">
           <img
-            src="RevoFunding.png"
+            src="revolist-lab-map.png"
             alt="レボファンディングを中心に、レボリストLab、おのくん、防災×帽祭、レボアート、レボリンク、レボソング、レボハットが社会貢献型プロジェクトとしてつながる全体図"
           />
           <figcaption>
@@ -557,96 +574,12 @@
         <div class="section-head">
           <div><p class="eyebrow">Site Diagram</p><h2>レボファンディングを上に置いた全体図</h2></div>
         </div>
-        <div class="site-map-panel">
-          <svg class="illustration-map" viewBox="0 0 1200 760" role="img" aria-labelledby="revo-map-title revo-map-desc">
-            <title id="revo-map-title">レボファンディングを中心にした全体図</title>
-            <desc id="revo-map-desc">中央にレボファンディング、下にレボアート、周囲にレボソング、レボリンク、レボリストLab、認定アーティスト、土台におのくんと防災×帽祭、最後に@hayatorがある関係図。</desc>
-            <defs>
-              <linearGradient id="mapBlue" x1="0" x2="1" y1="0" y2="1">
-                <stop offset="0%" stop-color="#007aff" />
-                <stop offset="100%" stop-color="#42a5ff" />
-              </linearGradient>
-              <linearGradient id="mapRed" x1="0" x2="1" y1="0" y2="1">
-                <stop offset="0%" stop-color="#ff3b30" />
-                <stop offset="100%" stop-color="#f07b58" />
-              </linearGradient>
-              <marker id="arrowHead" markerHeight="10" markerWidth="10" orient="auto" refX="8" refY="5">
-                <path d="M0,0 L10,5 L0,10 z" fill="#007aff" />
-              </marker>
-            </defs>
-
-            <rect x="18" y="18" width="1164" height="724" rx="28" fill="#f5f5f7" stroke="#d2d2d7" />
-            <text x="600" y="72" text-anchor="middle" class="map-title">レボファンディングを中心に広がる社会貢献型の活動</text>
-            <text x="600" y="104" text-anchor="middle" class="map-sub">応援、アート、音楽、企業協賛、防災、持ち寄り文化がひとつの流れでつながる</text>
-
-            <path d="M600 205 C600 245 600 260 600 295" stroke="#007aff" stroke-width="5" fill="none" marker-end="url(#arrowHead)" />
-            <path d="M600 390 C520 435 435 450 310 482" stroke="#007aff" stroke-width="3" fill="none" opacity="0.55" marker-end="url(#arrowHead)" />
-            <path d="M600 390 C680 435 765 450 890 482" stroke="#007aff" stroke-width="3" fill="none" opacity="0.55" marker-end="url(#arrowHead)" />
-            <path d="M510 178 C405 185 330 210 250 260" stroke="#007aff" stroke-width="3" fill="none" opacity="0.45" marker-end="url(#arrowHead)" />
-            <path d="M690 178 C795 185 870 210 950 260" stroke="#007aff" stroke-width="3" fill="none" opacity="0.45" marker-end="url(#arrowHead)" />
-            <path d="M600 460 C600 508 600 536 600 575" stroke="#111827" stroke-width="4" fill="none" opacity="0.55" marker-end="url(#arrowHead)" />
-
-            <g class="map-node">
-              <rect x="438" y="128" width="324" height="104" rx="24" fill="#111827" />
-              <text x="600" y="168" text-anchor="middle" class="map-chip">CENTER</text>
-              <text x="600" y="199" text-anchor="middle" font-size="32" font-weight="900" fill="#ffffff">レボファンディング</text>
-              <text x="600" y="222" text-anchor="middle" font-size="13" font-weight="700" fill="rgba(255,255,255,0.75)">応援者・ファン・商品・活動レポートを循環</text>
-            </g>
-
-            <g class="map-node">
-              <rect x="462" y="306" width="276" height="118" rx="24" fill="url(#mapBlue)" />
-              <text x="600" y="346" text-anchor="middle" class="map-chip">PROJECT</text>
-              <text x="600" y="379" text-anchor="middle" font-size="34" font-weight="900" fill="#ffffff">レボアート</text>
-              <text x="600" y="403" text-anchor="middle" font-size="13" font-weight="800" fill="rgba(255,255,255,0.82)">地域・企業・行政・学校・アーティストが参加</text>
-            </g>
-
-            <g class="map-node">
-              <rect x="112" y="224" width="240" height="112" rx="22" fill="#ffffff" stroke="#d2d2d7" />
-              <text x="232" y="258" text-anchor="middle" class="map-sub">REVO SERIES</text>
-              <text x="232" y="292" text-anchor="middle" class="map-label">レボソング</text>
-              <text x="232" y="318" text-anchor="middle" class="map-sub">想いを歌にして広げる</text>
-            </g>
-
-            <g class="map-node">
-              <rect x="848" y="224" width="240" height="112" rx="22" fill="#ffffff" stroke="#d2d2d7" />
-              <text x="968" y="258" text-anchor="middle" class="map-sub">REVO SERIES</text>
-              <text x="968" y="292" text-anchor="middle" class="map-label">レボリンク</text>
-              <text x="968" y="318" text-anchor="middle" class="map-sub">企業協賛を社会貢献へ</text>
-            </g>
-
-            <g class="map-node">
-              <rect x="120" y="438" width="250" height="112" rx="22" fill="#ffffff" stroke="#d2d2d7" />
-              <text x="245" y="472" text-anchor="middle" class="map-sub">LAB</text>
-              <text x="245" y="506" text-anchor="middle" class="map-label">レボリストLab</text>
-              <text x="245" y="532" text-anchor="middle" class="map-sub">防災・地域・応援の実験場</text>
-            </g>
-
-            <g class="map-node">
-              <rect x="830" y="438" width="250" height="112" rx="22" fill="#fff7ed" stroke="#f2c14e" />
-              <text x="955" y="472" text-anchor="middle" class="map-sub">SUPPORT</text>
-              <text x="955" y="506" text-anchor="middle" class="map-label">認定アーティスト</text>
-              <text x="955" y="532" text-anchor="middle" class="map-sub">想いを伝わる形に整える</text>
-            </g>
-
-            <g class="map-node">
-              <rect x="282" y="594" width="276" height="96" rx="22" fill="#ffffff" stroke="#111827" stroke-width="3" />
-              <text x="420" y="626" text-anchor="middle" class="map-sub">FOUNDATION</text>
-              <text x="420" y="660" text-anchor="middle" class="map-label">おのくん</text>
-              <text x="420" y="682" text-anchor="middle" class="map-sub">持ち寄り文化と地域のつながり</text>
-            </g>
-
-            <g class="map-node">
-              <rect x="642" y="594" width="276" height="96" rx="22" fill="#ffffff" stroke="#111827" stroke-width="3" />
-              <text x="780" y="626" text-anchor="middle" class="map-sub">FOUNDATION</text>
-              <text x="780" y="660" text-anchor="middle" class="map-label">防災×帽祭</text>
-              <text x="780" y="682" text-anchor="middle" class="map-sub">防災を身近に、楽しく届ける</text>
-            </g>
-
-            <g>
-              <rect x="510" y="704" width="180" height="32" rx="16" fill="#ffffff" stroke="#d2d2d7" />
-              <text x="600" y="725" text-anchor="middle" font-size="13" font-weight="900" fill="#5b6470">背景発信: @hayator</text>
-            </g>
-          </svg>
+        <div class="site-map-panel full-image-map">
+          <img
+            class="full-map-image"
+            src="revolist-lab-map.png"
+            alt="レボリストLabを土台に、おのくん、防災×帽祭、レボリンク、レボアート、レボハット、レボソング、レボファンディングがつながる全体図"
+          />
           <div class="map-links" aria-label="図解内の関連リンク">
             <a href="supporters.html">レボファンディング</a>
             <a href="revo-art.html">レボアート</a>
