@@ -261,6 +261,42 @@
         border-radius: 8px;
       }
 
+      .linked-image-map {
+        position: relative;
+        width: min(100%, 792px);
+        max-width: calc(71vh - 112px);
+        min-width: min(100%, 320px);
+        margin: 0 auto;
+      }
+
+      .linked-image-map img {
+        max-height: none;
+      }
+
+      .image-hotspot {
+        position: absolute;
+        border-radius: 10px;
+        outline: 0 solid rgba(0, 122, 255, 0);
+        background: rgba(0, 122, 255, 0);
+        transition: background 0.18s ease, outline 0.18s ease;
+      }
+
+      .image-hotspot:hover,
+      .image-hotspot:focus-visible {
+        outline: 3px solid rgba(0, 122, 255, 0.45);
+        background: rgba(0, 122, 255, 0.08);
+      }
+
+      .hotspot-funding { left: 34%; top: 3%; width: 56%; height: 20%; }
+      .hotspot-bosai { left: 4%; top: 24%; width: 28%; height: 18%; }
+      .hotspot-hat { left: 67%; top: 24%; width: 30%; height: 18%; }
+      .hotspot-art { left: 37%; top: 30%; width: 27%; height: 18%; }
+      .hotspot-link { left: 3%; top: 43%; width: 31%; height: 18%; }
+      .hotspot-song { left: 67%; top: 42%; width: 31%; height: 20%; }
+      .hotspot-lab { left: 35%; top: 59%; width: 31%; height: 18%; }
+      .hotspot-onokun { left: 0%; top: 78%; width: 37%; height: 20%; }
+      .hotspot-lab-note { left: 63%; top: 78%; width: 35%; height: 17%; }
+
       .seo-figure figcaption {
         margin-top: 14px;
         color: #5b6470;
@@ -420,10 +456,21 @@
 
       <section class="section">
         <figure class="seo-figure">
-          <img
-            src="revolist-lab-map.png"
-            alt="レボファンディングを中心に、レボリストLab、おのくん、防災×帽祭、レボアート、レボリンク、レボソング、レボハットが社会貢献型プロジェクトとしてつながる全体図"
-          />
+          <div class="linked-image-map">
+            <img
+              src="revolist-lab-map.png"
+              alt="レボファンディングを中心に、レボリストLab、おのくん、防災×帽祭、レボアート、レボリンク、レボソング、レボハットが社会貢献型プロジェクトとしてつながる全体図"
+            />
+            <a class="image-hotspot hotspot-funding" href="supporters.html" aria-label="レボファンディングのページへ"></a>
+            <a class="image-hotspot hotspot-bosai" href="https://revolist.earth/bosai-bosai" target="_blank" rel="noreferrer" aria-label="防災×帽祭のページへ"></a>
+            <a class="image-hotspot hotspot-hat" href="shop.html" aria-label="レボハットのページへ"></a>
+            <a class="image-hotspot hotspot-art" href="revo-art.html" aria-label="レボアートのページへ"></a>
+            <a class="image-hotspot hotspot-link" href="https://onokun.com/socially-responsible-sponsorship/" target="_blank" rel="noreferrer" aria-label="レボリンクのページへ"></a>
+            <a class="image-hotspot hotspot-song" href="https://revosong-charts.vercel.app/" target="_blank" rel="noreferrer" aria-label="レボソングのページへ"></a>
+            <a class="image-hotspot hotspot-lab" href="revolist.html" aria-label="レボリストLabのページへ"></a>
+            <a class="image-hotspot hotspot-onokun" href="https://onokun.com/" target="_blank" rel="noreferrer" aria-label="おのくんのページへ"></a>
+            <a class="image-hotspot hotspot-lab-note" href="revolist.html" aria-label="レボリストLabの説明へ"></a>
+          </div>
           <figcaption>
             レボファンディングを中心に、レボリストLabから生まれる社会貢献型プロジェクトの全体図。
           </figcaption>
