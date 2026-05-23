@@ -674,6 +674,154 @@ h3 {
   margin-bottom: 16px;
 }
 
+.ecosystem-flow {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(150px, 1fr));
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+}
+
+.ecosystem-flow a {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 260px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+}
+
+.ecosystem-flow a::after {
+  content: "";
+  position: absolute;
+  right: -10px;
+  top: 34px;
+  width: 18px;
+  height: 2px;
+  background: var(--teal);
+}
+
+.ecosystem-flow a:last-child::after {
+  display: none;
+}
+
+.ecosystem-flow span {
+  width: fit-content;
+  padding: 4px 9px;
+  border-radius: 999px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 900;
+  background: var(--teal);
+}
+
+.ecosystem-flow strong {
+  display: block;
+  margin: 18px 0 10px;
+  font-size: 24px;
+  line-height: 1.15;
+}
+
+.ecosystem-flow p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.site-diagram {
+  display: grid;
+  gap: 16px;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.diagram-node {
+  display: grid;
+  gap: 10px;
+  min-height: 190px;
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
+}
+
+.diagram-node span {
+  width: fit-content;
+  padding: 4px 9px;
+  border-radius: 999px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 900;
+  background: var(--teal);
+}
+
+.diagram-node strong {
+  font-size: clamp(24px, 4vw, 38px);
+  line-height: 1.1;
+}
+
+.diagram-node p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.diagram-top {
+  min-height: 220px;
+  color: #fff;
+  background: var(--navy);
+}
+
+.diagram-top span {
+  color: var(--navy);
+  background: #fff;
+}
+
+.diagram-top p {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.diagram-main {
+  border-color: rgba(0, 122, 255, 0.28);
+  background: #f7fbff;
+}
+
+.diagram-row {
+  display: grid;
+  grid-template-columns: minmax(0, 0.72fr);
+  justify-content: center;
+}
+
+.diagram-grid,
+.diagram-base {
+  display: grid;
+  gap: 14px;
+}
+
+.diagram-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.diagram-base {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding-top: 16px;
+  border-top: 3px solid var(--navy);
+}
+
+.base-node {
+  background: var(--soft);
+}
+
+.diagram-connector {
+  width: 3px;
+  height: 28px;
+  margin: 0 auto;
+  border-radius: 999px;
+  background: var(--teal);
+}
+
 .link-hub-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -2077,6 +2225,8 @@ details p {
   .portal-grid,
   .revo-map,
   .link-hub-grid,
+  .diagram-grid,
+  .diagram-base,
   .official-backlinks,
   .share-grid,
   .merch-grid,
@@ -2129,6 +2279,9 @@ details p {
   .portal-grid,
   .revo-map,
   .link-hub-grid,
+  .diagram-grid,
+  .diagram-base,
+  .diagram-row,
   .official-backlinks,
   .share-grid,
   .merch-grid,
