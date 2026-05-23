@@ -12,22 +12,33 @@
     <meta property="og:image" content="https://hayator11.github.io/revofunding/onokun-a.jpeg" />
     <link rel="stylesheet" href="styles.css" />
     <style>
-      .site-diagram {
-        display: grid;
-        gap: 18px;
+      .site-map-panel {
         max-width: 1180px;
         margin: 0 auto;
-        padding: clamp(14px, 2vw, 24px);
+        padding: clamp(18px, 3vw, 34px);
         border: 1px solid #d2d2d7;
         border-radius: 8px;
         background: #ffffff;
+        box-shadow: 0 18px 45px rgba(0, 0, 0, 0.07);
+      }
+
+      .site-diagram {
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-areas:
+          "song funding link"
+          "lab funding art"
+          "onokun foundation bosai";
+        gap: 16px;
+        align-items: stretch;
       }
 
       .diagram-node {
         display: grid;
         gap: 10px;
-        min-height: 170px;
-        padding: 22px;
+        min-height: 160px;
+        padding: 18px;
         border: 1px solid #d2d2d7;
         border-radius: 8px;
         background: #fbfbfd;
@@ -47,7 +58,7 @@
 
       .diagram-node strong {
         display: block;
-        font-size: clamp(24px, 3vw, 38px);
+        font-size: clamp(20px, 2.2vw, 30px);
         line-height: 1.1;
       }
 
@@ -57,7 +68,8 @@
       }
 
       .diagram-top {
-        min-height: 230px;
+        grid-area: funding;
+        min-height: 100%;
         color: #ffffff;
         background: #111827;
       }
@@ -72,64 +84,61 @@
       }
 
       .diagram-main {
+        grid-area: art;
         border: 2px solid #007aff;
         background: #edf6ff;
       }
 
-      .diagram-row {
-        display: grid;
-        grid-template-columns: minmax(0, 0.72fr);
-        justify-content: center;
+      .diagram-song {
+        grid-area: song;
       }
 
-      .diagram-grid,
-      .diagram-base {
-        display: grid;
-        gap: 14px;
+      .diagram-link {
+        grid-area: link;
       }
 
-      .diagram-grid {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
+      .diagram-lab {
+        grid-area: lab;
       }
 
-      .diagram-base {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        padding-top: 18px;
-        border-top: 4px solid #111827;
+      .diagram-designer {
+        grid-area: foundation;
+        background: #fff7ed;
       }
 
       .base-node {
+        border-top: 5px solid #111827;
         background: #f5f5f7;
       }
 
-      .diagram-connector {
-        position: relative;
-        display: grid;
-        place-items: center;
-        height: 44px;
+      .diagram-onokun {
+        grid-area: onokun;
       }
 
-      .diagram-connector::before {
-        content: "";
-        width: 3px;
-        height: 44px;
-        border-radius: 999px;
-        background: #007aff;
+      .diagram-bosai {
+        grid-area: bosai;
       }
 
-      .diagram-connector::after {
+      .site-diagram::before {
         content: "";
         position: absolute;
-        bottom: 0;
-        width: 14px;
-        height: 14px;
-        border-right: 3px solid #007aff;
-        border-bottom: 3px solid #007aff;
-        transform: rotate(45deg);
+        inset: 50% 10% auto;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, rgba(0, 122, 255, 0.34), transparent);
+        pointer-events: none;
+      }
+
+      .site-diagram::after {
+        content: "";
+        position: absolute;
+        inset: 12% 50% 18%;
+        width: 2px;
+        background: linear-gradient(180deg, transparent, rgba(0, 122, 255, 0.34), transparent);
+        pointer-events: none;
       }
 
       .diagram-caption {
-        margin: 6px 0 0;
+        margin: 18px 0 0;
         color: #6e6e73;
         text-align: center;
         font-weight: 800;
@@ -170,17 +179,29 @@
       }
 
       @media (max-width: 980px) {
-        .diagram-grid,
-        .diagram-base {
+        .site-diagram {
           grid-template-columns: repeat(2, minmax(0, 1fr));
+          grid-template-areas:
+            "funding funding"
+            "art art"
+            "song link"
+            "lab foundation"
+            "onokun bosai";
         }
       }
 
       @media (max-width: 720px) {
-        .diagram-row,
-        .diagram-grid,
-        .diagram-base {
+        .site-diagram {
           grid-template-columns: 1fr;
+          grid-template-areas:
+            "funding"
+            "art"
+            "song"
+            "link"
+            "lab"
+            "foundation"
+            "onokun"
+            "bosai";
         }
       }
     </style>
@@ -208,20 +229,19 @@
     <main>
       <section class="page-hero authority-hero">
         <p class="eyebrow">Revo Funding Map</p>
-        <h1>このサイトは、レボファンディングを中心に社会貢献型の活動をつなぐ図解です。</h1>
+        <h1>レボファンディングから広がる、社会貢献型の活動のつながり。</h1>
         <p class="lead">
-          一番上にあるのはレボファンディングです。
-          その中で、応援者、ファン、グッズ、活動レポート、次回展開を循環させます。
-          そこからレボアートが生まれ、レボソング、レボリンクなどのレボシリーズとつながります。
-          そしてその土台には、おのくんの活動と、防災×帽祭があります。
+          このページは、レボファンディングという仕組みの背景にある想いと、
+          そこから生まれるレボアート、レボソング、レボリンク、レボリストLab、
+          そして土台にあるおのくんと防災×帽祭の関係を、文章と図解で整理するためのページです。
         </p>
         <div class="hero-actions">
-          <a class="button primary" href="#site-map">全体図を見る</a>
-          <a class="button secondary" href="#social-good">社会貢献の文脈を見る</a>
+          <a class="button primary" href="#message">想いを読む</a>
+          <a class="button secondary" href="#site-map">全体図を見る</a>
         </div>
       </section>
 
-      <section class="section">
+      <section id="message" class="section">
         <div class="message-panel">
           <p class="message-lead">
             レボファンディングは、ただ資金を集めるための仕組みではありません。
@@ -246,59 +266,140 @@
         </div>
       </section>
 
+      <section class="section">
+        <div class="section-head">
+          <div><p class="eyebrow">Background</p><h2>なぜ、この仕組みが必要なのか。</h2></div>
+        </div>
+        <div class="story-layout">
+          <div>
+            <p class="lead compact">
+              これまでのクラウドファンディングは、支援して、リターンを受け取り、そこで関係が終わってしまうことが少なくありません。
+              もちろん、それだけでも大切な支援です。
+              でも、挑戦や地域活動や防災の取り組みは、一度の支援だけでは続きません。
+            </p>
+            <p>
+              本当に必要なのは、応援した人がそのまま活動を知り続け、商品や体験を通じてファンになり、
+              次の展開を一緒に広げていける仕組みです。
+              レボファンディングは、そのために、資金の流れ、制作費、在庫、売上、次回展開用のストック、起案者への支援を見える化します。
+            </p>
+            <p>
+              応援者に金銭的なリターンを返すのではなく、参加した履歴、称号、共創した体験、活動を広げた実感を残す。
+              その積み重ねが、挑戦者の活動を支え、ファンを増やし、社会貢献を継続できる形へ変えていきます。
+            </p>
+          </div>
+          <aside class="message-panel">
+            <p class="message-lead">支援で終わらせず、関係を育てる。</p>
+            <p>レボファンディングが目指すのは、単発の資金集めではなく、応援者とファンが活動を支え続ける循環です。</p>
+          </aside>
+        </div>
+      </section>
+
+      <section class="section band">
+        <div class="section-head">
+          <div><p class="eyebrow">How It Spreads</p><h2>レボアート、レボソング、レボリンクへ広がる理由。</h2></div>
+        </div>
+        <div class="story-layout">
+          <div>
+            <p class="lead compact">
+              応援を続けるためには、伝わる形が必要です。
+              そこでレボファンディングは、Tシャツやグッズだけでなく、アート、歌、企業協賛へ広がっていきます。
+            </p>
+            <p>
+              レボアートは、応援の気持ちを地域に残る表現へ変えます。
+              壁、車、帽子、イベント空間などに、地域の想いや挑戦の背景を残すことで、行政、企業、学校、アーティスト、応援者が関われる接点を作ります。
+            </p>
+            <p>
+              レボソングは、活動の想いを音楽として届けます。
+              文章では届きにくい背景や感情を、歌として残すことで、イベントやSNSで広がりやすくなります。
+            </p>
+            <p>
+              レボリンクは、企業の広告や協賛を、社会貢献活動を支える流れへ変えます。
+              企業がただ名前を出すだけではなく、何を支えたのか、どんな活動につながったのかを見える化します。
+            </p>
+          </div>
+          <aside class="message-panel">
+            <p class="message-lead">伝わる形があるから、応援は広がる。</p>
+            <p>商品、アート、歌、リンク。それぞれが入口になり、違う立場の人が関われるようになります。</p>
+          </aside>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <div><p class="eyebrow">Foundation</p><h2>土台にあるのは、おのくんと防災×帽祭。</h2></div>
+        </div>
+        <div class="story-layout">
+          <div>
+            <p class="lead compact">
+              この一連の取り組みを支えているのは、おのくんの活動にある持ち寄り文化です。
+              誰かが少しずつ持ち寄り、誰かを応援し、地域とのつながりを作っていく。
+              その考え方が、レボファンディングやレボアートの根っこにあります。
+            </p>
+            <p>
+              そして、おのくんの活動の中には、防災×帽祭という文脈があります。
+              防災を重く難しいものにせず、帽子やグッズ、アートやイベントを通じて、もっと身近にしていく取り組みです。
+            </p>
+            <p>
+              レボファンディング、レボアート、レボソング、レボリンクは、それぞれ形は違っても、地域、防災、応援、社会貢献を身近にするための仕組みです。
+              その意味で、すべてが社会貢献型の取り組みとしてつながっています。
+            </p>
+          </div>
+          <aside class="message-panel">
+            <p class="message-lead">持ち寄り文化を、今の時代の仕組みにする。</p>
+            <p>おのくんと防災×帽祭の文脈があるから、レボシリーズは単なる企画名ではなく、活動の背景を持った仕組みになります。</p>
+          </aside>
+        </div>
+      </section>
+
       <section id="site-map" class="section">
         <div class="section-head">
           <div><p class="eyebrow">Site Diagram</p><h2>レボファンディングを上に置いた全体図</h2></div>
         </div>
-        <div class="site-diagram" aria-label="レボファンディングを中心にした全体図">
-          <a class="diagram-node diagram-top" href="supporters.html">
-            <span>Center</span>
-            <strong>レボファンディング</strong>
-            <p>応援者、ファン、商品、売上、活動レポートを循環させ、挑戦を継続して支えるこのサイトの中心です。</p>
-          </a>
-
-          <div class="diagram-connector" aria-hidden="true"></div>
-
-          <div class="diagram-row">
-            <a class="diagram-node diagram-main" href="revo-art.html">
-              <span>Project</span>
-              <strong>レボアート</strong>
-              <p>レボファンディングから広がる、地域・企業・行政・学校・アーティストが参加できる社会貢献型アート。</p>
-            </a>
-          </div>
-
-          <div class="diagram-connector" aria-hidden="true"></div>
-
-          <div class="diagram-grid">
-            <a class="diagram-node" href="https://revosong-charts.vercel.app/" target="_blank" rel="noreferrer">
+        <div class="site-map-panel">
+          <div class="site-diagram" aria-label="レボファンディングを中心にした全体図">
+            <a class="diagram-node diagram-song" href="https://revosong-charts.vercel.app/" target="_blank" rel="noreferrer">
               <span>Revo Series</span>
               <strong>レボソング</strong>
               <p>活動の想いや挑戦の背景を、歌や音楽として残し、SNSやイベントで広げる表現。</p>
             </a>
-            <a class="diagram-node" href="https://onokun.com/socially-responsible-sponsorship/" target="_blank" rel="noreferrer">
+
+            <a class="diagram-node diagram-top" href="supporters.html">
+              <span>Center</span>
+              <strong>レボファンディング</strong>
+              <p>応援者、ファン、商品、売上、活動レポートを循環させ、挑戦を継続して支えるこのサイトの中心です。</p>
+            </a>
+
+            <a class="diagram-node diagram-link" href="https://onokun.com/socially-responsible-sponsorship/" target="_blank" rel="noreferrer">
               <span>Revo Series</span>
               <strong>レボリンク</strong>
               <p>企業の広告や協賛を、社会貢献活動を支える資金の流れに変える仕組み。</p>
             </a>
-            <a class="diagram-node" href="https://revolist.earth/revolist-lab" target="_blank" rel="noreferrer">
+
+            <a class="diagram-node diagram-lab" href="https://revolist.earth/revolist-lab" target="_blank" rel="noreferrer">
               <span>Revo Series</span>
               <strong>レボリストLab</strong>
               <p>防災、地域、アート、応援、社会貢献を小さく試し、実装する実験場。</p>
             </a>
-            <a class="diagram-node" href="designers.html">
+
+            <a class="diagram-node diagram-main" href="revo-art.html">
+              <span>Project</span>
+              <strong>レボアート</strong>
+              <p>地域・企業・行政・学校・アーティストが参加できる社会貢献型アート。</p>
+            </a>
+
+            <a class="diagram-node diagram-designer" href="designers.html">
               <span>Support</span>
               <strong>認定デザイナー</strong>
               <p>起案者の想いを、商品・グッズ・アート・SNS素材として伝わる形へ整える支援者。</p>
             </a>
-          </div>
 
-          <div class="diagram-base">
-            <a class="diagram-node base-node" href="https://onokun.com/" target="_blank" rel="noreferrer">
+            <a class="diagram-node base-node diagram-onokun" href="https://onokun.com/" target="_blank" rel="noreferrer">
               <span>Foundation</span>
               <strong>おのくん</strong>
               <p>持ち寄り文化と地域のつながりを象徴する存在。レボシリーズを支える大切な土台です。</p>
             </a>
-            <a class="diagram-node base-node" href="https://revolist.earth/bosai-bosai" target="_blank" rel="noreferrer">
+
+            <a class="diagram-node base-node diagram-bosai" href="https://revolist.earth/bosai-bosai" target="_blank" rel="noreferrer">
               <span>Foundation</span>
               <strong>防災×帽祭</strong>
               <p>おのくん活動の文脈にある、防災を身近に、楽しく、日常へ届ける社会貢献型の取り組み。</p>
