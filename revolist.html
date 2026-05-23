@@ -144,6 +144,58 @@
         font-weight: 800;
       }
 
+      .illustration-map {
+        display: block;
+        width: 100%;
+        height: auto;
+        max-height: 760px;
+      }
+
+      .map-title {
+        font-size: 34px;
+        font-weight: 900;
+        fill: #1d1d1f;
+      }
+
+      .map-label {
+        font-size: 21px;
+        font-weight: 900;
+        fill: #1d1d1f;
+      }
+
+      .map-sub {
+        font-size: 13px;
+        font-weight: 700;
+        fill: #5b6470;
+      }
+
+      .map-chip {
+        font-size: 11px;
+        font-weight: 900;
+        fill: #ffffff;
+      }
+
+      .map-node {
+        filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.1));
+      }
+
+      .map-links {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 18px;
+      }
+
+      .map-links a {
+        padding: 9px 12px;
+        border: 1px solid #d2d2d7;
+        border-radius: 8px;
+        background: #fbfbfd;
+        color: #007aff;
+        font-weight: 900;
+      }
+
       .message-panel {
         display: grid;
         gap: 18px;
@@ -356,54 +408,102 @@
           <div><p class="eyebrow">Site Diagram</p><h2>レボファンディングを上に置いた全体図</h2></div>
         </div>
         <div class="site-map-panel">
-          <div class="site-diagram" aria-label="レボファンディングを中心にした全体図">
-            <a class="diagram-node diagram-song" href="https://revosong-charts.vercel.app/" target="_blank" rel="noreferrer">
-              <span>Revo Series</span>
-              <strong>レボソング</strong>
-              <p>活動の想いや挑戦の背景を、歌や音楽として残し、SNSやイベントで広げる表現。</p>
-            </a>
+          <svg class="illustration-map" viewBox="0 0 1200 760" role="img" aria-labelledby="revo-map-title revo-map-desc">
+            <title id="revo-map-title">レボファンディングを中心にした全体図</title>
+            <desc id="revo-map-desc">中央にレボファンディング、下にレボアート、周囲にレボソング、レボリンク、レボリストLab、認定デザイナー、土台におのくんと防災×帽祭、最後に@hayatorがある関係図。</desc>
+            <defs>
+              <linearGradient id="mapBlue" x1="0" x2="1" y1="0" y2="1">
+                <stop offset="0%" stop-color="#007aff" />
+                <stop offset="100%" stop-color="#42a5ff" />
+              </linearGradient>
+              <linearGradient id="mapRed" x1="0" x2="1" y1="0" y2="1">
+                <stop offset="0%" stop-color="#ff3b30" />
+                <stop offset="100%" stop-color="#f07b58" />
+              </linearGradient>
+              <marker id="arrowHead" markerHeight="10" markerWidth="10" orient="auto" refX="8" refY="5">
+                <path d="M0,0 L10,5 L0,10 z" fill="#007aff" />
+              </marker>
+            </defs>
 
-            <a class="diagram-node diagram-top" href="supporters.html">
-              <span>Center</span>
-              <strong>レボファンディング</strong>
-              <p>応援者、ファン、商品、売上、活動レポートを循環させ、挑戦を継続して支えるこのサイトの中心です。</p>
-            </a>
+            <rect x="18" y="18" width="1164" height="724" rx="28" fill="#f5f5f7" stroke="#d2d2d7" />
+            <text x="600" y="72" text-anchor="middle" class="map-title">レボファンディングを中心に広がる社会貢献型の活動</text>
+            <text x="600" y="104" text-anchor="middle" class="map-sub">応援、アート、音楽、企業協賛、防災、持ち寄り文化がひとつの流れでつながる</text>
 
-            <a class="diagram-node diagram-link" href="https://onokun.com/socially-responsible-sponsorship/" target="_blank" rel="noreferrer">
-              <span>Revo Series</span>
-              <strong>レボリンク</strong>
-              <p>企業の広告や協賛を、社会貢献活動を支える資金の流れに変える仕組み。</p>
-            </a>
+            <path d="M600 205 C600 245 600 260 600 295" stroke="#007aff" stroke-width="5" fill="none" marker-end="url(#arrowHead)" />
+            <path d="M600 390 C520 435 435 450 310 482" stroke="#007aff" stroke-width="3" fill="none" opacity="0.55" marker-end="url(#arrowHead)" />
+            <path d="M600 390 C680 435 765 450 890 482" stroke="#007aff" stroke-width="3" fill="none" opacity="0.55" marker-end="url(#arrowHead)" />
+            <path d="M510 178 C405 185 330 210 250 260" stroke="#007aff" stroke-width="3" fill="none" opacity="0.45" marker-end="url(#arrowHead)" />
+            <path d="M690 178 C795 185 870 210 950 260" stroke="#007aff" stroke-width="3" fill="none" opacity="0.45" marker-end="url(#arrowHead)" />
+            <path d="M600 460 C600 508 600 536 600 575" stroke="#111827" stroke-width="4" fill="none" opacity="0.55" marker-end="url(#arrowHead)" />
 
-            <a class="diagram-node diagram-lab" href="https://revolist.earth/revolist-lab" target="_blank" rel="noreferrer">
-              <span>Revo Series</span>
-              <strong>レボリストLab</strong>
-              <p>防災、地域、アート、応援、社会貢献を小さく試し、実装する実験場。</p>
-            </a>
+            <g class="map-node">
+              <rect x="438" y="128" width="324" height="104" rx="24" fill="#111827" />
+              <text x="600" y="168" text-anchor="middle" class="map-chip">CENTER</text>
+              <text x="600" y="199" text-anchor="middle" font-size="32" font-weight="900" fill="#ffffff">レボファンディング</text>
+              <text x="600" y="222" text-anchor="middle" font-size="13" font-weight="700" fill="rgba(255,255,255,0.75)">応援者・ファン・商品・活動レポートを循環</text>
+            </g>
 
-            <a class="diagram-node diagram-main" href="revo-art.html">
-              <span>Project</span>
-              <strong>レボアート</strong>
-              <p>地域・企業・行政・学校・アーティストが参加できる社会貢献型アート。</p>
-            </a>
+            <g class="map-node">
+              <rect x="462" y="306" width="276" height="118" rx="24" fill="url(#mapBlue)" />
+              <text x="600" y="346" text-anchor="middle" class="map-chip">PROJECT</text>
+              <text x="600" y="379" text-anchor="middle" font-size="34" font-weight="900" fill="#ffffff">レボアート</text>
+              <text x="600" y="403" text-anchor="middle" font-size="13" font-weight="800" fill="rgba(255,255,255,0.82)">地域・企業・行政・学校・アーティストが参加</text>
+            </g>
 
-            <a class="diagram-node diagram-designer" href="designers.html">
-              <span>Support</span>
-              <strong>認定デザイナー</strong>
-              <p>起案者の想いを、商品・グッズ・アート・SNS素材として伝わる形へ整える支援者。</p>
-            </a>
+            <g class="map-node">
+              <rect x="112" y="224" width="240" height="112" rx="22" fill="#ffffff" stroke="#d2d2d7" />
+              <text x="232" y="258" text-anchor="middle" class="map-sub">REVO SERIES</text>
+              <text x="232" y="292" text-anchor="middle" class="map-label">レボソング</text>
+              <text x="232" y="318" text-anchor="middle" class="map-sub">想いを歌にして広げる</text>
+            </g>
 
-            <a class="diagram-node base-node diagram-onokun" href="https://onokun.com/" target="_blank" rel="noreferrer">
-              <span>Foundation</span>
-              <strong>おのくん</strong>
-              <p>持ち寄り文化と地域のつながりを象徴する存在。レボシリーズを支える大切な土台です。</p>
-            </a>
+            <g class="map-node">
+              <rect x="848" y="224" width="240" height="112" rx="22" fill="#ffffff" stroke="#d2d2d7" />
+              <text x="968" y="258" text-anchor="middle" class="map-sub">REVO SERIES</text>
+              <text x="968" y="292" text-anchor="middle" class="map-label">レボリンク</text>
+              <text x="968" y="318" text-anchor="middle" class="map-sub">企業協賛を社会貢献へ</text>
+            </g>
 
-            <a class="diagram-node base-node diagram-bosai" href="https://revolist.earth/bosai-bosai" target="_blank" rel="noreferrer">
-              <span>Foundation</span>
-              <strong>防災×帽祭</strong>
-              <p>おのくん活動の文脈にある、防災を身近に、楽しく、日常へ届ける社会貢献型の取り組み。</p>
-            </a>
+            <g class="map-node">
+              <rect x="120" y="438" width="250" height="112" rx="22" fill="#ffffff" stroke="#d2d2d7" />
+              <text x="245" y="472" text-anchor="middle" class="map-sub">LAB</text>
+              <text x="245" y="506" text-anchor="middle" class="map-label">レボリストLab</text>
+              <text x="245" y="532" text-anchor="middle" class="map-sub">防災・地域・応援の実験場</text>
+            </g>
+
+            <g class="map-node">
+              <rect x="830" y="438" width="250" height="112" rx="22" fill="#fff7ed" stroke="#f2c14e" />
+              <text x="955" y="472" text-anchor="middle" class="map-sub">SUPPORT</text>
+              <text x="955" y="506" text-anchor="middle" class="map-label">認定デザイナー</text>
+              <text x="955" y="532" text-anchor="middle" class="map-sub">想いを伝わる形に整える</text>
+            </g>
+
+            <g class="map-node">
+              <rect x="282" y="594" width="276" height="96" rx="22" fill="#ffffff" stroke="#111827" stroke-width="3" />
+              <text x="420" y="626" text-anchor="middle" class="map-sub">FOUNDATION</text>
+              <text x="420" y="660" text-anchor="middle" class="map-label">おのくん</text>
+              <text x="420" y="682" text-anchor="middle" class="map-sub">持ち寄り文化と地域のつながり</text>
+            </g>
+
+            <g class="map-node">
+              <rect x="642" y="594" width="276" height="96" rx="22" fill="#ffffff" stroke="#111827" stroke-width="3" />
+              <text x="780" y="626" text-anchor="middle" class="map-sub">FOUNDATION</text>
+              <text x="780" y="660" text-anchor="middle" class="map-label">防災×帽祭</text>
+              <text x="780" y="682" text-anchor="middle" class="map-sub">防災を身近に、楽しく届ける</text>
+            </g>
+
+            <g>
+              <rect x="510" y="704" width="180" height="32" rx="16" fill="#ffffff" stroke="#d2d2d7" />
+              <text x="600" y="725" text-anchor="middle" font-size="13" font-weight="900" fill="#5b6470">背景発信: @hayator</text>
+            </g>
+          </svg>
+          <div class="map-links" aria-label="図解内の関連リンク">
+            <a href="supporters.html">レボファンディング</a>
+            <a href="revo-art.html">レボアート</a>
+            <a href="https://revosong-charts.vercel.app/" target="_blank" rel="noreferrer">レボソング</a>
+            <a href="https://onokun.com/socially-responsible-sponsorship/" target="_blank" rel="noreferrer">レボリンク</a>
+            <a href="https://onokun.com/" target="_blank" rel="noreferrer">おのくん</a>
+            <a href="https://revolist.earth/bosai-bosai" target="_blank" rel="noreferrer">防災×帽祭</a>
           </div>
           <p class="diagram-caption">上の仕組みを支えている土台が、おのくんの持ち寄り文化と防災×帽祭です。</p>
         </div>
