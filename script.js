@@ -207,6 +207,35 @@ function reconcileCounterAliases(counters) {
     mergedCounters.soldNumber = numberOnly(mergedCounters.soldCount);
   }
 
+  if (mergedCounters.soldCount && !mergedCounters.buyerCount) {
+    mergedCounters.buyerCount = `${numberOnly(mergedCounters.soldCount)}人`;
+  }
+
+  if (mergedCounters.totalFunds && !mergedCounters.hopeAmount) {
+    mergedCounters.hopeAmount = mergedCounters.totalFunds;
+  }
+
+  if (mergedCounters.productionCost && mergedCounters.operationCost && !mergedCounters.usedAmount) {
+    const production = Number(numberOnly(mergedCounters.productionCost).replace(/,/g, ""));
+    const operation = Number(numberOnly(mergedCounters.operationCost).replace(/,/g, ""));
+    if (!Number.isNaN(production) && !Number.isNaN(operation)) {
+      mergedCounters.usedAmount = `${(production + operation).toLocaleString("ja-JP")}円`;
+    }
+  }
+
+  if (mergedCounters.nextStock && !mergedCounters.operatingAmount) {
+    mergedCounters.operatingAmount = mergedCounters.nextStock;
+  }
+
+  if (mergedCounters.hopeAmount && mergedCounters.usedAmount && mergedCounters.operatingAmount && !mergedCounters.remainingBudget) {
+    const hope = Number(numberOnly(mergedCounters.hopeAmount).replace(/,/g, ""));
+    const used = Number(numberOnly(mergedCounters.usedAmount).replace(/,/g, ""));
+    const operating = Number(numberOnly(mergedCounters.operatingAmount).replace(/,/g, ""));
+    if (!Number.isNaN(hope) && !Number.isNaN(used) && !Number.isNaN(operating)) {
+      mergedCounters.remainingBudget = `${(hope - used - operating).toLocaleString("ja-JP")}円`;
+    }
+  }
+
   return mergedCounters;
 }
 

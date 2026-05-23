@@ -66,11 +66,11 @@ Google Sheetsに戻り、以下を開きます。
 コピーしたCSV URLを `script.js` の以下に入れます。
 
 ```js
-const counterDataUrl = window.REVO_COUNTER_DATA_URL || "counter-data.json";
+const counterDataUrl = window.REVO_COUNTER_DATA_URL || "https://docs.google.com/spreadsheets/d/e/公開CSVのURL";
 ```
 
-最初は `counter-data.json` のままでも動きます。
-CSV URLができたらこちらに送ってください。こちらで接続します。
+CSVが読めない場合でも、ページ内の初期値が表示されます。
+テスト用に手動更新する場合は `counter-data.json` の数値を更新します。
 
 ## 7. 運用ルール
 
@@ -78,3 +78,4 @@ CSV URLができたらこちらに送ってください。こちらで接続し�
 - 公開してよい集計値だけを入れる
 - BASE売上、在庫、支援予定額は運営確認後に更新する
 - Google Formsの回答数を自動集計する場合も、公開するのは集計結果だけにする
+- 応援者数、希望金額、利用金額、運用額、残、購入者数は `Public Counters` の key とサイト側の `data-counter` 名を一致させる

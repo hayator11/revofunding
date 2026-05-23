@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>起案者一覧 | レボファンディング</title>
+    <meta name="description" content="レボファンディングの起案者一覧。各起案者の背景、応援者募集、支援者購入、進捗カウンターへ進むための入口です。" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="レボファンディング トップへ">
+        <span class="brand-mark" aria-hidden="true">R</span>
+        <span><strong>レボファンディング</strong><small>Project Owners</small></span>
+      </a>
+      <nav class="nav" aria-label="主要ナビゲーション">
+        <a href="index.html">トップ</a>
+        <a href="concept.html">仕組み</a>
+        <a href="owners.html">起案者一覧</a>
+        <a href="supporters.html">応援者募集</a>
+        <a href="shop.html">支援者購入</a>
+        <a href="designers.html">認定アーティスト</a>
+        <a href="revo-art.html">レボアート</a>
+        <a href="dashboard.html">透明性</a>
+        <a href="challenger.html">起案する</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="page-hero">
+        <p class="eyebrow">Project Owners</p>
+        <h1>起案者一覧</h1>
+        <p class="lead">
+          ここでは紹介文と募集導線を分けて、起案者ごとの想い、応援者募集、支援者購入、進捗カウンターへ迷わず進めるようにします。
+          応援者募集は「一緒に決める人」を集めるページ、支援者購入は「決まった商品を購入する人」のページです。
+        </p>
+      </section>
+
+      <section class="ticker" aria-label="起案者一覧の全体カウンター">
+        <div><span>応援者数</span><strong data-counter="totalSupporters">74人</strong></div>
+        <div><span>希望金額</span><strong data-counter="hopeAmount">500,000円</strong></div>
+        <div><span>利用金額</span><strong data-counter="usedAmount">163,000円</strong></div>
+        <div><span>購入者数</span><strong data-counter="buyerCount">64人</strong></div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <div><p class="eyebrow">Owner List</p><h2>現在公開中の起案者</h2></div>
+        </div>
+        <div class="challenge-grid">
+          <article class="challenge-card">
+            <div class="challenge-image image-bousai"><span>防災×帽祭</span></div>
+            <div class="challenge-content">
+              <div class="card-row"><span class="status open">応援者募集中</span><span class="step">Step 1</span></div>
+              <h3>防災を楽しく広げる帽祭プロジェクト</h3>
+              <p>防災を日常の会話にするため、起案者の活動背景をもとに応援グループと商品展開を決めていきます。</p>
+              <div class="metrics"><span><strong data-counter="supportersNumber">32</strong>応援者</span><span><strong data-counter="hopeAmount">500,000円</strong>希望</span><span><strong data-counter="buyerCount">64</strong>購入者</span></div>
+              <div class="card-actions">
+                <a class="button small primary" href="owner-detail.html">起案者ページ</a>
+                <a class="button small secondary" href="supporters.html">応援者募集</a>
+                <a class="button small icon" href="shop.html">支援者購入</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="challenge-card">
+            <div class="challenge-image image-art"><span>レボアート</span></div>
+            <div class="challenge-content">
+              <div class="card-row"><span class="status next">準備中</span><span class="step">Step 0</span></div>
+              <h3>地域と企業をつなぐレボアート実行企画</h3>
+              <p>挑戦から実行後の記録まで、アーティスト、企業、地域、応援者の関わりを見える化していきます。</p>
+              <div class="metrics"><span><strong>36</strong>応援者候補</span><span><strong>260,000円</strong>希望</span><span><strong>3</strong>協力先</span></div>
+              <div class="card-actions">
+                <a class="button small primary" href="revo-art.html">詳細を見る</a>
+                <a class="button small secondary" href="designers.html">認定アーティスト</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="challenge-card">
+            <div class="challenge-image image-links"><span>レボリンクス</span></div>
+            <div class="challenge-content">
+              <div class="card-row"><span class="status next">二次募集予定</span><span class="step">Step 3</span></div>
+              <h3>広告スポンサーを社会貢献へつなぐ実験</h3>
+              <p>広告、スポンサー、紹介を、起案者支援と次回展開の資金循環に変える企画です。</p>
+              <div class="metrics"><span><strong>21</strong>応援者</span><span><strong>180,000円</strong>希望</span><span><strong>8</strong>協力先</span></div>
+              <div class="card-actions">
+                <a class="button small primary" href="supporters.html">募集内容を見る</a>
+                <a class="button small secondary" href="money-flow.html">資金の流れ</a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div><strong>起案者一覧</strong><p>紹介、募集、購入、進捗を分けて見せます。</p></div>
+      <p>応援者募集と支援者購入は役割が違うため、別ページとして設計します。</p>
+      <p class="footer-links"><a href="legal.html">法務・購入条件</a><span>特商法 / 返品 / 発送 / 個人情報</span></p>
+    </footer>
+
+    <div class="toast" role="status" aria-live="polite"></div>
+    <script src="script.js"></script>
+  </body>
+</html>

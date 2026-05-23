@@ -6,10 +6,10 @@
 
 - `index.html`: トップページ、挑戦一覧、達成済み導線
 - `supporters.html`: 応援者募集ページ
-- `shop.html`: グッズ購入ページ、SNSシェア、埋め込みコード
+- `shop.html`: 支援者購入ページ、SNSシェア、埋め込みコード
 - `achieved.html`: 達成・ファン化している挑戦一覧
 - `license.html`: おのくんライセンス説明ページ
-- `designers.html`: 認定デザイナー募集・紹介ページ
+- `designers.html`: 認定アーティスト募集・紹介ページ
 - `challenger.html`: 起案者向け登録ページ
 - `dashboard.html`: 運営ダッシュボード風ページ
 - `money-flow.html`: 資金の流れ説明ページ
@@ -35,9 +35,9 @@
 - `Google_Forms_ファン案内登録フォーム設計.md`: ファン案内登録フォームの質問設計
 - `google_forms_create_fan_notice_form.gs`: ファン案内登録フォーム自動作成スクリプト
 - `Google_Forms_ファン案内登録フォーム作成手順.md`: ファン案内登録フォームの作成手順
-- `Google_Forms_認定デザイナー応募フォーム設計.md`: 認定デザイナー応募フォームの質問設計
-- `google_forms_create_designer_form.gs`: 認定デザイナー応募フォーム自動作成スクリプト
-- `Google_Forms_認定デザイナー応募フォーム作成手順.md`: 認定デザイナー応募フォームの作成手順
+- `Google_Forms_認定アーティスト応募フォーム設計.md`: 認定アーティスト応募フォームの質問設計
+- `google_forms_create_designer_form.gs`: 認定アーティスト応募フォーム自動作成スクリプト
+- `Google_Forms_認定アーティスト応募フォーム作成手順.md`: 認定アーティスト応募フォームの作成手順
 - `BASE_商品販売ページ設計.md`: BASE商品ページに入れる内容
 - `BASE_商品登録手順.md`: BASEへの商品登録手順
 - `Canva_SNS素材テンプレート設計.md`: Canvaで作るSNS素材の設計

@@ -36,6 +36,12 @@ Google Sheetsに `Public Counters` というシートを作ります。
 | totalSupporters | 74人 | 累計応援者 |
 | totalFans | 186人 | 累計ファン |
 | supportersCount | 32人 | 防災×帽祭の応援者 |
+| remainingSupporters | 18人 | 応援者グループ形成までの残り人数 |
+| hopeAmount | 500,000円 | 希望金額 |
+| usedAmount | 163,000円 | 利用金額 |
+| operatingAmount | 80,000円 | 運用額 |
+| remainingBudget | 257,000円 | 残 |
+| buyerCount | 64人 | 購入者数 |
 | fansCount | 118人 | 防災×帽祭のファン |
 | soldCount | 64枚 | 販売数 |
 | stockCount | 18枚 | 在庫 |
@@ -55,6 +61,8 @@ Google Sheetsに `Public Counters` というシートを作ります。
 4. 形式を `カンマ区切り値（.csv）` にする
 5. CSV URLをコピーする
 6. `script.js` の `counterDataUrl` をCSV URLへ差し替える
+
+現在のサイトは公開CSV URLを直接読む設定にしています。CSVを変更する場合は、`script.js` の `counterDataUrl` を新しいCSV URLに差し替えます。
 
 ## 注意
 

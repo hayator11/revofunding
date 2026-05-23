@@ -45,10 +45,10 @@ GitHub画面から行う場合は、リポジトリの `Add file` から `Upload
 
 - トップ: `/index.html`
 - 応援者募集: `/supporters.html`
-- グッズ購入: `/shop.html`
+- 支援者購入: `/shop.html`
 - 達成・ファン化: `/achieved.html`
 - おのくんライセンス: `/license.html`
-- 認定デザイナー: `/designers.html`
+- 認定アーティスト: `/designers.html`
 - 運営ダッシュボード風: `/dashboard.html`
 - 資金の流れ: `/money-flow.html`
 - マイページ風: `/mypage.html`

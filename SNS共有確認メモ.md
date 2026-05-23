@@ -7,7 +7,7 @@
 ## 今回の調整
 
 - SNS共有URLを `https://hayator11.github.io/revofunding/shop.html` に固定
-- 応援者募集、グッズ購入、認定デザイナー、達成・ファン化の各ページにSNS共有導線を設置
+- 応援者募集、支援者購入、認定アーティスト、達成・ファン化の各ページにSNS共有導線を設置
 - 紹介リンクを `https://hayator11.github.io/revofunding/shop.html?ref=revo-bousai-001` に固定
 - ブログ埋め込みコードを公開URLで生成
 - Instagram用コピー文に購入ページURLを追加
