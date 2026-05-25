@@ -10,6 +10,7 @@
       "sales": 64,
       "money": 320000,
       "updated": "2026-05-22",
+      "pageUrl": "owner-detail.html",
       "nextAction": "次の制作まであと18枚",
       "summary": "防災をもっと身近に、楽しく、かぶれる形で広げるレボチャレンジ。"
     },
@@ -23,6 +24,7 @@
       "sales": 8,
       "money": 180000,
       "updated": "2026-05-18",
+      "pageUrl": "project-revolinks.html",
       "nextAction": "二次募集開始まであと3チェック",
       "summary": "広告収入型のスポンサー導線を、地域・防災・挑戦の応援へつなげる実験。"
     },
@@ -36,6 +38,7 @@
       "sales": 36,
       "money": 145000,
       "updated": "2026-05-20",
+      "pageUrl": "project-onokun.html",
       "nextAction": "認定アーティスト相談中",
       "summary": "持ち寄り文化を見える形にして、地域と防災の応援を広げるグッズ展開。"
     },
@@ -49,6 +52,7 @@
       "sales": 16,
       "money": 260000,
       "updated": "2026-05-22",
+      "pageUrl": "revo-art.html",
       "nextAction": "開催地・企業協賛・アーティスト募集",
       "summary": "レボリストLab、防災×帽祭、レボリンクをつなぎ、地域と企業とアーティストが参加する共創プロジェクト。"
     }
