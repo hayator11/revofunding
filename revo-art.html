@@ -191,14 +191,14 @@
         <div class="form-panel">
           <p class="eyebrow">Revo Art Entry</p>
           <h2>レボアート相談・申込み</h2>
-          <form>
-            <label>相談種別<select><option>開催地として相談したい</option><option>企業協賛・レボリンクで応援したい</option><option>アーティストとして参加したい</option><option>学校・施設で実施したい</option><option>レボファンディングと連動したい</option></select></label>
-            <label>団体名 / 活動名<input type="text" placeholder="例: 〇〇市 / 〇〇学校 / 〇〇企業" /></label>
-            <label>相談内容<textarea placeholder="開催したい場所、協力できる内容、アート・防災・スポンサー連動の希望を書いてください。"></textarea></label>
-            <label class="check"><input type="checkbox" />公共性、安全面、開催地のルールを確認しながら企画を進めることを理解しました</label>
-            <a class="button primary" href="https://docs.google.com/forms/d/e/1FAIpQLSesxTpGbfAfXhHmIljMGknEFKWp0TfWR1n2R0NuPxt4rGdjKw/viewform?usp=dialog" data-revo-form="revoArt" target="_blank" rel="noreferrer">Google Formsで相談する</a>
+          <form class="external-form-gate" data-revo-form-gate="revoArt">
+            <label>相談種別<select name="consultationType" required><option value="">選択してください</option><option>開催地として相談したい</option><option>企業協賛・レボリンクで応援したい</option><option>アーティストとして参加したい</option><option>学校・施設で実施したい</option><option>レボファンディングと連動したい</option></select></label>
+            <label>団体名 / 活動名<input name="organizationName" type="text" placeholder="例: 〇〇市 / 〇〇学校 / 〇〇企業" required /></label>
+            <label>相談内容<textarea name="consultationDetail" placeholder="開催したい場所、協力できる内容、アート・防災・スポンサー連動の希望を書いてください。" required></textarea></label>
+            <label class="check"><input name="agreement" type="checkbox" required />公共性、安全面、開催地のルールを確認しながら企画を進めることを理解しました</label>
+            <button class="button primary" type="submit">入力内容を確認してGoogle Formsへ進む</button>
           </form>
-          <p class="notice-inline">レボアート専用フォームで受け付け、運営側で内容を確認します。</p>
+          <p class="notice-inline">すべての項目を入力し、確認事項に同意するとレボアート専用Googleフォームへ進めます。</p>
         </div>
         <div class="form-panel">
           <p class="eyebrow">Funding Link</p>

@@ -77,6 +77,25 @@ function applyIntegrationLinks() {
 
 applyIntegrationLinks();
 
+function setupExternalFormGates() {
+  document.querySelectorAll("[data-revo-form-gate]").forEach((form) => {
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      if (!form.reportValidity()) {
+        return;
+      }
+
+      const url = revoIntegrations.forms[form.dataset.revoFormGate];
+      if (url) {
+        window.open(url, "_blank", "noopener,noreferrer");
+      }
+    });
+  });
+}
+
+setupExternalFormGates();
+
 function buildShareUrl(platform, targetUrl, shareText = "防災×帽祭 応援Tシャツを応援しています") {
   const threadsText = `${shareText}。${targetUrl}`;
 
