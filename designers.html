@@ -149,7 +149,7 @@
           <a class="share-button x dynamic-share-link" href="#" data-platform="x" data-url="designers.html" data-text="レボファンディングの認定アーティスト募集を広げています" target="_blank" rel="noreferrer" aria-label="Xでシェア"><span>X</span></a>
           <a class="share-button threads dynamic-share-link" href="#" data-platform="threads" data-url="designers.html" data-text="レボファンディングの認定アーティスト募集を広げています" target="_blank" rel="noreferrer" aria-label="Threadsでシェア"><span>Threads</span></a>
           <a class="share-button line dynamic-share-link" href="#" data-platform="line" data-url="designers.html" data-text="レボファンディングの認定アーティスト募集を広げています" target="_blank" rel="noreferrer" aria-label="LINEでシェア"><span>LINE</span></a>
-          <button class="share-button instagram instagram-copy" type="button" data-url="designers.html" data-instagram-text="レボファンディングの認定アーティスト募集。応援グッズを愛されるデザインへ整える共創メンバーを募集しています。&#10;https://hayator11.github.io/revofunding/designers.html&#10;&#10;#デザイン #社会貢献 #おのくん #レボファンディング" aria-label="Instagram用文面をコピー"><span>Instagram</span></button>
+          <button class="share-button instagram instagram-copy" type="button" data-url="designers.html" data-instagram-text="レボファンディングの認定アーティスト募集。応援グッズを愛されるデザインへ整える共創メンバーを募集しています。&#10;https://revofunding.onokun.com/designers.html&#10;&#10;#デザイン #社会貢献 #おのくん #レボファンディング" aria-label="Instagram用文面をコピー"><span>Instagram</span></button>
           <a class="share-button facebook dynamic-share-link" href="#" data-platform="facebook" data-url="designers.html" data-text="レボファンディングの認定アーティスト募集を広げています" target="_blank" rel="noreferrer" aria-label="Facebookでシェア"><span>Facebook</span></a>
           <button class="share-button copy share-trigger" type="button" data-url="designers.html" data-share="レボファンディング 認定アーティスト募集" aria-label="URLをコピー"><span>コピー</span></button>
         </div>
@@ -158,26 +158,26 @@
       <section id="apply" class="section forms">
         <div class="form-panel">
           <p class="eyebrow">Artist Apply</p>
-          <h2>認定アーティスト応募</h2>
-          <form>
-            <label>お名前 / 活動名<input type="text" placeholder="例: アーティストA" /></label>
-            <label>得意分野<select><option>Tシャツ・グッズ</option><option>ロゴ</option><option>SNS画像</option><option>LP・資料</option></select></label>
-            <label>参加したい理由<textarea placeholder="社会貢献として関わりたいこと、デザインが広がる体験への期待を書いてください。"></textarea></label>
-            <label class="check"><input type="checkbox" />金銭報酬を前提にしない社会貢献・共創参加であることを理解しました</label>
-            <a class="button primary" href="https://docs.google.com/forms/d/e/1FAIpQLSf5NE0ZPj3e3nK_73pUNLz_09j7BS3jK2uGLvLaktCU01OMaQ/viewform?usp=dialog" data-revo-form="artist" target="_blank" rel="noreferrer">Google Formsで応募する</a>
+          <h2>認定アーティスト応募前の確認</h2>
+          <p>活動名、作品紹介、連絡先などの正式な応募内容はGoogleフォームで入力します。</p>
+          <form class="external-form-gate" data-revo-form-gate="artist">
+            <label>関心のある制作領域<select required><option value="">選択してください</option><option>Tシャツ・グッズ</option><option>ロゴ</option><option>SNS画像</option><option>アートプロジェクト</option></select></label>
+            <label>参加の検討段階<select required><option value="">選択してください</option><option>制度を詳しく知りたい</option><option>応募を検討している</option><option>参加可能な案件を相談したい</option></select></label>
+            <label class="check"><input type="checkbox" required />詳しい応募内容と連絡先は、次のGoogleフォームで正式に入力します</label>
+            <button class="button primary" type="submit">Googleフォームで応募を始める</button>
           </form>
-          <p class="notice-inline">実際の応募送信はGoogle Formsで受け付けます。</p>
+          <p class="notice-inline">この確認欄の選択内容は送信・保存されません。正式な受付はGoogleフォームの送信完了後となります。</p>
         </div>
         <div class="form-panel">
           <p class="eyebrow">For Challengers</p>
-          <h2>起案者からのデザイン相談</h2>
-          <form>
-            <label>挑戦名<input type="text" placeholder="例: 防災×帽祭 Tシャツプロジェクト" /></label>
-            <label>相談したい内容<select><option>グッズデザイン</option><option>ロゴ調整</option><option>SNS素材</option><option>本体デザイン相談</option></select></label>
-            <label>現在ある素材<textarea placeholder="ロゴ、写真、活動資料、使いたい言葉などを書いてください。"></textarea></label>
-            <a class="button secondary" href="https://docs.google.com/forms/d/e/1FAIpQLSf5NE0ZPj3e3nK_73pUNLz_09j7BS3jK2uGLvLaktCU01OMaQ/viewform?usp=dialog" data-revo-form="artist" target="_blank" rel="noreferrer">運営に相談する</a>
+          <h2>起案者からのデザイン相談前の確認</h2>
+          <p>企画名や手元の素材は、次のGoogleフォームで正式にお預かりします。</p>
+          <form class="external-form-gate" data-revo-form-gate="artist">
+            <label>相談したい内容<select required><option value="">選択してください</option><option>グッズデザイン</option><option>ロゴ調整</option><option>SNS素材</option><option>本体デザイン相談</option></select></label>
+            <label class="check"><input type="checkbox" required />詳しい素材情報と連絡先は、次のGoogleフォームで正式に入力します</label>
+            <button class="button secondary" type="submit">Googleフォームで相談を始める</button>
           </form>
-          <p class="notice-inline">デザイン相談も認定アーティスト応募フォームで受け付け、運営が内容を確認します。</p>
+          <p class="notice-inline">この確認欄の選択内容は送信・保存されません。デザイン相談もGoogleフォームで受け付け、運営が内容を確認します。</p>
         </div>
       </section>
     </main>

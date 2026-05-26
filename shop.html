@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>支援者購入（レボブースター） | レボファンディング</title>
     <meta name="description" content="起案者のロゴや活動背景を使った応援Tシャツ・グッズの購入ページ。おのくんライセンスの活用、ファン化、次回ロット導線まで確認できます。" />
-    <link rel="canonical" href="https://hayator11.github.io/revofunding/shop.html" />
+    <link rel="canonical" href="https://revofunding.onokun.com/shop.html" />
     <meta property="og:title" content="防災×帽祭 応援Tシャツ | レボファンディング" />
     <meta property="og:description" content="起案者のロゴや活動背景をグッズ化し、おのくんライセンスも活用できる応援Tシャツ。購入が次回ロットとファン化につながります。" />
     <meta property="og:type" content="product" />
-    <meta property="og:url" content="https://hayator11.github.io/revofunding/shop.html" />
-    <meta property="og:image" content="https://hayator11.github.io/revofunding/onokun-a.jpeg" />
+    <meta property="og:url" content="https://revofunding.onokun.com/shop.html" />
+    <meta property="og:image" content="https://revofunding.onokun.com/onokun-a.jpeg" />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="stylesheet" href="styles.css" />
     <script type="application/ld+json">
@@ -19,7 +19,7 @@
         "@type": "Product",
         "name": "防災×帽祭 応援Tシャツ",
         "description": "起案者のロゴや活動背景を使い、おのくんライセンスも活用できる防災×帽祭の初回応援Tシャツです。購入は挑戦のファン化と次回ロット制作につながります。",
-        "image": "https://hayator11.github.io/revofunding/onokun-a.jpeg",
+        "image": "https://revofunding.onokun.com/onokun-a.jpeg",
         "brand": { "@type": "Brand", "name": "レボファンディング" },
         "offers": {
           "@type": "Offer",
@@ -90,30 +90,13 @@
           </div>
           <div class="progress" aria-label="初回ロット販売率 64%"><span style="width: 64%"></span></div>
 
-          <form class="buy-panel">
-            <label>
-              サイズ
-              <div class="size-row" aria-label="サイズ選択">
-                <button type="button" class="size active">S</button>
-                <button type="button" class="size">M</button>
-                <button type="button" class="size">L</button>
-                <button type="button" class="size">XL</button>
-              </div>
-            </label>
-            <label>
-              数量
-              <select>
-                <option>1枚</option>
-                <option>2枚</option>
-                <option>3枚</option>
-              </select>
-            </label>
+          <div class="buy-panel">
+            <p class="notice-inline">サイズ、数量、送料、決済方法は、移動先のBASE商品ページで選択・確認できます。</p>
             <div class="shop-actions">
               <a class="button primary" href="https://onokun.shop.socialimagine.com/items/145050232" data-revo-base="bousaiProduct" target="_blank" rel="noreferrer">BASEで購入する</a>
               <button class="button icon share-trigger" type="button" data-share="防災×帽祭 応援Tシャツ">シェア</button>
             </div>
-            <p class="notice-inline">購入手続き、決済、発送情報の入力はBASEの商品ページで行います。</p>
-          </form>
+          </div>
         </div>
       </section>
 
@@ -261,7 +244,7 @@
             <h3>ブログ・サイト埋め込みコード</h3>
             <p>応援者のブログ、団体サイト、イベントページに貼れる紹介カードです。</p>
             <pre><code>&lt;iframe
-  src="shop.html"
+  src="https://revofunding.onokun.com/shop.html"
   title="防災×帽祭 応援Tシャツ"
   width="100%"
   height="520"
@@ -371,20 +354,21 @@
       <section class="section forms">
         <div class="form-panel" id="fan-form">
           <p class="eyebrow">After Purchase</p>
-          <h2>購入後ファン登録</h2>
-          <form>
-            <label>ニックネーム<input type="text" placeholder="例: 防災を広げたい人" /></label>
-            <label>受け取りたい案内<select><option>次回ロット通知</option><option>二次募集案内</option><option>起案者サービス案内</option></select></label>
-            <label class="check"><input type="checkbox" />金銭的リターンや売上分配がないことを理解しました</label>
-            <a class="button primary" href="https://docs.google.com/forms/d/e/1FAIpQLScPbj0Pa-CVw6X06duPbxZk6YU9nildlAjzrFTa6Wu75wWhWw/viewform?usp=dialog" data-revo-form="fan" target="_blank" rel="noreferrer">ファン案内に登録する</a>
+          <h2>購入後案内の登録前確認</h2>
+          <p>ニックネームや連絡先、受け取りたい案内は、次のGoogleフォームで正式に登録します。</p>
+          <form class="external-form-gate" data-revo-form-gate="fan">
+            <label>関心のある案内<select required><option value="">選択してください</option><option>次回ロット通知</option><option>二次募集案内</option><option>起案者の活動案内</option></select></label>
+            <label class="check"><input type="checkbox" required />金銭的リターンや売上分配がないことを理解しました</label>
+            <label class="check"><input type="checkbox" required />登録情報は次のGoogleフォームで正式に入力します</label>
+            <button class="button primary" type="submit">Googleフォームで案内登録を始める</button>
           </form>
-          <p class="notice-inline">案内はサイト更新、メール、SNSを中心に行います。LINE公式の一斉送信は初期運用では主軸にしません。</p>
+          <p class="notice-inline">この確認欄の選択内容は送信・保存されません。案内はサイト更新、メール、SNSを中心に行います。</p>
         </div>
         <div class="form-panel">
           <p class="eyebrow">Report</p>
           <h2>売上の見える化</h2>
           <p>購入ページから、レボサイクルレポートへつなげます。制作費、在庫、次回展開ストック、起案者支援予定額を確認できるようにします。</p>
-          <a class="button secondary" href="achieved.html#report">レポートを見る</a>
+          <a class="button secondary" href="report-detail.html">活動レポートを見る</a>
         </div>
       </section>
     </main>

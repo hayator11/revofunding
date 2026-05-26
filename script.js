@@ -13,7 +13,7 @@ const siteFooter = document.querySelector(".site-footer");
 const rankingList = document.querySelector(".ranking-list");
 const rankSortButtons = document.querySelectorAll(".rank-sort");
 const categoryFilter = document.querySelector(".category-filter");
-const publicBaseUrl = "https://hayator11.github.io/revofunding/";
+const publicBaseUrl = "https://revofunding.onokun.com/";
 const revoIntegrations = window.REVO_INTEGRATIONS || {
   forms: {
     revoArt: "https://docs.google.com/forms/d/e/1FAIpQLSesxTpGbfAfXhHmIljMGknEFKWp0TfWR1n2R0NuPxt4rGdjKw/viewform?usp=dialog",
@@ -40,6 +40,25 @@ const revoIntegrations = window.REVO_INTEGRATIONS || {
     ],
   },
 };
+
+const primaryNavigation = [
+  ["index.html", "トップ"],
+  ["concept.html", "仕組み"],
+  ["owners.html", "起案者一覧"],
+  ["supporters.html", "応援者募集"],
+  ["shop.html", "支援者購入"],
+  ["designers.html", "認定アーティスト"],
+  ["revo-art.html", "レボアート"],
+  ["revolist.html", "全体図"],
+  ["dashboard.html", "透明性"],
+  ["challenger.html", "起案する"],
+];
+
+document.querySelectorAll(".site-header .nav").forEach((nav) => {
+  nav.innerHTML = primaryNavigation
+    .map(([href, label]) => `<a href="${href}">${label}</a>`)
+    .join("");
+});
 const counterDataUrl = window.REVO_COUNTER_DATA_URL || revoIntegrations.sheets.publicCountersCsv;
 const projectsDataUrl = window.REVO_PROJECTS_DATA_URL || "projects-data.json";
 let activeStatusFilter = "all";

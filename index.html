@@ -55,7 +55,7 @@
             </div>
           </div>
           <div class="board-stats">
-            <div><strong data-counter="activeChallenges">3</strong><span>進行中の挑戦</span></div>
+            <div><strong data-counter="activeChallenges">0</strong><span>進行中の挑戦</span></div>
             <div><strong data-counter="totalFans">186人</strong><span>累計ファン</span></div>
             <div><strong data-counter="totalBadges">11</strong><span>称号付与</span></div>
           </div>
@@ -63,10 +63,10 @@
       </section>
 
       <section class="ticker" aria-label="レボファンディング全体カウンター">
-        <div><span>累計応援者</span><strong data-counter="totalSupporters">74人</strong></div>
+        <div><span>累計応援者</span><strong data-counter="totalSupporters">1人</strong></div>
         <div><span>累計ファン</span><strong data-counter="totalFans">186人</strong></div>
         <div><span>制作商品</span><strong data-counter="productsMade">4件</strong></div>
-        <div><span>次ステップ待ち</span><strong data-counter="waitingSteps">2件</strong></div>
+        <div><span>次ステップ待ち</span><strong data-counter="waitingSteps">1件</strong></div>
       </section>
 
       <section class="section portal-grid" aria-label="主要ページ">
@@ -97,7 +97,7 @@
         <a class="portal-card" href="achieved.html">
           <span class="status done">達成・継続</span>
           <h2>達成してファン化しているページ</h2>
-          <p>達成済みの挑戦、制作された商品、ファン数、次回ロット、二次募集予定を確認できます。</p>
+          <p>公開中の活動状況、制作された商品、ファン数、次回ロット、次の展開予定を確認できます。</p>
           <strong>達成後の広がりを見る</strong>
         </a>
         <a class="portal-card" href="shop.html">
@@ -192,15 +192,15 @@
       <section id="start" class="section forms">
         <div class="form-panel">
           <p class="eyebrow">For Challengers</p>
-          <h2>レボチャレンジ申請</h2>
-          <form>
-            <label>起案者名<input type="text" placeholder="例: レボリストLab" /></label>
-            <label>挑戦タイトル<input type="text" placeholder="例: 防災×帽祭 Tシャツプロジェクト" /></label>
-            <label>実現したいこと<textarea placeholder="挑戦の背景、最初に作りたい商品、集めたい応援を書いてください。"></textarea></label>
-            <label class="check"><input type="checkbox" />応援者への配当・売上分配・紹介報酬を目的とした企画ではないことを確認しました</label>
-            <a class="button primary" href="https://docs.google.com/forms/d/e/1FAIpQLSdtm4PpMVwWIRXsKLtSahzwWjCu2N4Qi14N-nHQh_ZF6UQzOg/viewform?usp=dialog" data-revo-form="challenger" target="_blank" rel="noreferrer">Google Formsで申請する</a>
+          <h2>起案前に内容を確認する</h2>
+          <p>個人情報や具体的な企画内容は、次のGoogleフォームで正式に入力します。</p>
+          <form class="external-form-gate" data-revo-form-gate="challenger">
+            <label>検討していること<select required><option value="">選択してください</option><option>活動を商品化して広げたい</option><option>応援者を集めて企画を考えたい</option><option>まずは仕組みを相談したい</option></select></label>
+            <label>現在の段階<select required><option value="">選択してください</option><option>アイデア段階</option><option>活動中で新しい展開を考えている</option><option>募集開始を相談したい</option></select></label>
+            <label class="check"><input type="checkbox" required />詳しい内容と連絡先は、次のGoogleフォームで正式に入力することを確認しました</label>
+            <button class="button primary" type="submit">Googleフォームで申請を始める</button>
           </form>
-          <p class="notice-inline">実際の申請送信はGoogle Formsで受け付けます。</p>
+          <p class="notice-inline">この確認欄の選択内容は送信・保存されません。正式な受付はGoogleフォームの送信完了後となります。</p>
         </div>
         <div class="form-panel">
           <p class="eyebrow">Rule</p>

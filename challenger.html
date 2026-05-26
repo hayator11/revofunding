@@ -128,18 +128,16 @@
       <section id="apply" class="section forms">
         <div class="form-panel">
           <p class="eyebrow">Apply</p>
-          <h2>レボチャレンジ申請フォーム</h2>
-          <form>
-            <label>起案者名 / 活動名<input type="text" placeholder="例: レボリストLab" /></label>
-            <label>挑戦タイトル<input type="text" placeholder="例: 防災×帽祭 Tシャツプロジェクト" /></label>
-            <label>挑戦の背景<textarea placeholder="なぜこの挑戦をしたいのか、誰に届けたいのかを書いてください。"></textarea></label>
-            <label>最初に作りたい商品<select><option>Tシャツ</option><option>帽子</option><option>トートバッグ</option><option>ステッカー・カード</option></select></label>
-            <label>希望する支援<select><option>応援者募集</option><option>認定アーティスト相談</option><option>おのくんライセンス相談</option><option>SNS拡散素材</option></select></label>
-            <label class="check"><input type="checkbox" />応援者への配当・売上分配・紹介報酬を目的とした企画ではないことを確認しました</label>
-            <label class="check"><input type="checkbox" />応援者が起案者の事業判断に関与しないことを理解しました</label>
-            <a class="button primary" href="https://docs.google.com/forms/d/e/1FAIpQLSdtm4PpMVwWIRXsKLtSahzwWjCu2N4Qi14N-nHQh_ZF6UQzOg/viewform?usp=dialog" data-revo-form="challenger" target="_blank" rel="noreferrer">Google Formsで申請する</a>
+          <h2>申請前の確認</h2>
+          <p>活動名、企画の背景、写真、連絡先などの正式な申請情報はGoogleフォームで入力します。</p>
+          <form class="external-form-gate" data-revo-form-gate="challenger">
+            <label>相談したい入口<select required><option value="">選択してください</option><option>応援者募集を始めたい</option><option>商品化の方向性を相談したい</option><option>アーティストやライセンスとの連携を相談したい</option><option>まだ決めずに相談したい</option></select></label>
+            <label>現在の準備状況<select required><option value="">選択してください</option><option>アイデアがある</option><option>活動資料や写真がある</option><option>商品案まで検討している</option><option>募集開始に進みたい</option></select></label>
+            <label class="check"><input type="checkbox" required />応援者への配当・売上分配・紹介報酬を目的とした企画ではないことを確認しました</label>
+            <label class="check"><input type="checkbox" required />詳しい申請内容と連絡先は、次のGoogleフォームで正式に入力します</label>
+            <button class="button primary" type="submit">Googleフォームで申請を始める</button>
           </form>
-          <p class="notice-inline">実際の申請送信はGoogle Formsで受け付けます。</p>
+          <p class="notice-inline">この確認欄の選択内容は送信・保存されません。正式な受付はGoogleフォームの送信完了後となります。</p>
         </div>
         <div class="form-panel">
           <p class="eyebrow">Before Apply</p>
