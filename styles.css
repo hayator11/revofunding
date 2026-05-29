@@ -653,6 +653,10 @@ h3 {
   max-width: 980px;
 }
 
+.title-break {
+  display: block;
+}
+
 .portal-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
