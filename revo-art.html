@@ -23,6 +23,7 @@
     <link rel="icon" href="favicon.svg?v=20260602" type="image/svg+xml" />
     <link rel="icon" href="favicon-32.png?v=20260602" type="image/png" sizes="32x32" />
     <link rel="apple-touch-icon" href="apple-touch-icon.png?v=20260602" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -181,61 +182,86 @@
         <div class="section-head">
           <div>
             <p class="eyebrow">Revo Art Map</p>
-            <h2>開催場所を、地図で見える化する。</h2>
+            <h2>全国の開催場所を、都道府県から見える化する。</h2>
             <p>
-              おのくんの里親Mapで大切にしてきた「つながりの可視化」を、レボアートでは開催地・会場・地域の公開Mapとして活用します。
-              個人宅ではなく、公開してよい施設、学校、商店街、企業、イベント会場などを掲載し、活動がどこで生まれているかを見える形にします。
+              おのくんの里親コミュニティMapで大切にしてきた「つながりの可視化」を、レボアートでは開催地・会場・地域の公開Mapとして活用します。
+              都道府県を選ぶと市町村ごとの登録数が表示され、一覧から個別の開催地Mapへ切り替えられます。
             </p>
           </div>
           <a class="button secondary" href="https://onokun.com/satoya-map/" target="_blank" rel="noreferrer">おのくん里親Mapを見る</a>
         </div>
-        <div class="art-map-layout">
-          <div class="art-map-panel">
-            <div class="art-map-frame" aria-label="レボアート開催場所の地図">
-              <iframe
-                title="レボアート開催場所Map"
-                src="https://www.google.com/maps?q=%E5%AE%AE%E5%9F%8E%E7%9C%8C%E6%9D%B1%E6%9D%BE%E5%B3%B6%E5%B8%82%E7%9F%A2%E6%9C%AC%E5%AD%97%E4%B8%8A%E6%96%B0%E6%B2%BC8&output=embed"
-                loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade"></iframe>
-            </div>
-            <div class="map-note">
-              <strong>Map掲載の考え方</strong>
-              <p>掲載するのは、公開許可を得た開催地・協力施設・イベント会場のみです。個人情報につながる住所は掲載せず、必要に応じて市区町村単位や施設名単位で表示します。</p>
+        <div class="revo-art-map-wrap" aria-label="レボアート開催地Map">
+          <div class="revo-art-total">
+            <span>総開催登録数</span>
+            <strong data-revo-art-total>0</strong>
+            <em>件</em>
+          </div>
+          <div class="revo-art-map-tabs" role="tablist" aria-label="地図表示切替">
+            <button class="active" type="button" data-revo-art-map-tab="japan">日本マップ</button>
+            <button type="button" data-revo-art-map-tab="world">世界マップ</button>
+          </div>
+          <div class="revo-art-leaflet-shell">
+            <div id="revo-art-japan-map" class="revo-art-leaflet active" role="tabpanel" aria-label="日本の開催登録Map"></div>
+            <div id="revo-art-world-map" class="revo-art-leaflet" role="tabpanel" aria-label="世界の開催登録Map"></div>
+            <div class="revo-art-map-legend" aria-label="登録数の凡例">
+              <span>登録数:</span>
+              <b class="level-0">0</b>
+              <b class="level-1">1〜2</b>
+              <b class="level-3">3〜5</b>
+              <b class="level-6">6+</b>
             </div>
           </div>
-          <aside class="art-location-list" aria-label="レボアート開催地一覧">
-            <article class="art-location-card active">
-              <span>Base</span>
-              <h3>おのくん活動拠点 / 東松島</h3>
-              <p>おのくん、レボリストLab、防災×帽祭の文脈とつながる、レボアートの起点となるエリアです。</p>
-              <dl>
-                <div><dt>公開範囲</dt><dd>地域・活動拠点</dd></div>
-                <div><dt>想定内容</dt><dd>相談受付 / 展示 / ワークショップ</dd></div>
-              </dl>
-              <a href="https://onokun.com/art-project/" target="_blank" rel="noreferrer">おのくんアートキャラバンを見る</a>
-            </article>
-            <article class="art-location-card">
-              <span>Coming Soon</span>
-              <h3>学校・施設・商店街</h3>
-              <p>ウォールアート、ペイントハット、展示、地域共創イベントなど、公開許可を得た場所から順次追加します。</p>
-              <dl>
-                <div><dt>公開範囲</dt><dd>施設名または地域名</dd></div>
-                <div><dt>想定内容</dt><dd>防災アート / 体験企画</dd></div>
-              </dl>
-              <a href="#apply">開催地として相談する</a>
-            </article>
-            <article class="art-location-card">
-              <span>Partner</span>
-              <h3>企業・スポンサー協力地</h3>
-              <p>レボリンクと連動し、企業協賛がどの地域活動を支えたのかを活動レポートとあわせて可視化します。</p>
-              <dl>
-                <div><dt>公開範囲</dt><dd>企業名 / 会場名 / 地域名</dd></div>
-                <div><dt>想定内容</dt><dd>協賛 / 展示 / 広報連携</dd></div>
-              </dl>
-              <a href="https://onokun.com/socially-responsible-sponsorship/" target="_blank" rel="noreferrer">レボリンクを見る</a>
-            </article>
+          <div class="map-note">
+            <strong>Map掲載の考え方</strong>
+            <p>掲載するのは、公開許可を得た開催地・協力施設・イベント会場のみです。個人情報につながる住所は掲載せず、市町村単位・施設名単位・会場単位で表示します。</p>
+          </div>
+        </div>
+        <div class="revo-art-map-results">
+          <section class="art-location-browser" aria-label="レボアート開催地一覧">
+            <div class="location-browser-head">
+              <span data-revo-art-selected-label>全国</span>
+              <h3 data-revo-art-selected-title>登録スポット</h3>
+              <p data-revo-art-selected-description>都道府県をクリックすると、市町村ごとの登録数と開催地一覧が表示されます。</p>
+            </div>
+            <div class="city-summary-list" data-revo-art-cities></div>
+            <div class="art-location-list" data-revo-art-list></div>
+          </section>
+          <aside class="revo-art-ranking" aria-label="全国登録ランキング">
+            <h3>全国レボアートランキング</h3>
+            <div data-revo-art-ranking-list></div>
           </aside>
         </div>
+        <section class="revo-art-detail" data-revo-art-detail aria-label="登録スポット詳細">
+          <div class="revo-art-detail-head">
+            <div>
+              <span>登録スポット詳細</span>
+              <h3 data-revo-art-detail-name>開催地を選択してください</h3>
+              <p data-revo-art-detail-meta>都道府県をクリックして、一覧から個別スポットを選べます。</p>
+            </div>
+            <button class="button small secondary" type="button" data-revo-art-back>スポット一覧に戻る</button>
+          </div>
+          <div class="revo-art-detail-body">
+            <img data-revo-art-detail-image src="onokun-a.jpeg" alt="レボアート開催地イメージ" loading="lazy" />
+            <div>
+              <h4>紹介文</h4>
+              <p data-revo-art-detail-description>開催地の紹介文がここに表示されます。</p>
+              <h4>表示エリア</h4>
+              <p data-revo-art-detail-area>都道府県 / 市町村</p>
+            </div>
+          </div>
+          <div class="art-map-frame pin-map" aria-label="個別開催地のGoogle Map">
+            <iframe
+              data-revo-art-detail-map
+              title="レボアート個別開催地Map"
+              src="https://www.google.com/maps?q=%E5%AE%AE%E5%9F%8E%E7%9C%8C%E6%9D%B1%E6%9D%BE%E5%B3%B6%E5%B8%82%E7%9F%A2%E6%9C%AC%E5%AD%97%E4%B8%8A%E6%96%B0%E6%B2%BC8&output=embed"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+          <div class="revo-art-detail-actions">
+            <a class="button primary" data-revo-art-official href="#apply">相談フォームへ</a>
+            <a class="button secondary" data-revo-art-google href="https://www.google.com/maps" target="_blank" rel="noreferrer">GoogleMapへ移動</a>
+          </div>
+        </section>
       </section>
 
       <section class="section detail-layout">
@@ -309,6 +335,7 @@
     </footer>
 
     <div class="toast" role="status" aria-live="polite"></div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="script.js"></script>
   </body>
 </html>

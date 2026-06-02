@@ -14,12 +14,98 @@ const rankingList = document.querySelector(".ranking-list");
 const rankSortButtons = document.querySelectorAll(".rank-sort");
 const categoryFilter = document.querySelector(".category-filter");
 const videoEmbeds = document.querySelectorAll(".video-embed");
+const artMapSection = document.querySelector("#place-map");
 const publicBaseUrl = "https://revofunding.onokun.com/";
 const counterDataUrl = window.REVO_COUNTER_DATA_URL || "https://docs.google.com/spreadsheets/d/e/2PACX-1vRcKmEgg9vkR0RHr8i1dbqnjOCZS7Julyl54k9tqUEBGxEejykf3X5eS4iZOKnsowGrtwiGZ7b7vRBN/pub?gid=403200930&single=true&output=csv";
 const projectsDataUrl = window.REVO_PROJECTS_DATA_URL || "projects-data.json";
 let activeStatusFilter = "all";
 let activeSort = "active";
 let activeCategory = "all";
+
+const revoArtMapData = {
+  japanGeoJsonUrl: "https://raw.githubusercontent.com/codeforgermany/click_that_hood/main/public/data/japan.geojson",
+  worldGeoJsonUrl: "https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json",
+  locations: [
+    {
+      id: "higashimatsushima-base",
+      prefecture: "宮城県",
+      city: "東松島市",
+      name: "おのくん活動拠点 / 東松島",
+      type: "活動拠点",
+      icon: "🏠",
+      description: "おのくん、レボリストLab、防災×帽祭の文脈とつながる、レボアートの起点となるエリアです。公開できる開催地や連携先を、ここから全国へ広げていきます。",
+      area: "宮城県 東松島市",
+      mapQuery: "宮城県東松島市矢本字上新沼8",
+      image: "onokun-a.jpeg",
+      officialUrl: "https://onokun.com/art-project/",
+    },
+    {
+      id: "miyagi-school-sample",
+      prefecture: "宮城県",
+      city: "東松島市",
+      name: "学校・施設・商店街 連携候補",
+      type: "開催候補",
+      icon: "🏫",
+      description: "ウォールアート、ペイントハット、展示、地域共創イベントなど、公開許可を得た場所から順次追加します。",
+      area: "宮城県 東松島市",
+      mapQuery: "宮城県東松島市",
+      image: "RevoFunding.png",
+      officialUrl: "#apply",
+    },
+    {
+      id: "miyagi-company-sample",
+      prefecture: "宮城県",
+      city: "仙台市",
+      name: "企業協賛・展示連携候補",
+      type: "企業協賛",
+      icon: "🏢",
+      description: "レボリンクと連動し、企業協賛が地域や防災アートを支える流れを活動レポートとして見える化します。",
+      area: "宮城県 仙台市",
+      mapQuery: "宮城県仙台市",
+      image: "RevoFunding.png",
+      officialUrl: "https://onokun.com/socially-responsible-sponsorship/",
+    },
+    {
+      id: "tokyo-partner-sample",
+      prefecture: "東京都",
+      city: "渋谷区",
+      name: "レボアート企業共創候補",
+      type: "企業協賛",
+      icon: "🏢",
+      description: "首都圏の企業やクリエイターと連携し、社会貢献型アートの協賛・発信・展示の入口をつくります。",
+      area: "東京都 渋谷区",
+      mapQuery: "東京都渋谷区",
+      image: "onokun-b.jpeg",
+      officialUrl: "https://onokun.com/socially-responsible-sponsorship/",
+    },
+    {
+      id: "tochigi-hat-sample",
+      prefecture: "栃木県",
+      city: "宇都宮市",
+      name: "レボハット体験候補",
+      type: "ワークショップ",
+      icon: "🎩",
+      description: "帽子を入口に、アート、ファッション、防災体験をつなぐレボハットのワークショップ候補地です。",
+      area: "栃木県 宇都宮市",
+      mapQuery: "栃木県宇都宮市",
+      image: "onokun-b.jpeg",
+      officialUrl: "https://onokun.com/revohat/",
+    },
+    {
+      id: "fukuoka-art-sample",
+      prefecture: "福岡県",
+      city: "朝倉市",
+      name: "地域共創アート候補",
+      type: "地域共創",
+      icon: "🎨",
+      description: "地域の記憶や自然、防災の文脈をアートで伝える開催候補地です。市町村ごとの登録一覧として公開していきます。",
+      area: "福岡県 朝倉市",
+      mapQuery: "福岡県朝倉市",
+      image: "RevoFunding.png",
+      officialUrl: "#apply",
+    },
+  ],
+};
 
 function pageUrl(path = window.location.pathname.split("/").pop() || "index.html") {
   return new URL(path, publicBaseUrl).href;
@@ -100,6 +186,326 @@ videoEmbeds.forEach((embed) => {
   const title = embed.dataset.videoTitle || "Project video";
   embed.innerHTML = `<iframe src="${embedUrl}" title="${title}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;
 });
+
+function escHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function countUnique(items, key) {
+  return new Set(items.map((item) => item[key]).filter(Boolean)).size;
+}
+
+function revoArtColor(count) {
+  if (count >= 6) return "#d63d33";
+  if (count >= 3) return "#f26f4f";
+  if (count >= 1) return "#f8cdbb";
+  return "#f4f5f7";
+}
+
+function revoArtOpacity(count) {
+  return count > 0 ? 0.84 : 0.52;
+}
+
+function revoArtGoogleMapEmbedUrl(location) {
+  const query = location.mapQuery || [location.name, location.prefecture, location.city].filter(Boolean).join(" ");
+  return `https://maps.google.com/maps?q=${encodeURIComponent(query)}&z=16&output=embed&hl=ja`;
+}
+
+function revoArtGoogleMapSearchUrl(location) {
+  const query = location.mapQuery || [location.name, location.prefecture, location.city].filter(Boolean).join(" ");
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+}
+
+function setupRevoArtMap() {
+  if (!artMapSection) return;
+  if (typeof L === "undefined") {
+    const list = artMapSection.querySelector("[data-revo-art-list]");
+    if (list) list.innerHTML = "<p>地図プログラムの読み込み中です。ページを再読み込みしてください。</p>";
+    return;
+  }
+
+  const locations = revoArtMapData.locations;
+  const prefData = locations.reduce((result, location) => {
+    result[location.prefecture] = (result[location.prefecture] || 0) + 1;
+    return result;
+  }, {});
+  const worldData = { Japan: locations.length };
+  const totalCounter = artMapSection.querySelector("[data-revo-art-total]");
+  const label = artMapSection.querySelector("[data-revo-art-selected-label]");
+  const title = artMapSection.querySelector("[data-revo-art-selected-title]");
+  const description = artMapSection.querySelector("[data-revo-art-selected-description]");
+  const cityList = artMapSection.querySelector("[data-revo-art-cities]");
+  const list = artMapSection.querySelector("[data-revo-art-list]");
+  const rankingListElement = artMapSection.querySelector("[data-revo-art-ranking-list]");
+  const detail = artMapSection.querySelector("[data-revo-art-detail]");
+  const detailName = artMapSection.querySelector("[data-revo-art-detail-name]");
+  const detailMeta = artMapSection.querySelector("[data-revo-art-detail-meta]");
+  const detailImage = artMapSection.querySelector("[data-revo-art-detail-image]");
+  const detailDescription = artMapSection.querySelector("[data-revo-art-detail-description]");
+  const detailArea = artMapSection.querySelector("[data-revo-art-detail-area]");
+  const detailMap = artMapSection.querySelector("[data-revo-art-detail-map]");
+  const officialLink = artMapSection.querySelector("[data-revo-art-official]");
+  const googleLink = artMapSection.querySelector("[data-revo-art-google]");
+  const backButton = artMapSection.querySelector("[data-revo-art-back]");
+  const tabs = [...artMapSection.querySelectorAll("[data-revo-art-map-tab]")];
+  const japanMapElement = artMapSection.querySelector("#revo-art-japan-map");
+  const worldMapElement = artMapSection.querySelector("#revo-art-world-map");
+  let japanLayer;
+  let japanMap;
+  let worldMap;
+
+  if (totalCounter) totalCounter.textContent = String(locations.length);
+
+  function locationsByPrefecture(prefecture) {
+    return locations.filter((location) => !prefecture || location.prefecture === prefecture);
+  }
+
+  function groupedCities(selectedLocations) {
+    return selectedLocations.reduce((result, location) => {
+      const city = location.city || "市町村未設定";
+      if (!result[city]) result[city] = [];
+      result[city].push(location);
+      return result;
+    }, {});
+  }
+
+  function renderCityList(selectedLocations, prefecture = "") {
+    if (!cityList) return;
+    const cities = groupedCities(selectedLocations);
+
+    if (!Object.keys(cities).length) {
+      cityList.innerHTML = `<div class="city-summary-item"><strong>${escHtml(prefecture || "全国")}</strong><span>登録なし</span></div>`;
+      return;
+    }
+
+    cityList.innerHTML = Object.entries(cities)
+      .map(([city, items]) => `<button class="city-summary-item" type="button" data-revo-art-city="${escHtml(city)}"><strong>${escHtml(city)}</strong><span>${items.length}件</span></button>`)
+      .join("");
+  }
+
+  function renderLocationCard(location) {
+    return `
+      <article class="art-location-card">
+        <span>${escHtml(location.icon)} ${escHtml(location.type)}</span>
+        <h3>${escHtml(location.name)}</h3>
+        <p>${escHtml(location.description)}</p>
+        <dl>
+          <div><dt>都道府県</dt><dd>${escHtml(location.prefecture)}</dd></div>
+          <div><dt>市町村</dt><dd>${escHtml(location.city)}</dd></div>
+          <div><dt>表示エリア</dt><dd>${escHtml(location.area)}</dd></div>
+        </dl>
+        <button type="button" data-revo-art-location="${escHtml(location.id)}">詳細・GoogleMapを見る</button>
+      </article>
+    `;
+  }
+
+  function renderLocationList(selectedLocations, prefecture = "") {
+    if (!list) return;
+
+    list.innerHTML = selectedLocations.length
+      ? selectedLocations.map(renderLocationCard).join("")
+      : `
+        <article class="art-location-card">
+          <span>Entry</span>
+          <h3>${escHtml(prefecture || "この地域")}の開催地を募集しています</h3>
+          <p>公開許可を得た施設、学校、商店街、企業、イベント会場を登録できます。レボアート開催地として相談してください。</p>
+          <a href="#apply">開催地として相談する</a>
+        </article>
+      `;
+  }
+
+  function renderRanking() {
+    if (!rankingListElement) return;
+    const ranking = Object.entries(prefData)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5);
+
+    rankingListElement.innerHTML = ranking.length
+      ? ranking.map(([prefecture, count], index) => `<button type="button" data-revo-art-pref="${escHtml(prefecture)}"><strong>${index + 1}位</strong><span>${escHtml(prefecture)}</span><em>${count}件</em></button>`).join("")
+      : "<p>登録が入るとランキングが表示されます。</p>";
+  }
+
+  function showDetail(location, shouldScroll = true) {
+    if (!detail || !location) return;
+    if (detailName) detailName.textContent = location.name;
+    if (detailMeta) detailMeta.textContent = `${location.icon} ${location.type} / ${location.prefecture} ${location.city}`;
+    if (detailImage) {
+      detailImage.src = location.image || "onokun-a.jpeg";
+      detailImage.alt = `${location.name} イメージ`;
+    }
+    if (detailDescription) detailDescription.textContent = location.description;
+    if (detailArea) detailArea.textContent = location.area || `${location.prefecture} ${location.city}`;
+    if (detailMap) {
+      detailMap.src = revoArtGoogleMapEmbedUrl(location);
+      detailMap.title = `${location.name} Google Map`;
+    }
+    if (officialLink) {
+      officialLink.href = location.officialUrl || "#apply";
+      officialLink.textContent = location.officialUrl && location.officialUrl.startsWith("http") ? "公式サイト" : "相談フォームへ";
+      officialLink.toggleAttribute("target", Boolean(location.officialUrl && location.officialUrl.startsWith("http")));
+      officialLink.rel = location.officialUrl && location.officialUrl.startsWith("http") ? "noreferrer" : "";
+    }
+    if (googleLink) googleLink.href = revoArtGoogleMapSearchUrl(location);
+    detail.classList.add("visible");
+    if (shouldScroll) detail.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function renderPrefecture(prefecture = "") {
+    const selectedLocations = locationsByPrefecture(prefecture);
+    if (label) label.textContent = prefecture || "全国";
+    if (title) title.textContent = prefecture ? `${prefecture}の登録スポット` : "全国の登録スポット";
+    if (description) {
+      description.textContent = prefecture
+        ? selectedLocations.length
+          ? `${prefecture}には${selectedLocations.length}件の公開登録があります。市町村ごとの一覧から個別のGoogleMapを確認できます。`
+          : `${prefecture}には、まだ公開登録がありません。開催地として相談するとここに追加できます。`
+        : "都道府県をクリックすると、市町村ごとの登録数と開催地一覧が表示されます。";
+    }
+    renderCityList(selectedLocations, prefecture);
+    renderLocationList(selectedLocations, prefecture);
+    if (selectedLocations[0]) showDetail(selectedLocations[0], false);
+  }
+
+  function renderCity(city) {
+    const selectedLocations = locations.filter((location) => location.city === city);
+    renderLocationList(selectedLocations, city);
+    if (selectedLocations[0]) showDetail(selectedLocations[0]);
+  }
+
+  function initJapanMap() {
+    if (!japanMapElement) return;
+    japanMap = L.map(japanMapElement, {
+      center: [36.5, 137.5],
+      zoom: 5,
+      scrollWheelZoom: false,
+    });
+
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      subdomains: "abc",
+      maxZoom: 19,
+    }).addTo(japanMap);
+
+    fetch(revoArtMapData.japanGeoJsonUrl)
+      .then((response) => response.json())
+      .then((geojson) => {
+        japanLayer = L.geoJSON(geojson, {
+          style(feature) {
+            const name = feature.properties.name || feature.properties.nam_ja || "";
+            const count = prefData[name] || 0;
+            return {
+              fillColor: revoArtColor(count),
+              fillOpacity: revoArtOpacity(count),
+              weight: 1,
+              color: "#fff",
+              opacity: 1,
+            };
+          },
+          onEachFeature(feature, layer) {
+            const name = feature.properties.name || feature.properties.nam_ja || "";
+            const count = prefData[name] || 0;
+            layer.bindTooltip(`<strong>${escHtml(name)}</strong><br>開催登録: <strong>${count}</strong> 件`, {
+              direction: "auto",
+              sticky: true,
+            });
+            layer.on("mouseover", function () {
+              this.setStyle({ fillOpacity: 1, weight: 2, color: "#007aff" });
+            });
+            layer.on("mouseout", function () {
+              japanLayer.resetStyle(this);
+            });
+            layer.on("click", () => {
+              renderPrefecture(name);
+              layer.bindPopup(`<strong>${escHtml(name)}</strong><br>開催登録: <strong>${count}</strong> 件`).openPopup();
+            });
+          },
+        }).addTo(japanMap);
+      })
+      .catch(() => {
+        japanMapElement.innerHTML = '<p class="map-load-error">日本地図を読み込めませんでした。通信環境を確認してください。</p>';
+      });
+  }
+
+  function initWorldMap() {
+    if (!worldMapElement) return;
+    worldMap = L.map(worldMapElement, {
+      center: [20, 0],
+      zoom: 2,
+      scrollWheelZoom: false,
+    });
+
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      subdomains: "abc",
+      maxZoom: 19,
+    }).addTo(worldMap);
+
+    fetch(revoArtMapData.worldGeoJsonUrl)
+      .then((response) => response.json())
+      .then((geojson) => {
+        L.geoJSON(geojson, {
+          style(feature) {
+            const name = feature.properties.name || "";
+            const count = worldData[name] || 0;
+            return {
+              fillColor: revoArtColor(count),
+              fillOpacity: revoArtOpacity(count),
+              weight: 1,
+              color: "#fff",
+              opacity: 1,
+            };
+          },
+        }).addTo(worldMap);
+      })
+      .catch(() => {
+        worldMapElement.innerHTML = '<p class="map-load-error">世界地図を読み込めませんでした。</p>';
+      });
+  }
+
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+      const target = tab.dataset.revoArtMapTab;
+      tabs.forEach((item) => item.classList.toggle("active", item === tab));
+      japanMapElement?.classList.toggle("active", target === "japan");
+      worldMapElement?.classList.toggle("active", target === "world");
+      window.setTimeout(() => {
+        japanMap?.invalidateSize();
+        worldMap?.invalidateSize();
+      }, 80);
+    });
+  });
+
+  artMapSection.addEventListener("click", (event) => {
+    const cityButton = event.target.closest("[data-revo-art-city]");
+    const locationButton = event.target.closest("[data-revo-art-location]");
+    const prefButton = event.target.closest("[data-revo-art-pref]");
+
+    if (cityButton) renderCity(cityButton.dataset.revoArtCity);
+    if (locationButton) {
+      const location = locations.find((item) => item.id === locationButton.dataset.revoArtLocation);
+      showDetail(location);
+    }
+    if (prefButton) renderPrefecture(prefButton.dataset.revoArtPref);
+  });
+
+  if (backButton) {
+    backButton.addEventListener("click", () => {
+      artMapSection.querySelector(".art-location-browser")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
+
+  renderRanking();
+  renderPrefecture("");
+  initJapanMap();
+  initWorldMap();
+}
+
+setupRevoArtMap();
 
 function parseCounterCsv(text) {
   const rows = [];
