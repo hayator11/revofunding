@@ -26,6 +26,10 @@
     {
       "name": "レボリンク",
       "description": "企業広告や協賛を社会貢献型の支援導線へ変える仕組み。"
+    },
+    {
+      "name": "レボハット",
+      "description": "帽子をものづくり、想像性、ファッション、防災体験の入口として広げる構想。"
     }
   ],
   "importantPages": [
@@ -40,10 +44,10 @@
   "externalContext": {
     "onokun": "https://onokun.com/",
     "revoLink": "https://onokun.com/socially-responsible-sponsorship/",
+    "revoHat": "https://onokun.com/revohat/",
     "revolistLab": "https://revolist.earth/revolist-lab",
-    "bosaiBosai": "https://revolist.earth/bosai-bosai",
+    "bosaiBosai": "https://onokun.com/bosai",
     "revoSong": "https://revosong-charts.vercel.app/",
     "hayator": "https://hayator.socialimagine.com/"
   }
 }
-

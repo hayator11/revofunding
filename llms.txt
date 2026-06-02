@@ -44,8 +44,8 @@
 - おのくん: https://onokun.com/
 - おのくんアートキャラバン: https://onokun.com/art-project/
 - レボリンク: https://onokun.com/socially-responsible-sponsorship/
+- レボハット: https://onokun.com/revohat/
 - レボリストLab: https://revolist.earth/revolist-lab
-- 防災×帽祭: https://revolist.earth/bosai-bosai
+- 防災×帽祭: https://onokun.com/bosai
 - レボソング: https://revosong-charts.vercel.app/
 - @hayator: https://hayator.socialimagine.com/
-
