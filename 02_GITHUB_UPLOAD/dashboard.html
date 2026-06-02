@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="google-site-verification" content="R_e8E9Ga3FSMDd3Z_H1SpU8hkM8lMW25IpkPWFbMAxM" />
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LPQ0HZ7KKJ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-LPQ0HZ7KKJ');
+    </script>
+    <title>運営ダッシュボード | レボファンディング</title>
+    <link rel="icon" href="favicon.ico?v=20260602" sizes="any" />
+    <link rel="icon" href="favicon.svg?v=20260602" type="image/svg+xml" />
+    <link rel="icon" href="favicon-32.png?v=20260602" type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png?v=20260602" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html"><span class="brand-mark">R</span><span><strong>レボファンディング</strong><small>Dashboard</small></span></a>
+      <nav class="nav" aria-label="主要ナビゲーション">
+        <a href="index.html">トップ</a>
+        <a href="revolist.html">全体構造</a>
+        <a href="concept.html">仕組み</a>
+        <a href="supporters.html">応援する</a>
+        <a href="shop.html">買って広げる</a>
+        <a href="challenger.html">挑戦する</a>
+        <a href="designers.html">作って参加</a>
+        <a href="revo-art.html">レボアート</a>
+        <a href="representative.html">運営</a>
+      </nav>
+    </header>
+    <main>
+      <section class="page-hero">
+        <p class="eyebrow">Transparency Dashboard</p>
+        <h1>お金・在庫・活動の流れを見える化する。</h1>
+        <p class="lead">レボファンディングの信頼は、集まった応援が何に使われ、次にどう進むかを見せることから生まれます。</p>
+      </section>
+      <section class="section dashboard-panel">
+        <div class="dashboard-grid">
+          <div class="dash-card"><span>集まった資金</span><strong data-counter="totalFunds">320,000円</strong><small>初期応援・商品購入</small></div>
+          <div class="dash-card"><span>制作費</span><strong data-counter="productionCost">120,000円</strong><small>Tシャツ初回ロット</small></div>
+          <div class="dash-card"><span>在庫数</span><strong data-counter="stockCount">18枚</strong><small>販売可能在庫</small></div>
+          <div class="dash-card"><span>売上</span><strong data-counter="salesAmount">288,000円</strong><small>販売済み64枚</small></div>
+          <div class="dash-card"><span>次回ストック</span><strong data-counter="nextStock">80,000円</strong><small>二次募集・次ロット準備</small></div>
+          <div class="dash-card"><span>起案者支援予定</span><strong data-counter="challengerSupportPlanned">45,000円</strong><small>精算確認後</small></div>
+          <div class="dash-card"><span>支援済み額</span><strong data-counter="challengerSupportPaid">20,000円</strong><small>活動支援として実行済み</small></div>
+          <div class="dash-card"><span>次アクション</span><strong data-counter="nextAction">二次募集</strong><small>在庫10枚以下で承認判断</small></div>
+        </div>
+      </section>
+      <section class="section">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Counter Rules</p>
+            <h2>各カウンターの見方</h2>
+          </div>
+        </div>
+        <div class="rule-grid">
+          <div class="rule-card">
+            <h3>集まった資金</h3>
+            <p>初期応援、商品購入、企画に紐づく入金をまとめた総額です。応援者への配当原資ではありません。</p>
+          </div>
+          <div class="rule-card">
+            <h3>制作費・運営費</h3>
+            <p>商品制作、発送、決済手数料、管理作業、告知素材など、企画を安全に進めるための費用です。</p>
+          </div>
+          <div class="rule-card">
+            <h3>次回ストック</h3>
+            <p>次のロット制作、二次募集、在庫補充、活動報告のために残す資金です。売り切りで終わらせないために確保します。</p>
+          </div>
+          <div class="rule-card">
+            <h3>起案者支援予定</h3>
+            <p>必要経費と次回展開ストックを確認したうえで、起案者の活動支援として還元予定の金額です。</p>
+          </div>
+          <div class="rule-card">
+            <h3>支援済み額</h3>
+            <p>運営確認後、起案者の活動支援として実際に還元した金額です。活動レポートとあわせて更新します。</p>
+          </div>
+          <div class="rule-card">
+            <h3>応援者・ファン数</h3>
+            <p>参加、購入、登録、共有などで関わった人数です。金銭的な権利ではなく、参加履歴として可視化します。</p>
+          </div>
+        </div>
+      </section>
+      <section class="section detail-layout">
+        <div class="detail-main">
+          <p class="eyebrow">Admin Flow</p>
+          <h2>運営チェックで進むステップ</h2>
+          <div class="timeline">
+            <div class="timeline-item active"><span>確認済み</span><strong>初期募集開始</strong><p>金銭的リターンなし、事業判断非介入、商品内容を確認済み。</p></div>
+            <div class="timeline-item active"><span>進行中</span><strong>販売・ファン化</strong><p>購入者をファン登録、SNS共有、サイト更新、応援グループへつなげています。</p></div>
+            <div class="timeline-item"><span>次回</span><strong>二次募集承認</strong><p>在庫、売上、ストック、起案者希望を確認して開始します。</p></div>
+          </div>
+        </div>
+        <aside class="detail-side">
+          <div class="counter-card"><span>応援者</span><strong data-counter="supportersCount">32人</strong></div>
+          <div class="counter-card"><span>ファン</span><strong data-counter="fansCount">118人</strong></div>
+          <div class="counter-card"><span>SNS共有</span><strong data-counter="snsShares">47件</strong></div>
+          <div class="counter-card"><span>紹介流入</span><strong data-counter="referralVisits">23件</strong></div>
+        </aside>
+      </section>
+    </main>
+    <footer class="site-footer"><div><strong>レボファンディング</strong><p>透明性が、継続応援の土台になる。</p></div><p>数値はプロトタイプ用サンプルです。実際の販売条件、返品、発送はBASE商品ページで確認します。</p>
+      <p class="footer-links"><a href="legal.html">法務・購入条件</a><span>特商法 / 返品 / 発送 / 個人情報</span></p>
+</footer>
+    <div class="toast" role="status" aria-live="polite"></div>
+    <script src="script.js"></script>
+  </body>
+</html>
