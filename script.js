@@ -13,53 +13,9 @@ const siteFooter = document.querySelector(".site-footer");
 const rankingList = document.querySelector(".ranking-list");
 const rankSortButtons = document.querySelectorAll(".rank-sort");
 const categoryFilter = document.querySelector(".category-filter");
+const videoEmbeds = document.querySelectorAll(".video-embed");
 const publicBaseUrl = "https://revofunding.onokun.com/";
-const revoIntegrations = window.REVO_INTEGRATIONS || {
-  forms: {
-    revoArt: "https://docs.google.com/forms/d/e/1FAIpQLSesxTpGbfAfXhHmIljMGknEFKWp0TfWR1n2R0NuPxt4rGdjKw/viewform?usp=dialog",
-    challenger: "https://docs.google.com/forms/d/e/1FAIpQLSdtm4PpMVwWIRXsKLtSahzwWjCu2N4Qi14N-nHQh_ZF6UQzOg/viewform?usp=dialog",
-    supporter: "https://docs.google.com/forms/d/e/1FAIpQLSezDrOpfyY4sj9ShlTu1OzptzqOOGFHL-nl8yCX8_jTADhUcg/viewform?usp=dialog",
-    artist: "https://docs.google.com/forms/d/e/1FAIpQLSf5NE0ZPj3e3nK_73pUNLz_09j7BS3jK2uGLvLaktCU01OMaQ/viewform?usp=dialog",
-    fan: "https://docs.google.com/forms/d/e/1FAIpQLScPbj0Pa-CVw6X06duPbxZk6YU9nildlAjzrFTa6Wu75wWhWw/viewform?usp=dialog",
-    license: "https://docs.google.com/forms/d/e/1FAIpQLSfbpc3VAFMKqkPO_JfOoPQ91uJZ-UGZSdBje3jpztW0yFiP5Q/viewform?usp=dialog",
-  },
-  base: {
-    bousaiProduct: "https://onokun.shop.socialimagine.com/items/145050232",
-  },
-  sheets: {
-    publicCountersCsv: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRcKmEgg9vkR0RHr8i1dbqnjOCZS7Julyl54k9tqUEBGxEejykf3X5eS4iZOKnsowGrtwiGZ7b7vRBN/pub?gid=403200930&single=true&output=csv",
-    receivedSheets: [
-      "https://docs.google.com/spreadsheets/d/11x5gBvQcis6t2xKtD5NlnnzBWI0ywaQKgXUJOZqOuNo/edit?usp=sharing",
-      "https://docs.google.com/spreadsheets/d/1uSPieEo9-W9VCBp-FVG_4lwMJ4ireC217dT1HEliPCs/edit?gid=149106504#gid=149106504",
-      "https://docs.google.com/spreadsheets/d/1znlaaylwX1pydYJlbeEqMULnVU8Ybww0kwFH6YvvWp0/edit",
-      "https://docs.google.com/spreadsheets/d/1AbtWF5BB3X5XriN-emSFZIiYToCNgS-6wR7mZCefAMM/edit?gid=424815998#gid=424815998",
-      "https://docs.google.com/spreadsheets/d/1AKVgptl_E89qoDyEx0LGQAbD9PMqKQaYkvAkzhrwaFg/edit?gid=0#gid=0",
-      "https://docs.google.com/spreadsheets/d/1CuwE7XB1GEmDCyql3LTznVNLdH6kCeI-kL79FtRDyaQ/edit",
-      "https://docs.google.com/spreadsheets/d/1XfS0yNh7TIMbimt8PtoHed9mFAyf0DS1guH6z1JInb8/edit?gid=531798815#gid=531798815",
-      "https://docs.google.com/spreadsheets/d/12Uj0RBGDy1dJFCgXxNMkXPKW4Uz0rRvdGsCAph_gsNc/edit?gid=1487671474#gid=1487671474",
-    ],
-  },
-};
-
-const primaryNavigation = [
-  ["index.html", "トップ"],
-  ["concept.html", "仕組み"],
-  ["owners.html", "起案者一覧"],
-  ["supporters.html", "応援者募集"],
-  ["shop.html", "支援者購入"],
-  ["designers.html", "認定アーティスト"],
-  ["revo-art.html", "レボアート"],
-  ["revolist.html", "全体図"],
-  ["dashboard.html", "透明性"],
-  ["challenger.html", "起案する"],
-];
-
-document.querySelectorAll(".site-header .nav").forEach((nav) => {
-  nav.innerHTML = primaryNavigation
-    .map(([href, label]) => `<a href="${href}">${label}</a>`)
-    .join("");
-});
-const counterDataUrl = window.REVO_COUNTER_DATA_URL || revoIntegrations.sheets.publicCountersCsv;
+const counterDataUrl = window.REVO_COUNTER_DATA_URL || "https://docs.google.com/spreadsheets/d/e/2PACX-1vRcKmEgg9vkR0RHr8i1dbqnjOCZS7Julyl54k9tqUEBGxEejykf3X5eS4iZOKnsowGrtwiGZ7b7vRBN/pub?gid=403200930&single=true&output=csv";
 const projectsDataUrl = window.REVO_PROJECTS_DATA_URL || "projects-data.json";
 let activeStatusFilter = "all";
 let activeSort = "active";
@@ -73,47 +29,6 @@ function currentPublicPageUrl() {
   const fileName = window.location.pathname.split("/").pop() || "index.html";
   return pageUrl(fileName);
 }
-
-function applyIntegrationLinks() {
-  document.querySelectorAll("[data-revo-form]").forEach((link) => {
-    const url = revoIntegrations.forms[link.dataset.revoForm];
-    if (url) {
-      link.href = url;
-      link.target = "_blank";
-      link.rel = "noreferrer";
-    }
-  });
-
-  document.querySelectorAll("[data-revo-base]").forEach((link) => {
-    const url = revoIntegrations.base[link.dataset.revoBase];
-    if (url) {
-      link.href = url;
-      link.target = "_blank";
-      link.rel = "noreferrer";
-    }
-  });
-}
-
-applyIntegrationLinks();
-
-function setupExternalFormGates() {
-  document.querySelectorAll("[data-revo-form-gate]").forEach((form) => {
-    form.addEventListener("submit", (event) => {
-      event.preventDefault();
-
-      if (!form.reportValidity()) {
-        return;
-      }
-
-      const url = revoIntegrations.forms[form.dataset.revoFormGate];
-      if (url) {
-        window.open(url, "_blank", "noopener,noreferrer");
-      }
-    });
-  });
-}
-
-setupExternalFormGates();
 
 function buildShareUrl(platform, targetUrl, shareText = "防災×帽祭 応援Tシャツを応援しています") {
   const threadsText = `${shareText}。${targetUrl}`;
@@ -142,6 +57,49 @@ function showToast(message) {
   toast.classList.add("visible");
   window.setTimeout(() => toast.classList.remove("visible"), 2200);
 }
+
+function videoEmbedUrl(url) {
+  if (!url) return "";
+
+  try {
+    const parsed = new URL(url);
+    const host = parsed.hostname.replace("www.", "");
+
+    if (host === "youtu.be") {
+      return `https://www.youtube.com/embed/${parsed.pathname.replace("/", "")}`;
+    }
+
+    if (host.includes("youtube.com")) {
+      if (parsed.pathname.startsWith("/shorts/")) {
+        return `https://www.youtube.com/embed/${parsed.pathname.split("/")[2] || ""}`;
+      }
+
+      const videoId = parsed.searchParams.get("v");
+      if (videoId) {
+        return `https://www.youtube.com/embed/${videoId}`;
+      }
+    }
+
+    if (host.includes("vimeo.com")) {
+      const videoId = parsed.pathname.split("/").filter(Boolean).pop();
+      if (videoId) {
+        return `https://player.vimeo.com/video/${videoId}`;
+      }
+    }
+  } catch (error) {
+    return "";
+  }
+
+  return "";
+}
+
+videoEmbeds.forEach((embed) => {
+  const embedUrl = videoEmbedUrl(embed.dataset.videoUrl || "");
+  if (!embedUrl) return;
+
+  const title = embed.dataset.videoTitle || "Project video";
+  embed.innerHTML = `<iframe src="${embedUrl}" title="${title}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;
+});
 
 function parseCounterCsv(text) {
   const rows = [];
@@ -291,35 +249,6 @@ function reconcileCounterAliases(counters) {
 
   if (mergedCounters.soldCount) {
     mergedCounters.soldNumber = numberOnly(mergedCounters.soldCount);
-  }
-
-  if (mergedCounters.soldCount && !mergedCounters.buyerCount) {
-    mergedCounters.buyerCount = `${numberOnly(mergedCounters.soldCount)}人`;
-  }
-
-  if (mergedCounters.totalFunds && !mergedCounters.hopeAmount) {
-    mergedCounters.hopeAmount = mergedCounters.totalFunds;
-  }
-
-  if (mergedCounters.productionCost && mergedCounters.operationCost && !mergedCounters.usedAmount) {
-    const production = Number(numberOnly(mergedCounters.productionCost).replace(/,/g, ""));
-    const operation = Number(numberOnly(mergedCounters.operationCost).replace(/,/g, ""));
-    if (!Number.isNaN(production) && !Number.isNaN(operation)) {
-      mergedCounters.usedAmount = `${(production + operation).toLocaleString("ja-JP")}円`;
-    }
-  }
-
-  if (mergedCounters.nextStock && !mergedCounters.operatingAmount) {
-    mergedCounters.operatingAmount = mergedCounters.nextStock;
-  }
-
-  if (mergedCounters.hopeAmount && mergedCounters.usedAmount && mergedCounters.operatingAmount && !mergedCounters.remainingBudget) {
-    const hope = Number(numberOnly(mergedCounters.hopeAmount).replace(/,/g, ""));
-    const used = Number(numberOnly(mergedCounters.usedAmount).replace(/,/g, ""));
-    const operating = Number(numberOnly(mergedCounters.operatingAmount).replace(/,/g, ""));
-    if (!Number.isNaN(hope) && !Number.isNaN(used) && !Number.isNaN(operating)) {
-      mergedCounters.remainingBudget = `${(hope - used - operating).toLocaleString("ja-JP")}円`;
-    }
   }
 
   return mergedCounters;
