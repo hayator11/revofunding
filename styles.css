@@ -145,6 +145,18 @@ video {
   justify-content: center;
 }
 
+.hero-message {
+  display: grid;
+  gap: 8px;
+  max-width: 640px;
+  margin: 22px 0 0;
+  line-height: 1.55;
+}
+
+.hero-message span {
+  display: block;
+}
+
 .lab-flow-line {
   display: flex;
   align-items: center;
@@ -1463,6 +1475,31 @@ h3 {
   background:
     linear-gradient(120deg, rgba(255, 255, 255, 0.9), rgba(245, 248, 250, 0.82)),
     url("onokun-a.jpeg") right 12% center / min(34vw, 380px) auto no-repeat;
+}
+
+.revo-art-message {
+  max-width: 720px;
+}
+
+.revo-art-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 22px 0 0;
+}
+
+.revo-art-cta a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 10px 18px;
+  border: 1px solid rgba(0, 122, 255, 0.18);
+  border-radius: 999px;
+  color: var(--teal);
+  background: rgba(255, 255, 255, 0.72);
+  font-weight: 800;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
 }
 
 .revo-map {
