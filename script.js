@@ -808,6 +808,31 @@ function formatRatio(current, target, suffix = "") {
   return suffix ? `${currentText}${suffix} / ${targetText}${suffix}` : `${currentText} / ${targetText}`;
 }
 
+function hasProjectValue(project, key) {
+  return Object.prototype.hasOwnProperty.call(project, key) && String(project[key] ?? "").trim() !== "";
+}
+
+function projectNumber(project, key, fallback = 0) {
+  if (hasProjectValue(project, key)) return plainNumber(project[key]);
+  return plainNumber(fallback);
+}
+
+function projectText(project, key, fallback = "") {
+  if (hasProjectValue(project, key)) return String(project[key]).trim();
+  return fallback;
+}
+
+function salesProgressText(project) {
+  if (!project.targetSalesCount && !project.currentSalesCount) return "商品決定後に開始";
+  return formatRatio(project.currentSalesCount, project.targetSalesCount, "点");
+}
+
+function salesProgressNote(project) {
+  if (!project.targetSalesCount && !project.currentSalesCount) return "販売金額は商品の決定後に開始";
+  if (project.salesAmount) return `販売金額 ${formatCurrency(project.salesAmount)}`;
+  return "販売金額は手動更新";
+}
+
 function splitList(value) {
   if (Array.isArray(value)) return value;
   return String(value || "")
@@ -834,10 +859,14 @@ function normalizeProject(project) {
   const firstProduct = productList[0] || {};
   const detailImages = project.detail_image_urls || project.galleryImages || [];
   const meisterProfile = project.meisterProfile || {};
-  const targetAmount = plainNumber(project.target_amount || project.afterAmount || project.money);
-  const currentAmount = plainNumber(project.current_amount || project.money || project.beforeAmount);
-  const targetSupporters = plainNumber(project.target_supporters || project.boostGoalCount || project.sparkGoalCount || project.supporters);
-  const currentSupporters = plainNumber(project.current_supporters || project.supporters || project.sparkCurrentCount || project.boostCurrentCount);
+  const targetAmount = projectNumber(project, "target_amount", project.afterAmount || project.money);
+  const currentAmount = projectNumber(project, "current_amount", project.beforeAmount || project.money);
+  const targetSupporters = projectNumber(project, "target_supporters", project.sparkGoalCount || project.boostGoalCount || project.supporters);
+  const currentSupporters = projectNumber(project, "current_supporters", project.sparkCurrentCount || project.boostCurrentCount || project.supporters);
+  const productPrice = projectText(project, "product_price", firstProduct.price || "");
+  const targetSalesCount = projectNumber(project, "target_sales_count", project.productionGoalCount || 0);
+  const currentSalesCount = projectNumber(project, "current_sales_count", project.sales || project.wornCount || 0);
+  const salesAmount = projectNumber(project, "sales_amount", 0);
   const status = String(project.status || "draft").trim();
 
   return {
@@ -857,22 +886,28 @@ function normalizeProject(project) {
     creatorSnsUrl: project.creator_sns_url || meisterProfile.snsUrl || "",
     category: project.category || "",
     productType: project.product_type || project.productionItemName || firstProduct.name || "",
+    productPrice,
     targetAmount,
     currentAmount,
     targetSupporters,
     currentSupporters,
-    fanTargetAfterSuccess: plainNumber(project.fan_target_after_success || project.fans || project.boostGoalCount),
+    fanTargetAfterSuccess: projectNumber(project, "fan_target_after_success", project.fans || project.boostGoalCount),
+    targetSalesCount,
+    currentSalesCount,
+    salesAmount,
+    boosterTargetSupporters: projectNumber(project, "booster_target_supporters", project.boostGoalCount || 0),
+    boosterCurrentSupporters: projectNumber(project, "booster_current_supporters", project.boostCurrentCount || 0),
+    boosterStatus: project.booster_status || "募集ページ設定後に公開",
     baseProductUrl: project.base_product_url || firstProduct.purchaseUrl || "",
     workFormUrl: project.work_form_url || project.project_input_form_url || "",
     workNote: project.work_note || project.operator_note || "",
-    productPrice: project.product_price || firstProduct.price || "",
     startDate: project.start_date || "",
     endDate: project.end_date || "",
     publishedAt: project.published_at || project.updated || "",
     updatedAt: project.updated_at || project.updated || "",
     displayOrder: plainNumber(project.display_order || 999),
     fans: plainNumber(project.fans || project.fan_target_after_success || 0),
-    sales: plainNumber(project.sales || project.productionGoalCount || 0),
+    sales: currentSalesCount,
     money: currentAmount,
     updated: String(project.updated_at || project.published_at || project.updated || "").replaceAll("-", ""),
     nextAction: project.next_action || project.nextAction || "",
@@ -930,16 +965,16 @@ function createProjectCard(project) {
       <h3>${project.title}</h3>
       <p>${project.shortDescription}</p>
       <div class="project-progress-map spark-map" aria-label="プロジェクトの進行">
-        <div><span>応援者</span><strong>${formatRatio(project.currentSupporters, project.targetSupporters, "人")}</strong></div>
+        <div><span>応援者目標</span><strong>${formatCount(project.targetSupporters)}</strong></div>
         <i></i>
-        <div><span>現在金額</span><strong>${formatCurrency(project.currentAmount)}</strong></div>
+        <div><span>達成人数</span><strong>${formatCount(project.currentSupporters)}</strong></div>
         <i></i>
-        <div><span>達成率</span><strong>${percent}%</strong></div>
+        <div><span>ファン目標</span><strong>${formatCount(project.fanTargetAfterSuccess)}</strong></div>
       </div>
       <div class="project-stats">
-        <div class="mini-stat"><span>金額の進行</span><strong>${formatCurrency(project.currentAmount)}</strong><small>目標 ${formatCurrency(project.targetAmount)}</small>${progressBar(project.currentAmount, project.targetAmount, "金額の進行")}</div>
-        <div class="mini-stat"><span>応援人数の進行</span><strong>${formatRatio(project.currentSupporters, project.targetSupporters, "人")}</strong><small>${supportersPercent}%</small>${progressBar(project.currentSupporters, project.targetSupporters, "応援人数の進行")}</div>
-        <div class="mini-stat"><span>次のファン目標</span><strong>${formatCount(project.fanTargetAfterSuccess)}</strong><small>達成後に広げる人数</small></div>
+        <div class="mini-stat"><span>目標金額</span><strong>${formatCurrency(project.targetAmount)}</strong><small>達成金額 ${formatCurrency(project.currentAmount)}</small>${progressBar(project.currentAmount, project.targetAmount, "金額の進行")}</div>
+        <div class="mini-stat"><span>応援者</span><strong>${formatRatio(project.currentSupporters, project.targetSupporters, "人")}</strong><small>${supportersPercent}%</small>${progressBar(project.currentSupporters, project.targetSupporters, "応援人数の進行")}</div>
+        <div class="mini-stat"><span>販売</span><strong>${salesProgressText(project)}</strong><small>${salesProgressNote(project)}</small></div>
       </div>
       <p class="project-message">${project.nextAction || "応援が次の循環へ進む準備をしています。"}</p>
       <div class="card-actions">
@@ -1043,11 +1078,11 @@ function renderProjectDetail(project) {
 
     <section class="section project-number-section" aria-label="挑戦の数字">
       <div class="project-number-grid">
-        <div class="number-card spark"><span>金額の進行</span><strong>${formatCurrency(project.currentAmount)}</strong><small>目標 ${formatCurrency(project.targetAmount)}</small>${progressBar(project.currentAmount, project.targetAmount, "金額の進行")}</div>
-        <div class="number-card"><span>達成率</span><strong>${percent}%</strong><small>現在金額 / 目標金額</small>${progressBar(project.currentAmount, project.targetAmount, "達成率")}</div>
-        <div class="number-card"><span>応援人数の進行</span><strong>${formatRatio(project.currentSupporters, project.targetSupporters, "人")}</strong><small>${supportersPercent}%</small>${progressBar(project.currentSupporters, project.targetSupporters, "応援人数の進行")}</div>
+        <div class="number-card spark"><span>目標金額</span><strong>${formatCurrency(project.targetAmount)}</strong><small>達成金額 ${formatCurrency(project.currentAmount)}</small>${progressBar(project.currentAmount, project.targetAmount, "金額の進行")}</div>
+        <div class="number-card"><span>達成金額</span><strong>${formatCurrency(project.currentAmount)}</strong><small>${percent}%達成</small>${progressBar(project.currentAmount, project.targetAmount, "達成率")}</div>
+        <div class="number-card"><span>応援者の目標人数</span><strong>${formatCount(project.targetSupporters)}</strong><small>達成人数 ${formatCount(project.currentSupporters)} / ${supportersPercent}%</small>${progressBar(project.currentSupporters, project.targetSupporters, "応援人数の進行")}</div>
         <div class="number-card boost"><span>達成後ファン目標</span><strong>${formatCount(project.fanTargetAfterSuccess)}</strong><small>次の循環へ広げる人数</small></div>
-        <div class="number-card amplify"><span>商品種別</span><strong>${project.productType || "未設定"}</strong><small>${project.productPrice || "価格未設定"}</small></div>
+        <div class="number-card amplify"><span>販売</span><strong>${salesProgressText(project)}</strong><small>${salesProgressNote(project)}</small></div>
       </div>
     </section>
 
@@ -1339,9 +1374,9 @@ function renderProjectWork(project, requestedId = "") {
     <section class="section project-number-section">
       <div class="section-head"><div><p class="eyebrow">Counters</p><h2>現在値と目標値</h2></div></div>
       <div class="project-number-grid work-number-grid">
-        <div class="number-card spark"><span>現在金額</span><strong>${formatCurrency(project.currentAmount)}</strong><small>目標 ${formatCurrency(project.targetAmount)}</small>${progressBar(project.currentAmount, project.targetAmount, "金額の進行")}</div>
-        <div class="number-card"><span>応援人数</span><strong>${formatRatio(project.currentSupporters, project.targetSupporters, "人")}</strong><small>${supportersPercent}%</small>${progressBar(project.currentSupporters, project.targetSupporters, "応援人数の進行")}</div>
-        <div class="number-card boost"><span>達成率</span><strong>${percent}%</strong><small>現在金額 / 目標金額</small>${progressBar(project.currentAmount, project.targetAmount, "達成率")}</div>
+        <div class="number-card spark"><span>目標金額</span><strong>${formatCurrency(project.targetAmount)}</strong><small>達成金額 ${formatCurrency(project.currentAmount)}</small>${progressBar(project.currentAmount, project.targetAmount, "金額の進行")}</div>
+        <div class="number-card"><span>応援者の目標人数</span><strong>${formatCount(project.targetSupporters)}</strong><small>達成人数 ${formatCount(project.currentSupporters)} / ${supportersPercent}%</small>${progressBar(project.currentSupporters, project.targetSupporters, "応援人数の進行")}</div>
+        <div class="number-card boost"><span>販売</span><strong>${salesProgressText(project)}</strong><small>${salesProgressNote(project)}</small></div>
         <div class="number-card amplify"><span>達成後ファン目標</span><strong>${formatCount(project.fanTargetAfterSuccess)}</strong><small>次の循環で広げる人数</small></div>
       </div>
     </section>
