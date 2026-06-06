@@ -18,6 +18,8 @@ const artMapSection = document.querySelector("#place-map");
 const publicBaseUrl = "https://revofunding.onokun.com/";
 const counterDataUrl = window.REVO_COUNTER_DATA_URL || "https://docs.google.com/spreadsheets/d/e/2PACX-1vRcKmEgg9vkR0RHr8i1dbqnjOCZS7Julyl54k9tqUEBGxEejykf3X5eS4iZOKnsowGrtwiGZ7b7vRBN/pub?gid=403200930&single=true&output=csv";
 const projectsDataUrl = window.REVO_PROJECTS_DATA_URL || "projects-data.json";
+const projectDataFallbackUrl = "projects-data.json";
+const projectDetailRoot = document.querySelector("[data-project-detail]");
 let activeStatusFilter = "all";
 let activeSort = "active";
 let activeCategory = "all";
@@ -782,53 +784,299 @@ function updateRanking() {
     });
 }
 
+function plainNumber(value) {
+  const normalized = String(value || "").replace(/[^\d.-]/g, "");
+  return normalized ? Number(normalized) : 0;
+}
+
+function formatCurrency(value) {
+  const number = plainNumber(value);
+  return number ? `${number.toLocaleString("ja-JP")}円` : "0円";
+}
+
+function formatCount(value, suffix = "人") {
+  const number = plainNumber(value);
+  return number ? `${number.toLocaleString("ja-JP")}${suffix}` : `0${suffix}`;
+}
+
+function splitList(value) {
+  if (Array.isArray(value)) return value;
+  return String(value || "")
+    .split(/\n|\||,/)
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
+function displayProjectStatus(status) {
+  if (status === "closed") return "終了済み";
+  if (status === "published") return "公開中";
+  if (status === "open") return "募集中";
+  if (status === "next") return "二次募集予定";
+  if (status === "done") return "達成済み";
+  return status || "準備中";
+}
+
+function isPublicProject(project) {
+  return ["published", "closed", "open", "next", "done"].includes(project.status);
+}
+
 function normalizeProject(project) {
+  const productList = Array.isArray(project.productList) ? project.productList : [];
+  const firstProduct = productList[0] || {};
+  const detailImages = project.detail_image_urls || project.galleryImages || [];
+  const meisterProfile = project.meisterProfile || {};
+  const targetAmount = plainNumber(project.target_amount || project.afterAmount || project.money);
+  const currentAmount = plainNumber(project.current_amount || project.money || project.beforeAmount);
+  const targetSupporters = plainNumber(project.target_supporters || project.boostGoalCount || project.sparkGoalCount || project.supporters);
+  const currentSupporters = plainNumber(project.current_supporters || project.supporters || project.sparkCurrentCount || project.boostCurrentCount);
+  const status = String(project.status || "draft").trim();
+
   return {
-    id: project.id || project.projectId || "",
-    status: project.status || "open",
+    id: project.project_id || project.projectId || project.id || "",
+    status,
+    statusLabel: project.status_label || project.statusLabel || displayProjectStatus(status),
+    title: project.title || "",
+    subtitle: project.subtitle || project.subTitle || project.catchCopy || "",
+    shortDescription: project.short_description || project.summary || project.subTitle || "",
+    detailDescription: project.detail_description || project.detailBody || project.summary || "",
+    mainImageUrl: project.main_image_url || project.mainImage || "",
+    detailImageUrls: splitList(detailImages).map((item) => (typeof item === "string" ? { src: item, caption: "" } : item)),
+    creatorName: project.creator_name || meisterProfile.name || "",
+    creatorProfile: project.creator_profile || meisterProfile.message || "",
+    creatorImageUrl: project.creator_image_url || meisterProfile.image || "",
+    creatorOfficialUrl: project.creator_official_url || meisterProfile.officialUrl || "",
+    creatorSnsUrl: project.creator_sns_url || meisterProfile.snsUrl || "",
     category: project.category || "",
-    supporters: Number(project.supporters || 0),
-    fans: Number(project.fans || 0),
-    sales: Number(project.sales || 0),
-    money: Number(project.money || 0),
-    updated: String(project.updated || "").replaceAll("-", ""),
+    productType: project.product_type || project.productionItemName || firstProduct.name || "",
+    targetAmount,
+    currentAmount,
+    targetSupporters,
+    currentSupporters,
+    fanTargetAfterSuccess: plainNumber(project.fan_target_after_success || project.fans || project.boostGoalCount),
+    baseProductUrl: project.base_product_url || firstProduct.purchaseUrl || "",
+    productPrice: project.product_price || firstProduct.price || "",
+    startDate: project.start_date || "",
+    endDate: project.end_date || "",
+    publishedAt: project.published_at || project.updated || "",
+    updatedAt: project.updated_at || project.updated || "",
+    displayOrder: plainNumber(project.display_order || 999),
+    fans: plainNumber(project.fans || project.fan_target_after_success || 0),
+    sales: plainNumber(project.sales || project.productionGoalCount || 0),
+    money: currentAmount,
+    updated: String(project.updated_at || project.published_at || project.updated || "").replaceAll("-", ""),
+    nextAction: project.next_action || project.nextAction || "",
+    shareText: project.share_text || project.shareText || "",
   };
 }
 
-function applyProjectData(projects) {
-  projects.forEach((project) => {
-    const normalized = normalizeProject(project);
-    if (!normalized.id) return;
-
-    const card = document.querySelector(`[data-project="${normalized.id}"]`);
-    if (!card) return;
-
-    card.dataset.status = normalized.status;
-    card.dataset.category = normalized.category;
-    card.dataset.supporters = String(normalized.supporters);
-    card.dataset.fans = String(normalized.fans);
-    card.dataset.sales = String(normalized.sales);
-    card.dataset.money = String(normalized.money);
-    card.dataset.updated = normalized.updated;
-  });
-
-  updateRanking();
+function projectDetailUrl(project) {
+  return `project.html?id=${encodeURIComponent(project.id)}`;
 }
 
-async function loadProjectData() {
-  if (!rankingList) return;
+function progressPercent(current, target) {
+  if (!target) return 0;
+  return Math.round((current / target) * 100);
+}
+
+function createProjectCard(project) {
+  const article = document.createElement("article");
+  const visualClass = project.category.includes("アート")
+    ? "photo-art"
+    : project.category.includes("広告")
+      ? "photo-links"
+      : project.category.includes("おのくん")
+        ? "photo-onokun"
+        : "photo-bousai";
+  const publicStatus = project.status === "closed" ? "done" : project.status === "next" ? "next" : "open";
+  const percent = progressPercent(project.currentAmount, project.targetAmount);
+  const supportersPercent = progressPercent(project.currentSupporters, project.targetSupporters);
+
+  article.className = "challenge-card project-card dynamic-project-card";
+  article.dataset.project = project.id;
+  article.dataset.status = publicStatus;
+  article.dataset.category = project.category;
+  article.dataset.money = String(project.currentAmount);
+  article.dataset.supporters = String(project.currentSupporters);
+  article.dataset.fans = String(project.fanTargetAfterSuccess || project.fans);
+  article.dataset.sales = String(project.sales);
+  article.dataset.updated = project.updated;
+  article.innerHTML = `
+    <div class="project-photo ${visualClass}">
+      <span class="project-mode">${project.productType || "REVO PROJECT"}</span>
+      <strong>${project.subtitle || project.title}</strong>
+    </div>
+    <div class="project-content">
+      <div class="card-row"><span class="status ${publicStatus}">${project.statusLabel}</span><span class="step">${project.nextAction || `${percent}%`}</span></div>
+      <h3>${project.title}</h3>
+      <p>${project.shortDescription}</p>
+      <div class="project-progress-map spark-map" aria-label="プロジェクトの進行">
+        <div><span>応援者</span><strong>${project.currentSupporters}/${project.targetSupporters || "-"}</strong></div>
+        <i></i>
+        <div><span>達成率</span><strong>${percent}%</strong></div>
+        <i></i>
+        <div><span>ファン目標</span><strong>${project.fanTargetAfterSuccess || "-"}人</strong></div>
+      </div>
+      <div class="project-stats">
+        <div class="mini-stat"><span>現在金額</span><strong>${formatCurrency(project.currentAmount)}</strong></div>
+        <div class="mini-stat"><span>目標金額</span><strong>${formatCurrency(project.targetAmount)}</strong></div>
+        <div class="mini-stat"><span>応援人数</span><strong>${supportersPercent}%</strong></div>
+      </div>
+      <p class="project-message">${project.nextAction || "応援が次の循環へ進む準備をしています。"}</p>
+      <div class="card-actions">
+        <a class="button small primary" href="${projectDetailUrl(project)}">Project詳細を見る</a>
+        ${project.baseProductUrl ? `<a class="button small secondary" href="${project.baseProductUrl}" target="_blank" rel="noreferrer">BASEで見る</a>` : '<span class="button small secondary disabled">BASE準備中</span>'}
+        <button class="button small icon share-trigger" type="button" data-url="${projectDetailUrl(project)}" data-share="${project.title}">共有</button>
+      </div>
+    </div>
+  `;
+
+  return article;
+}
+
+function applyProjectData(projects) {
+  const normalizedProjects = projects
+    .map(normalizeProject)
+    .filter((project) => project.id && isPublicProject(project))
+    .sort((a, b) => a.displayOrder - b.displayOrder || String(b.publishedAt).localeCompare(String(a.publishedAt)));
+
+  if (rankingList) {
+    rankingList.innerHTML = "";
+
+    if (!normalizedProjects.length) {
+      const empty = document.createElement("div");
+      empty.className = "project-empty-state";
+      empty.innerHTML = "<strong>公開準備中です。</strong><span>Projectsシートでstatusをpublishedにしたプロジェクトがここに表示されます。</span>";
+      rankingList.appendChild(empty);
+    } else {
+      normalizedProjects.forEach((project) => rankingList.appendChild(createProjectCard(project)));
+    }
+  }
+
+  updateRanking();
+  return normalizedProjects;
+}
+
+async function fetchProjectsFrom(url) {
+  const response = await fetch(url, { cache: "no-store" });
+  if (!response.ok) throw new Error("Project data could not be loaded.");
+
+  const contentType = response.headers.get("content-type") || "";
+  const isCsv = url.endsWith(".csv") || url.includes("output=csv") || contentType.includes("text/csv");
+  const projects = isCsv ? parseProjectCsv(await response.text()) : (await response.json()).projects;
+
+  if (isCsv && projects.length) {
+    const headers = Object.keys(projects[0]);
+    const hasProjectColumns = headers.includes("project_id") || headers.includes("id") || headers.includes("title");
+    if (!hasProjectColumns) {
+      throw new Error("Projects CSV does not include project columns.");
+    }
+  }
+
+  return projects || [];
+}
+
+async function loadProjectData({ renderList = true } = {}) {
+  if (!rankingList && !projectDetailRoot) return [];
 
   try {
-    const response = await fetch(projectsDataUrl, { cache: "no-store" });
-    if (!response.ok) return;
-
-    const contentType = response.headers.get("content-type") || "";
-    const isCsv = projectsDataUrl.endsWith(".csv") || projectsDataUrl.includes("output=csv") || contentType.includes("text/csv");
-    const projects = isCsv ? parseProjectCsv(await response.text()) : (await response.json()).projects;
-    applyProjectData(projects || []);
+    const projects = await fetchProjectsFrom(projectsDataUrl);
+    return renderList ? applyProjectData(projects) : projects.map(normalizeProject);
   } catch (error) {
-    updateRanking();
+    try {
+      const fallbackProjects = await fetchProjectsFrom(projectDataFallbackUrl);
+      return renderList ? applyProjectData(fallbackProjects) : fallbackProjects.map(normalizeProject);
+    } catch (fallbackError) {
+      updateRanking();
+      return [];
+    }
   }
+}
+
+function renderProjectDetail(project) {
+  if (!projectDetailRoot) return;
+
+  if (!project) {
+    projectDetailRoot.innerHTML = '<section class="section"><div class="project-empty-state"><strong>Projectが見つかりません。</strong><span>URLのid、またはProjectsシートのproject_idを確認してください。</span><a class="button primary" href="supporters.html">一覧へ戻る</a></div></section>';
+    return;
+  }
+
+  const percent = progressPercent(project.currentAmount, project.targetAmount);
+  const detailImages = project.detailImageUrls.length ? project.detailImageUrls : [{ src: project.mainImageUrl, caption: project.title }];
+  const baseButton = project.baseProductUrl
+    ? `<a class="button primary" href="${project.baseProductUrl}" target="_blank" rel="noreferrer">BASEで購入する</a>`
+    : '<span class="button primary disabled">BASE準備中</span>';
+
+  document.title = `${project.title} | レボファンディング`;
+  projectDetailRoot.innerHTML = `
+    <section class="project-hero-detail">
+      <div class="project-hero-copy">
+        <p class="eyebrow">${project.statusLabel} / ${project.category}</p>
+        <h1>${project.title}</h1>
+        <p class="lead">${project.subtitle}</p>
+        <p>${project.shortDescription}</p>
+        <div class="project-status-row"><span class="status ${project.status === "closed" ? "done" : "open"}">${project.statusLabel}</span><span>${project.nextAction || `${percent}%達成`}</span></div>
+        <div class="project-cta-row">${baseButton}<button class="button icon share-trigger" type="button" data-url="${projectDetailUrl(project)}" data-share="${project.title}">SNSで共有する</button></div>
+      </div>
+      <div class="project-template-image">${project.mainImageUrl ? `<img src="${project.mainImageUrl}" alt="${project.title}" />` : "<span>Project Visual</span>"}</div>
+    </section>
+
+    <section class="section project-number-section" aria-label="挑戦の数字">
+      <div class="project-number-grid">
+        <div class="number-card spark"><span>現在金額</span><strong>${formatCurrency(project.currentAmount)}</strong><small>目標 ${formatCurrency(project.targetAmount)}</small></div>
+        <div class="number-card"><span>達成率</span><strong>${percent}%</strong><small>current_amount / target_amount</small></div>
+        <div class="number-card"><span>現在応援人数</span><strong>${formatCount(project.currentSupporters)}</strong><small>目標 ${formatCount(project.targetSupporters)}</small></div>
+        <div class="number-card boost"><span>達成後ファン目標</span><strong>${formatCount(project.fanTargetAfterSuccess)}</strong><small>次の循環へ広げる人数</small></div>
+        <div class="number-card amplify"><span>商品種別</span><strong>${project.productType || "未設定"}</strong><small>${project.productPrice || "価格未設定"}</small></div>
+      </div>
+    </section>
+
+    <section class="section project-story-layout">
+      <article class="project-story-body">
+        <p class="eyebrow">Story</p>
+        <h2>挑戦の詳細</h2>
+        <p>${project.detailDescription || project.shortDescription}</p>
+      </article>
+      <aside class="project-side-panel">
+        <h2>起案者</h2>
+        ${project.creatorImageUrl ? `<img class="creator-image" src="${project.creatorImageUrl}" alt="${project.creatorName}" />` : ""}
+        <h3>${project.creatorName || "起案者情報 未設定"}</h3>
+        <p>${project.creatorProfile || "Projectsシートでcreator_profileを入力すると表示されます。"}</p>
+        <div class="card-actions">
+          ${project.creatorOfficialUrl ? `<a class="button small secondary" href="${project.creatorOfficialUrl}" target="_blank" rel="noreferrer">公式サイト</a>` : ""}
+          ${project.creatorSnsUrl ? `<a class="button small secondary" href="${project.creatorSnsUrl}" target="_blank" rel="noreferrer">SNS</a>` : ""}
+        </div>
+      </aside>
+    </section>
+
+    <section class="section project-gallery-section">
+      <div class="section-head"><div><p class="eyebrow">Gallery</p><h2>詳細画像</h2></div></div>
+      <div class="project-gallery">
+        ${detailImages.map((image) => `<figure><img src="${image.src}" alt="${image.caption || project.title}" /><figcaption>${image.caption || project.title}</figcaption></figure>`).join("")}
+      </div>
+    </section>
+
+    <section class="section project-share-panel">
+      <div><p class="eyebrow">Share</p><h2>このProjectを広げる</h2><p>${project.shareText || `${project.title}を応援しています。`}</p></div>
+      <div class="project-cta-row">
+        <a class="button secondary dynamic-share-link" href="#" data-platform="x" data-url="${projectDetailUrl(project)}" data-text="${project.shareText || project.title}" target="_blank" rel="noreferrer">Xで共有</a>
+        <a class="button secondary dynamic-share-link" href="#" data-platform="line" data-url="${projectDetailUrl(project)}" data-text="${project.shareText || project.title}" target="_blank" rel="noreferrer">LINEで送る</a>
+      </div>
+    </section>
+  `;
+
+  projectDetailRoot.querySelectorAll(".dynamic-share-link").forEach((link) => {
+    const targetUrl = pageUrl(link.dataset.url);
+    link.href = buildShareUrl(link.dataset.platform, targetUrl, link.dataset.text);
+  });
+}
+
+async function loadProjectDetail() {
+  if (!projectDetailRoot) return;
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+  const projects = await loadProjectData({ renderList: false });
+  const publicProjects = projects.filter(isPublicProject);
+  renderProjectDetail(publicProjects.find((project) => project.id === id));
 }
 
 rankSortButtons.forEach((button) => {
@@ -849,6 +1097,7 @@ if (categoryFilter) {
 
 updateRanking();
 loadProjectData();
+loadProjectDetail();
 
 shareButtons.forEach((button) => {
   button.addEventListener("click", async () => {
@@ -878,6 +1127,29 @@ shareButtons.forEach((button) => {
       showToast("共有文: " + text);
     }
   });
+});
+
+document.addEventListener("click", async (event) => {
+  const button = event.target.closest(".share-trigger");
+  if (!button || Array.from(shareButtons).includes(button)) return;
+
+  const title = button.dataset.share || "レボファンディング";
+  const text = `${title}を応援しています。応援者とファンで挑戦を次の展開へ育てるレボファンディングです。`;
+  const targetUrl = pageUrl(button.dataset.url || window.location.pathname.split("/").pop() || "index.html");
+  const shareData = { title, text, url: targetUrl };
+
+  if (navigator.share) {
+    try {
+      await navigator.share(shareData);
+      return;
+    } catch (error) {
+      // 共有をキャンセルした場合はコピーに切り替えません。
+      return;
+    }
+  }
+
+  await navigator.clipboard.writeText(`${text}\n${targetUrl}`);
+  showToast("共有リンクをコピーしました");
 });
 
 sizeButtons.forEach((button) => {
