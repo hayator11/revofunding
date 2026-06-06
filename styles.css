@@ -869,6 +869,22 @@ h3 {
   line-height: 1.5;
 }
 
+.metric-progress {
+  width: 100%;
+  height: 8px;
+  margin-top: 14px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.metric-progress span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--blue), var(--red));
+}
+
 .number-card.spark {
   border-color: rgba(255, 59, 48, 0.24);
   background: rgba(255, 59, 48, 0.06);
@@ -878,6 +894,170 @@ h3 {
 .number-card.amplify {
   border-color: rgba(0, 122, 255, 0.22);
   background: rgba(0, 122, 255, 0.06);
+}
+
+.work-number-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.project-work-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.45fr);
+  gap: clamp(22px, 5vw, 56px);
+  align-items: center;
+  padding: clamp(50px, 8vw, 92px) clamp(18px, 5vw, 72px);
+  background:
+    radial-gradient(circle at 12% 18%, rgba(255, 59, 48, 0.1), transparent 28%),
+    radial-gradient(circle at 86% 12%, rgba(0, 122, 255, 0.12), transparent 28%),
+    var(--paper);
+}
+
+.project-work-hero h1 {
+  max-width: 980px;
+}
+
+.work-room-card {
+  padding: clamp(22px, 4vw, 34px);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 20px 54px rgba(0, 0, 0, 0.07);
+}
+
+.work-room-card span,
+.work-room-card strong {
+  display: block;
+}
+
+.work-room-card span {
+  color: var(--blue);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.work-room-card strong {
+  margin: 10px 0;
+  color: var(--ink);
+  font-size: clamp(24px, 3vw, 34px);
+  line-height: 1.12;
+}
+
+.work-checklist {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.work-step {
+  min-height: 210px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+}
+
+.work-step span {
+  display: inline-flex;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: var(--soft);
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.work-step h3 {
+  margin-top: 18px;
+  font-size: 22px;
+}
+
+.work-step p {
+  color: var(--muted);
+}
+
+.work-step.done {
+  border-color: rgba(52, 199, 89, 0.24);
+  background: rgba(52, 199, 89, 0.06);
+}
+
+.work-step.done span {
+  background: rgba(52, 199, 89, 0.14);
+  color: #19743a;
+}
+
+.work-step.review {
+  border-color: rgba(0, 122, 255, 0.22);
+  background: rgba(0, 122, 255, 0.06);
+}
+
+.work-step.review span {
+  background: rgba(0, 122, 255, 0.12);
+  color: var(--blue);
+}
+
+.work-input-form {
+  display: grid;
+  gap: 18px;
+  padding: clamp(20px, 4vw, 34px);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.05);
+}
+
+.work-form-status {
+  justify-self: start;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(0, 122, 255, 0.1);
+  color: var(--blue);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.work-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.work-input-form label {
+  display: grid;
+  gap: 8px;
+  color: var(--ink);
+  font-weight: 900;
+}
+
+.work-input-form input,
+.work-input-form textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--soft);
+  color: var(--ink);
+  font: inherit;
+  font-weight: 700;
+}
+
+.work-input-form input {
+  min-height: 48px;
+  padding: 0 14px;
+}
+
+.work-input-form textarea {
+  min-height: 120px;
+  padding: 14px;
+  resize: vertical;
+}
+
+.work-input-form .work-submit-output {
+  min-height: 220px;
+  background: #f7f8fb;
+  color: var(--muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.7;
 }
 
 .project-story-layout {
@@ -4197,6 +4377,7 @@ details p {
   .forms,
   .project-hero-detail,
   .project-story-layout,
+  .project-work-hero,
   .booster-category-head,
   .art-map-layout,
   .art-map-system {
@@ -4224,6 +4405,9 @@ details p {
   .dashboard-grid,
   .rule-grid,
   .project-number-grid,
+  .work-number-grid,
+  .work-checklist,
+  .work-form-grid,
   .project-gallery,
   .report-timeline,
   .booster-card-grid,
@@ -4322,6 +4506,9 @@ details p {
   .project-stats.boost-stats,
   .project-progress-map,
   .project-number-grid,
+  .work-number-grid,
+  .work-checklist,
+  .work-form-grid,
   .project-gallery,
   .report-timeline,
   .booster-card-grid,

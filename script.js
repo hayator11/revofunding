@@ -20,6 +20,7 @@ const counterDataUrl = window.REVO_COUNTER_DATA_URL || "https://docs.google.com/
 const projectsDataUrl = window.REVO_PROJECTS_DATA_URL || "projects-data.json";
 const projectDataFallbackUrl = "projects-data.json";
 const projectDetailRoot = document.querySelector("[data-project-detail]");
+const projectWorkRoot = document.querySelector("[data-project-work]");
 let activeStatusFilter = "all";
 let activeSort = "active";
 let activeCategory = "all";
@@ -799,6 +800,14 @@ function formatCount(value, suffix = "人") {
   return number ? `${number.toLocaleString("ja-JP")}${suffix}` : `0${suffix}`;
 }
 
+function formatRatio(current, target, suffix = "") {
+  const currentNumber = plainNumber(current);
+  const targetNumber = plainNumber(target);
+  const currentText = currentNumber.toLocaleString("ja-JP");
+  const targetText = targetNumber ? targetNumber.toLocaleString("ja-JP") : "-";
+  return suffix ? `${currentText}${suffix} / ${targetText}${suffix}` : `${currentText} / ${targetText}`;
+}
+
 function splitList(value) {
   if (Array.isArray(value)) return value;
   return String(value || "")
@@ -854,6 +863,8 @@ function normalizeProject(project) {
     currentSupporters,
     fanTargetAfterSuccess: plainNumber(project.fan_target_after_success || project.fans || project.boostGoalCount),
     baseProductUrl: project.base_product_url || firstProduct.purchaseUrl || "",
+    workFormUrl: project.work_form_url || project.project_input_form_url || "",
+    workNote: project.work_note || project.operator_note || "",
     productPrice: project.product_price || firstProduct.price || "",
     startDate: project.start_date || "",
     endDate: project.end_date || "",
@@ -873,9 +884,18 @@ function projectDetailUrl(project) {
   return `project.html?id=${encodeURIComponent(project.id)}`;
 }
 
+function projectWorkUrl(project) {
+  return `project-work.html?id=${encodeURIComponent(project.id)}`;
+}
+
 function progressPercent(current, target) {
   if (!target) return 0;
   return Math.round((current / target) * 100);
+}
+
+function progressBar(current, target, label) {
+  const percent = Math.min(progressPercent(current, target), 100);
+  return `<div class="metric-progress" aria-label="${label}"><span style="width: ${percent}%"></span></div>`;
 }
 
 function createProjectCard(project) {
@@ -910,16 +930,16 @@ function createProjectCard(project) {
       <h3>${project.title}</h3>
       <p>${project.shortDescription}</p>
       <div class="project-progress-map spark-map" aria-label="プロジェクトの進行">
-        <div><span>応援者</span><strong>${project.currentSupporters}/${project.targetSupporters || "-"}</strong></div>
+        <div><span>応援者</span><strong>${formatRatio(project.currentSupporters, project.targetSupporters, "人")}</strong></div>
+        <i></i>
+        <div><span>現在金額</span><strong>${formatCurrency(project.currentAmount)}</strong></div>
         <i></i>
         <div><span>達成率</span><strong>${percent}%</strong></div>
-        <i></i>
-        <div><span>ファン目標</span><strong>${project.fanTargetAfterSuccess || "-"}人</strong></div>
       </div>
       <div class="project-stats">
-        <div class="mini-stat"><span>現在金額</span><strong>${formatCurrency(project.currentAmount)}</strong></div>
-        <div class="mini-stat"><span>目標金額</span><strong>${formatCurrency(project.targetAmount)}</strong></div>
-        <div class="mini-stat"><span>応援人数</span><strong>${supportersPercent}%</strong></div>
+        <div class="mini-stat"><span>金額の進行</span><strong>${formatCurrency(project.currentAmount)}</strong><small>目標 ${formatCurrency(project.targetAmount)}</small>${progressBar(project.currentAmount, project.targetAmount, "金額の進行")}</div>
+        <div class="mini-stat"><span>応援人数の進行</span><strong>${formatRatio(project.currentSupporters, project.targetSupporters, "人")}</strong><small>${supportersPercent}%</small>${progressBar(project.currentSupporters, project.targetSupporters, "応援人数の進行")}</div>
+        <div class="mini-stat"><span>次のファン目標</span><strong>${formatCount(project.fanTargetAfterSuccess)}</strong><small>達成後に広げる人数</small></div>
       </div>
       <p class="project-message">${project.nextAction || "応援が次の循環へ進む準備をしています。"}</p>
       <div class="card-actions">
@@ -976,7 +996,7 @@ async function fetchProjectsFrom(url) {
 }
 
 async function loadProjectData({ renderList = true } = {}) {
-  if (!rankingList && !projectDetailRoot) return [];
+  if (!rankingList && !projectDetailRoot && !projectWorkRoot) return [];
 
   try {
     const projects = await fetchProjectsFrom(projectsDataUrl);
@@ -1001,6 +1021,7 @@ function renderProjectDetail(project) {
   }
 
   const percent = progressPercent(project.currentAmount, project.targetAmount);
+  const supportersPercent = progressPercent(project.currentSupporters, project.targetSupporters);
   const detailImages = project.detailImageUrls.length ? project.detailImageUrls : [{ src: project.mainImageUrl, caption: project.title }];
   const baseButton = project.baseProductUrl
     ? `<a class="button primary" href="${project.baseProductUrl}" target="_blank" rel="noreferrer">BASEで購入する</a>`
@@ -1022,9 +1043,9 @@ function renderProjectDetail(project) {
 
     <section class="section project-number-section" aria-label="挑戦の数字">
       <div class="project-number-grid">
-        <div class="number-card spark"><span>現在金額</span><strong>${formatCurrency(project.currentAmount)}</strong><small>目標 ${formatCurrency(project.targetAmount)}</small></div>
-        <div class="number-card"><span>達成率</span><strong>${percent}%</strong><small>current_amount / target_amount</small></div>
-        <div class="number-card"><span>現在応援人数</span><strong>${formatCount(project.currentSupporters)}</strong><small>目標 ${formatCount(project.targetSupporters)}</small></div>
+        <div class="number-card spark"><span>金額の進行</span><strong>${formatCurrency(project.currentAmount)}</strong><small>目標 ${formatCurrency(project.targetAmount)}</small>${progressBar(project.currentAmount, project.targetAmount, "金額の進行")}</div>
+        <div class="number-card"><span>達成率</span><strong>${percent}%</strong><small>現在金額 / 目標金額</small>${progressBar(project.currentAmount, project.targetAmount, "達成率")}</div>
+        <div class="number-card"><span>応援人数の進行</span><strong>${formatRatio(project.currentSupporters, project.targetSupporters, "人")}</strong><small>${supportersPercent}%</small>${progressBar(project.currentSupporters, project.targetSupporters, "応援人数の進行")}</div>
         <div class="number-card boost"><span>達成後ファン目標</span><strong>${formatCount(project.fanTargetAfterSuccess)}</strong><small>次の循環へ広げる人数</small></div>
         <div class="number-card amplify"><span>商品種別</span><strong>${project.productType || "未設定"}</strong><small>${project.productPrice || "価格未設定"}</small></div>
       </div>
@@ -1070,6 +1091,306 @@ function renderProjectDetail(project) {
   });
 }
 
+function workStepState(project, step) {
+  if (project.status === "published" || project.status === "closed") return "done";
+  if (step.required.some((key) => String(project[key] || "").trim())) return "done";
+  if (project.status === "review" || project.status === "approved") return "review";
+  return "todo";
+}
+
+function workDraftKey(projectId = "new") {
+  return `revo-work-draft-${projectId || "new"}`;
+}
+
+function projectWorkForm(project = {}) {
+  return `
+    <section class="section">
+      <div class="section-head"><div><p class="eyebrow">Work Form</p><h2>作業ページで入力する</h2></div><span class="section-note">入力内容はこのブラウザに下書き保存されます。</span></div>
+      <form class="work-input-form" data-work-form data-project-id="${project.id || "new"}">
+        <div class="work-form-status" data-work-form-status>入力中</div>
+        <label>Projectタイトル<input name="title" type="text" placeholder="例: おのくんキャラバン レボアート" value="${project.title || ""}" /></label>
+        <label>キャッチコピー<input name="subtitle" type="text" placeholder="例: 孤独な挑戦者を、減らしたい。" value="${project.subtitle || ""}" /></label>
+        <label>短い説明<textarea name="shortDescription" placeholder="一覧ページに出す2〜3行の説明を書いてください。">${project.shortDescription || ""}</textarea></label>
+        <label>詳細本文<textarea name="detailDescription" placeholder="挑戦の背景、なぜ今やるのか、誰に届けたいのか、次の循環で何をしたいのかを書いてください。">${project.detailDescription || ""}</textarea></label>
+        <div class="work-form-grid">
+          <label>メイン画像URL<input name="mainImageUrl" type="url" placeholder="https://..." value="${project.mainImageUrl || ""}" /></label>
+          <label>詳細画像URL<input name="detailImageUrls" type="text" placeholder="複数ある場合はカンマ区切り" value="${project.detailImageUrls?.map((image) => image.src).join(", ") || ""}" /></label>
+          <label>商品種別<input name="productType" type="text" placeholder="Tシャツ、帽子、ステッカーなど" value="${project.productType || ""}" /></label>
+          <label>BASE商品URL<input name="baseProductUrl" type="url" placeholder="https://..." value="${project.baseProductUrl || ""}" /></label>
+          <label>目標金額<input name="targetAmount" type="number" min="0" placeholder="例: 500000" value="${project.targetAmount || ""}" /></label>
+          <label>目標応援人数<input name="targetSupporters" type="number" min="0" placeholder="例: 100" value="${project.targetSupporters || ""}" /></label>
+          <label>達成後ファン目標<input name="fanTargetAfterSuccess" type="number" min="0" placeholder="例: 300" value="${project.fanTargetAfterSuccess || ""}" /></label>
+          <label>公式サイト / SNS<input name="creatorOfficialUrl" type="url" placeholder="https://..." value="${project.creatorOfficialUrl || project.creatorSnsUrl || ""}" /></label>
+        </div>
+        <label>運営へのメモ<textarea name="operatorNote" placeholder="相談したいこと、確認してほしいこと、画像提出方法などを書いてください。"></textarea></label>
+        <div class="project-cta-row">
+          <button class="button secondary" type="button" data-save-work>下書き保存</button>
+          <button class="button primary" type="submit">運営確認待ちにする</button>
+        </div>
+        <textarea class="work-submit-output" data-work-output readonly placeholder="提出用テキストがここに生成されます。"></textarea>
+      </form>
+    </section>
+  `;
+}
+
+function bindProjectWorkForm() {
+  const form = projectWorkRoot?.querySelector("[data-work-form]");
+  if (!form) return;
+
+  const projectId = form.dataset.projectId || "new";
+  const key = workDraftKey(projectId);
+  const output = form.querySelector("[data-work-output]");
+  const status = form.querySelector("[data-work-form-status]");
+  const saved = JSON.parse(localStorage.getItem(key) || "{}");
+
+  Object.entries(saved).forEach(([name, value]) => {
+    const field = form.elements[name];
+    if (field) field.value = value;
+  });
+
+  function collect() {
+    return Array.from(new FormData(form).entries()).reduce((result, [name, value]) => {
+      result[name] = String(value || "").trim();
+      return result;
+    }, {});
+  }
+
+  function saveDraft(message = "下書きを保存しました") {
+    localStorage.setItem(key, JSON.stringify(collect()));
+    if (status) status.textContent = "下書き保存済み";
+    showToast(message);
+  }
+
+  function buildSubmissionText(data) {
+    return [
+      "【レボファンディング 作業ページ入力】",
+      `project_id: ${projectId}`,
+      `Projectタイトル: ${data.title || ""}`,
+      `キャッチコピー: ${data.subtitle || ""}`,
+      "",
+      "【短い説明】",
+      data.shortDescription || "",
+      "",
+      "【詳細本文】",
+      data.detailDescription || "",
+      "",
+      "【画像URL】",
+      `メイン画像: ${data.mainImageUrl || ""}`,
+      `詳細画像: ${data.detailImageUrls || ""}`,
+      "",
+      "【商品・目標】",
+      `商品種別: ${data.productType || ""}`,
+      `目標金額: ${data.targetAmount || ""}`,
+      `目標応援人数: ${data.targetSupporters || ""}`,
+      `達成後ファン目標: ${data.fanTargetAfterSuccess || ""}`,
+      `BASE商品URL: ${data.baseProductUrl || ""}`,
+      "",
+      "【公式リンク】",
+      data.creatorOfficialUrl || "",
+      "",
+      "【運営へのメモ】",
+      data.operatorNote || "",
+    ].join("\n");
+  }
+
+  form.querySelector("[data-save-work]")?.addEventListener("click", () => saveDraft());
+  form.addEventListener("input", () => {
+    localStorage.setItem(key, JSON.stringify(collect()));
+    if (status) status.textContent = "入力中 / 自動保存";
+  });
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const data = collect();
+    const text = buildSubmissionText(data);
+    localStorage.setItem(key, JSON.stringify({ ...data, submittedAt: new Date().toISOString() }));
+    if (output) output.value = text;
+    if (status) status.textContent = "運営確認待ち";
+
+    try {
+      await navigator.clipboard.writeText(text);
+      showToast("提出用テキストをコピーしました");
+    } catch (error) {
+      showToast("提出用テキストを生成しました");
+    }
+  });
+}
+
+function renderProjectWorkGate() {
+  if (!projectWorkRoot) return;
+
+  document.title = "申請が必要です | レボファンディング";
+  projectWorkRoot.innerHTML = `
+    <section class="project-work-hero">
+      <div>
+        <p class="eyebrow">Before Work Room</p>
+        <h1>作業ページへ進む前に、Googleフォーム申請が必要です。</h1>
+        <p class="lead">このページは、申請が完了した方が次の準備を進めるためのページです。まず起案者申請フォームを送信してください。</p>
+      </div>
+      <div class="work-room-card">
+        <span>先に必要なこと</span>
+        <strong>起案者申請を送信する</strong>
+        <p>申請完了後、Googleフォームの完了画面に表示されるリンクから、本文・画像・商品案の準備ページへ進めます。</p>
+        <div class="project-cta-row">
+          <a class="button primary" href="https://docs.google.com/forms/d/e/1FAIpQLSdtm4PpMVwWIRXsKLtSahzwWjCu2N4Qi14N-nHQh_ZF6UQzOg/viewform?usp=dialog" target="_blank" rel="noreferrer">Googleフォームで申請する</a>
+          <a class="button secondary" href="challenger.html">起案者ページへ戻る</a>
+        </div>
+      </div>
+    </section>
+  `;
+}
+
+function renderProjectWorkStart(requestedId = "") {
+  if (!projectWorkRoot) return;
+
+  document.title = "申請後の準備ページ | レボファンディング";
+  projectWorkRoot.innerHTML = `
+    <section class="project-work-hero">
+      <div>
+        <p class="eyebrow">Application Next Step</p>
+        <h1>申請ありがとうございます。次に公開準備を進めましょう</h1>
+        <p class="lead">申請内容を確認後、運営から個別作業ページURLをお送りします。個別URLでは、あなたのプロジェクト内容を確認しながら公開準備を進められます。</p>
+        ${requestedId ? `<div class="project-status-row"><span class="status next">確認中</span><span>指定されたproject_id: ${requestedId}</span></div>` : ""}
+      </div>
+      <div class="work-room-card">
+        <span>公開準備</span>
+        <strong>先に整理しておく内容</strong>
+        <p>個別作業ページURLが届く前に、本文、画像、商品案、目標値、公式リンクをまとめておくと公開までの確認がスムーズになります。</p>
+        <div class="project-cta-row">
+          <a class="button primary" href="https://docs.google.com/forms/d/e/1FAIpQLSdtm4PpMVwWIRXsKLtSahzwWjCu2N4Qi14N-nHQh_ZF6UQzOg/viewform?usp=dialog" target="_blank" rel="noreferrer">公開準備情報を送る</a>
+          <a class="button secondary" href="supporters.html">公開Projectを見る</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><div><p class="eyebrow">Preparation Checklist</p><h2>公開準備で整理する項目</h2></div></div>
+      <div class="work-checklist">
+        <article class="work-step todo"><span>文章</span><h3>プロジェクトタイトル</h3><p>一覧や詳細ページで最初に見える、挑戦の名前を整理します。</p></article>
+        <article class="work-step todo"><span>文章</span><h3>サブタイトル</h3><p>挑戦の方向性が一言で伝わる短いコピーを準備します。</p></article>
+        <article class="work-step todo"><span>文章</span><h3>小説明</h3><p>一覧カードに表示する、2〜3行のわかりやすい説明を用意します。</p></article>
+        <article class="work-step todo"><span>文章</span><h3>詳細説明</h3><p>何を実現したいのか、どう広げるのか、次の循環までを文章にします。</p></article>
+        <article class="work-step todo"><span>想い</span><h3>想い・背景</h3><p>なぜこの挑戦をするのか、誰に届けたいのかを整理します。</p></article>
+        <article class="work-step todo"><span>商品</span><h3>商品案</h3><p>Tシャツ、トートバッグ、その他グッズなど、最初に展開したい商品を考えます。</p></article>
+        <article class="work-step todo"><span>数字</span><h3>目標金額</h3><p>制作費、広報、次回展開を踏まえた目標金額を整理します。</p></article>
+        <article class="work-step todo"><span>数字</span><h3>目標人数</h3><p>最初の応援者数、広げたい人数、達成後のファン募集目標人数を考えます。</p></article>
+        <article class="work-step todo"><span>画像</span><h3>見出し画像</h3><p>プロジェクトの印象を決めるメイン画像を準備します。</p></article>
+        <article class="work-step todo"><span>画像</span><h3>詳細説明に使う画像</h3><p>活動風景、商品案、制作途中、集合写真などを整理します。</p></article>
+        <article class="work-step todo"><span>リンク</span><h3>公式サイト / SNS</h3><p>起案者の公式サイト、SNS、関連ページのURLをまとめます。</p></article>
+        <article class="work-step review"><span>運営</span><h3>運営へのメモ</h3><p>相談したいこと、確認してほしいこと、BASE登録後に反映してほしい内容をまとめます。</p></article>
+      </div>
+    </section>
+
+    <section class="section project-story-layout">
+      <article class="project-story-body">
+        <p class="eyebrow">How it works</p>
+        <h2>申請後の流れ</h2>
+        <p>Googleフォームの申請内容は、運営管理表に入り、Projectsシートに下書きとして作成されます。運営が内容を確認したあと、個別作業ページURLをお送りします。</p>
+        <p>個別URLでは、あなたのプロジェクト内容を確認しながら、公開に必要な本文、画像、目標値、BASEリンクの反映状況を確認できます。</p>
+      </article>
+      <aside class="project-side-panel">
+        <h2>Googleフォーム完了後に表示する文</h2>
+        <p>申請ありがとうございます。続けて、本文・画像・商品案の準備をこちらから進めてください。</p>
+        <p><strong>https://revofunding.onokun.com/project-work.html?from=form</strong></p>
+        <p>運営確認後、個別の作業ページURLをお送りします。</p>
+      </aside>
+    </section>
+  `;
+}
+
+function renderProjectWork(project, requestedId = "") {
+  if (!projectWorkRoot) return;
+
+  if (!project) {
+    renderProjectWorkStart(requestedId);
+    return;
+  }
+
+  const percent = progressPercent(project.currentAmount, project.targetAmount);
+  const supportersPercent = progressPercent(project.currentSupporters, project.targetSupporters);
+  const workSteps = [
+    { title: "想い・本文を書く", body: "挑戦の背景、なぜ今やるのか、目指す未来を入力します。", required: ["detailDescription", "shortDescription"] },
+    { title: "画像を提出する", body: "メイン画像、制作風景、商品イメージ、活動写真を提出します。", required: ["mainImageUrl"] },
+    { title: "商品・目標を確認する", body: "商品種別、目標金額、目標人数、ファン目標を確認します。", required: ["productType", "targetAmount", "targetSupporters"] },
+    { title: "BASEリンクを確認する", body: "購入ページが準備できたら、BASEの商品URLをProjectsに設定します。", required: ["baseProductUrl"] },
+    { title: "運営確認へ進む", body: "内容が整ったら運営確認へ。問題なければpublishedで公開します。", required: ["publishedAt"] },
+  ];
+
+  const formButton = project.workFormUrl
+    ? `<a class="button primary" href="${project.workFormUrl}" target="_blank" rel="noreferrer">詳細入力フォームを開く</a>`
+    : '<span class="button primary disabled">詳細入力フォーム準備中</span>';
+
+  document.title = `${project.title || "Project"} 作業ページ | レボファンディング`;
+  projectWorkRoot.innerHTML = `
+    <section class="project-work-hero">
+      <div>
+        <p class="eyebrow">Project Work Room</p>
+        <h1>${project.title || "Project作業ページ"}</h1>
+        <p class="lead">申請後に、起案者が記事・画像・商品情報を整えるための作業ページです。</p>
+        <div class="project-status-row"><span class="status ${project.status === "published" ? "open" : "next"}">${project.statusLabel}</span><span>project_id: ${project.id}</span></div>
+      </div>
+      <div class="work-room-card">
+        <span>次にやること</span>
+        <strong>${project.status === "published" ? "公開済みです" : "入力内容を整えて運営確認へ"}</strong>
+        <p>${project.workNote || "詳細本文、画像、目標値、BASEリンクを整えると公開準備に進めます。"}</p>
+        <div class="project-cta-row">${formButton}<a class="button secondary" href="${projectDetailUrl(project)}">公開プレビューを見る</a></div>
+      </div>
+    </section>
+
+    <section class="section project-number-section">
+      <div class="section-head"><div><p class="eyebrow">Counters</p><h2>現在値と目標値</h2></div></div>
+      <div class="project-number-grid work-number-grid">
+        <div class="number-card spark"><span>現在金額</span><strong>${formatCurrency(project.currentAmount)}</strong><small>目標 ${formatCurrency(project.targetAmount)}</small>${progressBar(project.currentAmount, project.targetAmount, "金額の進行")}</div>
+        <div class="number-card"><span>応援人数</span><strong>${formatRatio(project.currentSupporters, project.targetSupporters, "人")}</strong><small>${supportersPercent}%</small>${progressBar(project.currentSupporters, project.targetSupporters, "応援人数の進行")}</div>
+        <div class="number-card boost"><span>達成率</span><strong>${percent}%</strong><small>現在金額 / 目標金額</small>${progressBar(project.currentAmount, project.targetAmount, "達成率")}</div>
+        <div class="number-card amplify"><span>達成後ファン目標</span><strong>${formatCount(project.fanTargetAfterSuccess)}</strong><small>次の循環で広げる人数</small></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><div><p class="eyebrow">Checklist</p><h2>公開までの作業</h2></div></div>
+      <div class="work-checklist">
+        ${workSteps.map((step) => {
+          const state = workStepState(project, step);
+          return `<article class="work-step ${state}"><span>${state === "done" ? "完了" : state === "review" ? "確認中" : "未完了"}</span><h3>${step.title}</h3><p>${step.body}</p></article>`;
+        }).join("")}
+      </div>
+    </section>
+
+    ${projectWorkForm(project)}
+
+    <section class="section project-story-layout">
+      <article class="project-story-body">
+        <p class="eyebrow">Draft Preview</p>
+        <h2>入力内容の確認</h2>
+        <p><strong>短い説明:</strong> ${project.shortDescription || "未入力"}</p>
+        <p><strong>詳細本文:</strong> ${project.detailDescription || "未入力"}</p>
+        <p><strong>商品種別:</strong> ${project.productType || "未入力"}</p>
+        <p><strong>BASE URL:</strong> ${project.baseProductUrl || "未設定"}</p>
+      </article>
+      <aside class="project-side-panel">
+        <h2>画像</h2>
+        ${project.mainImageUrl ? `<img class="creator-image" src="${project.mainImageUrl}" alt="${project.title}" />` : "<p>main_image_urlが未設定です。</p>"}
+        <p>公開用画像は、運営確認後にProjectsの画像URLへ反映します。</p>
+      </aside>
+    </section>
+  `;
+
+  bindProjectWorkForm();
+}
+
+async function loadProjectWork() {
+  if (!projectWorkRoot) return;
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+  const fromForm = params.get("from") === "form";
+  if (!id && !fromForm) {
+    renderProjectWorkGate();
+    return;
+  }
+  const projects = await loadProjectData({ renderList: false });
+  renderProjectWork(id ? projects.find((project) => project.id === id) : null, id || "");
+}
+
 async function loadProjectDetail() {
   if (!projectDetailRoot) return;
   const params = new URLSearchParams(window.location.search);
@@ -1098,6 +1419,7 @@ if (categoryFilter) {
 updateRanking();
 loadProjectData();
 loadProjectDetail();
+loadProjectWork();
 
 shareButtons.forEach((button) => {
   button.addEventListener("click", async () => {
