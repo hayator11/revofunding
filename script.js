@@ -66,7 +66,7 @@ const revoArtMapData = {
       area: "宮城県 仙台市",
       mapQuery: "宮城県仙台市",
       image: "RevoFunding.png",
-      officialUrl: "https://onokun.com/socially-responsible-sponsorship/",
+      officialUrl: "https://onokun.com/revolink",
     },
     {
       id: "tokyo-partner-sample",
@@ -79,7 +79,7 @@ const revoArtMapData = {
       area: "東京都 渋谷区",
       mapQuery: "東京都渋谷区",
       image: "onokun-b.jpeg",
-      officialUrl: "https://onokun.com/socially-responsible-sponsorship/",
+      officialUrl: "https://onokun.com/revolink",
     },
     {
       id: "tochigi-hat-sample",
@@ -800,6 +800,18 @@ function formatCount(value, suffix = "人") {
   return number ? `${number.toLocaleString("ja-JP")}${suffix}` : `0${suffix}`;
 }
 
+function formatOptionalCurrency(value, isSet) {
+  return isSet ? formatCurrency(value) : "調整中";
+}
+
+function formatOptionalCount(value, isSet, suffix = "人") {
+  return isSet ? formatCount(value, suffix) : "調整中";
+}
+
+function percentText(current, target, isSet, suffix = "") {
+  return isSet ? `${progressPercent(current, target)}${suffix}` : "調整中";
+}
+
 function formatRatio(current, target, suffix = "") {
   const currentNumber = plainNumber(current);
   const targetNumber = plainNumber(target);
@@ -822,6 +834,14 @@ function projectText(project, key, fallback = "") {
   return fallback;
 }
 
+function sparkPlanLabel(plan) {
+  if (plan === "spark10") return "スパーク10";
+  if (plan === "spark20") return "スパーク20";
+  if (plan === "spark50") return "スパーク50";
+  if (plan === "custom") return "個別相談プラン";
+  return "";
+}
+
 function salesProgressText(project) {
   if (!project.targetSalesCount && !project.currentSalesCount) return "販売開始前";
   return formatRatio(project.currentSalesCount, project.targetSalesCount, "点");
@@ -841,6 +861,74 @@ function splitList(value) {
     .filter(Boolean);
 }
 
+function driveImageUrl(value, size = 1200) {
+  const text = String(value || "").trim();
+  if (!text) return "";
+  const match = text.match(/[?&]id=([^&]+)/) || text.match(/\/file\/d\/([^/]+)/);
+  if (!match) return text;
+  return `https://drive.google.com/thumbnail?id=${encodeURIComponent(match[1])}&sz=w${size}`;
+}
+
+function normalizeImageList(...values) {
+  const seen = new Set();
+  return values
+    .flatMap((value) => splitList(value))
+    .map((item) => (typeof item === "string" ? { src: item, caption: "" } : item))
+    .filter((item) => item && item.src)
+    .map((item) => ({ ...item, src: driveImageUrl(item.src) }))
+    .filter((item) => {
+      if (seen.has(item.src)) return false;
+      seen.add(item.src);
+      return true;
+    });
+}
+
+function parseBodyImageBlocks(value) {
+  const items = Array.isArray(value)
+    ? value
+    : String(value || "")
+      .split(/\r?\n/)
+      .flatMap((line) => line.includes("|") ? [line] : line.split(","))
+      .map((item) => item.trim())
+      .filter(Boolean);
+
+  return items.map((item) => {
+    if (typeof item !== "string") return item;
+    const parts = item.split("|").map((part) => part.trim());
+    if (parts.length >= 3) {
+      const after = /^\d+$/.test(parts[0]) ? Math.max(1, plainNumber(parts[0])) : "end";
+      return { after, src: driveImageUrl(parts[1]), caption: parts.slice(2).join(" / ") };
+    }
+    if (parts.length === 2) return { after: "end", src: driveImageUrl(parts[0]), caption: parts[1] };
+    return { after: "end", src: driveImageUrl(parts[0]), caption: "" };
+  }).filter((item) => item && item.src);
+}
+
+function projectImageFigure(image, fallbackAlt) {
+  return `<figure><img src="${image.src}" alt="${image.caption || fallbackAlt}" /><figcaption>${image.caption || fallbackAlt}</figcaption></figure>`;
+}
+
+function renderRichProjectBody(text, imageBlocks, fallbackAlt) {
+  const paragraphs = String(text || "")
+    .split(/\n{2,}|\r?\n/)
+    .map((item) => item.trim())
+    .filter(Boolean);
+  const blocks = imageBlocks || [];
+  const usedBlocks = new Set();
+  const bodyHtml = (paragraphs.length ? paragraphs : ["Projectsシートでdetail_descriptionを入力すると表示されます。"])
+    .map((paragraph, index) => {
+      const afterBlocks = blocks.filter((block, blockIndex) => {
+        const match = Number(block.after) === index + 1;
+        if (match) usedBlocks.add(blockIndex);
+        return match;
+      });
+      return `<p>${paragraph}</p>${afterBlocks.map((image) => projectImageFigure(image, fallbackAlt)).join("")}`;
+    })
+    .join("");
+  const endBlocks = blocks.filter((block, blockIndex) => block.after === "end" || !usedBlocks.has(blockIndex));
+  return `${bodyHtml}${endBlocks.map((image) => projectImageFigure(image, fallbackAlt)).join("")}`;
+}
+
 function displayProjectStatus(status) {
   if (status === "closed") return "終了済み";
   if (status === "published") return "公開中";
@@ -858,11 +946,17 @@ function normalizeProject(project) {
   const productList = Array.isArray(project.productList) ? project.productList : [];
   const firstProduct = productList[0] || {};
   const detailImages = project.detail_image_urls || project.galleryImages || [];
+  const uploadedTitleImages = normalizeImageList(project.main_visual_uploads, project.product_image_uploads);
+  const uploadedBodyImages = normalizeImageList(project.body_image_uploads);
+  const uploadedCreatorImages = normalizeImageList(project.creator_profile_uploads);
+  const titleImages = normalizeImageList(project.title_image_urls, project.main_image_url || project.mainImage, uploadedTitleImages, detailImages).slice(0, 5);
   const meisterProfile = project.meisterProfile || {};
   const targetAmount = projectNumber(project, "target_amount", project.afterAmount || project.money);
   const currentAmount = projectNumber(project, "current_amount", project.beforeAmount || 0);
   const targetSupporters = projectNumber(project, "target_supporters", project.sparkGoalCount || project.boostGoalCount || 0);
-  const currentSupporters = projectNumber(project, "current_supporters", project.sparkCurrentCount || project.boostCurrentCount || project.supporters);
+  const currentSupporters = projectNumber(project, "current_supporters", project.sparkCurrentCount || project.boostCurrentCount || 0);
+  const hasTargetAmount = hasProjectValue(project, "target_amount") || plainNumber(project.afterAmount || project.money || project.targetAmount) > 0;
+  const hasTargetSupporters = hasProjectValue(project, "target_supporters") || plainNumber(project.sparkGoalCount || project.boostGoalCount || project.targetSupporters) > 0;
   const productPrice = projectText(project, "product_price", firstProduct.price || "");
   const targetSalesCount = projectNumber(project, "target_sales_count", project.productionGoalCount || 0);
   const currentSalesCount = projectNumber(project, "current_sales_count", project.sales || project.wornCount || 0);
@@ -878,19 +972,33 @@ function normalizeProject(project) {
     shortDescription: project.short_description || project.summary || project.subTitle || "",
     detailDescription: project.detail_description || project.detailBody || project.summary || "",
     mainImageUrl: project.main_image_url || project.mainImage || "",
-    detailImageUrls: splitList(detailImages).map((item) => (typeof item === "string" ? { src: item, caption: "" } : item)),
+    titleImageUrls: titleImages,
+    detailImageUrls: normalizeImageList(detailImages, project.product_image_uploads, project.body_image_uploads),
+    bodyImageBlocks: parseBodyImageBlocks(project.body_image_blocks || project.bodyImageBlocks || uploadedBodyImages.map((image) => `end|${image.src}|提出画像`).join("\n") || ""),
+    uploadedTitleImages,
+    uploadedBodyImages,
+    uploadedCreatorImages,
+    imagePlacementNote: project.image_placement_note || project.imagePlacementNote || "",
+    imageReferenceUrls: project.image_reference_urls || project.imageReferenceUrls || "",
+    imageRightsConfirmed: project.image_rights_confirmed || project.imageRightsConfirmed || "",
+    imageSubmissionNote: project.image_submission_note || project.imageSubmissionNote || "",
     creatorName: project.creator_name || meisterProfile.name || "",
     creatorProfile: project.creator_profile || meisterProfile.message || "",
-    creatorImageUrl: project.creator_image_url || meisterProfile.image || "",
+    creatorImageUrl: driveImageUrl(project.creator_image_url || uploadedCreatorImages[0]?.src || meisterProfile.image || ""),
     creatorOfficialUrl: project.creator_official_url || meisterProfile.officialUrl || "",
     creatorSnsUrl: project.creator_sns_url || meisterProfile.snsUrl || "",
     category: project.category || "",
     productType: project.product_type || project.productionItemName || firstProduct.name || "",
     productPrice,
+    sparkPlan: projectText(project, "spark_plan", project.sparkPlan || ""),
+    sparkPlanLabel: sparkPlanLabel(projectText(project, "spark_plan", project.sparkPlan || "")),
+    customRequestMemo: projectText(project, "custom_request_memo", project.customRequestMemo || ""),
     targetAmount,
     currentAmount,
+    hasTargetAmount,
     targetSupporters,
     currentSupporters,
+    hasTargetSupporters,
     fanTargetAfterSuccess: projectNumber(project, "fan_target_after_success", project.fans || project.boostGoalCount),
     targetSalesCount,
     currentSalesCount,
@@ -901,7 +1009,7 @@ function normalizeProject(project) {
     boosterCurrentSupporters: projectNumber(project, "booster_current_supporters", project.boostCurrentCount || 0),
     boosterStatus: project.booster_status || "募集ページ設定後に公開",
     baseProductUrl: project.base_product_url || firstProduct.purchaseUrl || "",
-    workFormUrl: project.work_form_url || project.project_input_form_url || "",
+    workFormUrl: project.work_form_url || project.project_input_form_url || project.work_page_url || "",
     workNote: project.work_note || project.operator_note || "",
     startDate: project.start_date || "",
     endDate: project.end_date || "",
@@ -923,6 +1031,10 @@ function projectDetailUrl(project) {
 
 function projectWorkUrl(project) {
   return `project-work.html?id=${encodeURIComponent(project.id)}`;
+}
+
+function projectPublicPreviewUrl(project) {
+  return isPublicProject(project) ? projectDetailUrl(project) : projectWorkUrl(project);
 }
 
 function progressPercent(current, target) {
@@ -947,6 +1059,8 @@ function createProjectCard(project) {
   const publicStatus = project.status === "closed" ? "done" : project.status === "next" ? "next" : "open";
   const percent = progressPercent(project.currentAmount, project.targetAmount);
   const supportersPercent = progressPercent(project.currentSupporters, project.targetSupporters);
+  const amountPercentText = percentText(project.currentAmount, project.targetAmount, project.hasTargetAmount, "%");
+  const supportersPercentText = percentText(project.currentSupporters, project.targetSupporters, project.hasTargetSupporters, "%");
 
   article.className = "challenge-card project-card dynamic-project-card";
   article.dataset.project = project.id;
@@ -959,23 +1073,24 @@ function createProjectCard(project) {
   article.dataset.updated = project.updated;
   article.innerHTML = `
     <div class="project-photo ${visualClass}">
-      <span class="project-mode">${project.productType || "REVO PROJECT"}</span>
+      ${project.titleImageUrls.length ? `<div class="project-photo-strip">${project.titleImageUrls.slice(0, 3).map((image) => `<img src="${image.src}" alt="${image.caption || project.title}" />`).join("")}</div>` : ""}
+      <span class="project-mode">${project.sparkPlanLabel || project.productType || "REVO PROJECT"}</span>
       <strong>${project.subtitle || project.title}</strong>
     </div>
     <div class="project-content">
-      <div class="card-row"><span class="status ${publicStatus}">${project.statusLabel}</span><span class="step">${project.nextAction || `${percent}%`}</span></div>
+      <div class="card-row"><span class="status ${publicStatus}">${project.statusLabel}</span><span class="step">${project.nextAction || amountPercentText}</span></div>
       <h3>${project.title}</h3>
       <p>${project.shortDescription}</p>
       <div class="project-progress-map spark-map" aria-label="プロジェクトの進行">
         <div><span>現在応援者</span><strong>${formatCount(project.currentSupporters)}</strong></div>
         <i></i>
-        <div><span>目標応援者</span><strong>${formatCount(project.targetSupporters)}</strong></div>
+        <div><span>目標応援者</span><strong>${formatOptionalCount(project.targetSupporters, project.hasTargetSupporters)}</strong></div>
         <i></i>
         <div><span>ファン目標</span><strong>${formatCount(project.fanTargetAfterSuccess)}</strong></div>
       </div>
       <div class="project-stats">
-        <div class="mini-stat"><span>目標金額</span><strong>${formatCurrency(project.targetAmount)}</strong><small>達成金額 ${formatCurrency(project.currentAmount)}</small>${progressBar(project.currentAmount, project.targetAmount, "金額の進行")}</div>
-        <div class="mini-stat"><span>応援者の達成人数</span><strong>${formatCount(project.currentSupporters)}</strong><small>目標 ${formatCount(project.targetSupporters)} / ${supportersPercent}%</small>${progressBar(project.currentSupporters, project.targetSupporters, "応援人数の進行")}</div>
+        <div class="mini-stat"><span>目標金額</span><strong>${formatOptionalCurrency(project.targetAmount, project.hasTargetAmount)}</strong><small>達成金額 ${formatCurrency(project.currentAmount)}</small>${progressBar(project.currentAmount, project.targetAmount, "金額の進行")}</div>
+        <div class="mini-stat"><span>応援者の達成人数</span><strong>${formatCount(project.currentSupporters)}</strong><small>目標 ${formatOptionalCount(project.targetSupporters, project.hasTargetSupporters)} / ${supportersPercentText}</small>${progressBar(project.currentSupporters, project.targetSupporters, "応援人数の進行")}</div>
         <div class="mini-stat"><span>販売</span><strong>${salesProgressText(project)}</strong><small>${salesProgressNote(project)}</small></div>
       </div>
       <p class="project-message">${project.nextAction || "応援が次の循環へ進む準備をしています。"}</p>
@@ -1059,7 +1174,10 @@ function renderProjectDetail(project) {
 
   const percent = progressPercent(project.currentAmount, project.targetAmount);
   const supportersPercent = progressPercent(project.currentSupporters, project.targetSupporters);
-  const detailImages = project.detailImageUrls.length ? project.detailImageUrls : [{ src: project.mainImageUrl, caption: project.title }];
+  const amountPercentText = percentText(project.currentAmount, project.targetAmount, project.hasTargetAmount, "%");
+  const amountPercentStatusText = project.hasTargetAmount ? `${percent}%達成` : "調整中";
+  const supportersPercentText = percentText(project.currentSupporters, project.targetSupporters, project.hasTargetSupporters, "%");
+  const detailImages = project.detailImageUrls.length ? project.detailImageUrls : project.titleImageUrls;
   const baseButton = project.baseProductUrl
     ? `<a class="button primary" href="${project.baseProductUrl}" target="_blank" rel="noreferrer">BASEで購入する</a>`
     : '<span class="button primary disabled">BASE準備中</span>';
@@ -1072,17 +1190,19 @@ function renderProjectDetail(project) {
         <h1>${project.title}</h1>
         <p class="lead">${project.subtitle}</p>
         <p>${project.shortDescription}</p>
-        <div class="project-status-row"><span class="status ${project.status === "closed" ? "done" : "open"}">${project.statusLabel}</span><span>${project.nextAction || `${percent}%達成`}</span></div>
+        <div class="project-status-row"><span class="status ${project.status === "closed" ? "done" : "open"}">${project.statusLabel}</span><span>${project.nextAction || amountPercentStatusText}</span></div>
         <div class="project-cta-row">${baseButton}<button class="button icon share-trigger" type="button" data-url="${projectDetailUrl(project)}" data-share="${project.title}">SNSで共有する</button></div>
       </div>
-      <div class="project-template-image">${project.mainImageUrl ? `<img src="${project.mainImageUrl}" alt="${project.title}" />` : "<span>Project Visual</span>"}</div>
+      <div class="project-template-image">
+        ${project.titleImageUrls.length ? `<div class="project-title-gallery">${project.titleImageUrls.map((image) => `<img src="${image.src}" alt="${image.caption || project.title}" />`).join("")}</div>` : "<span>Project Visual</span>"}
+      </div>
     </section>
 
     <section class="section project-number-section" aria-label="挑戦の数字">
       <div class="project-number-grid">
-        <div class="number-card spark"><span>目標金額</span><strong>${formatCurrency(project.targetAmount)}</strong><small>達成金額 ${formatCurrency(project.currentAmount)}</small>${progressBar(project.currentAmount, project.targetAmount, "金額の進行")}</div>
-        <div class="number-card"><span>金額達成率</span><strong>${percent}%</strong><small>${formatCurrency(project.currentAmount)} / ${formatCurrency(project.targetAmount)}</small>${progressBar(project.currentAmount, project.targetAmount, "達成率")}</div>
-        <div class="number-card"><span>応援者の達成人数</span><strong>${formatCount(project.currentSupporters)}</strong><small>目標 ${formatCount(project.targetSupporters)} / ${supportersPercent}%</small>${progressBar(project.currentSupporters, project.targetSupporters, "応援人数の進行")}</div>
+        <div class="number-card spark"><span>目標金額</span><strong>${formatOptionalCurrency(project.targetAmount, project.hasTargetAmount)}</strong><small>達成金額 ${formatCurrency(project.currentAmount)}</small>${progressBar(project.currentAmount, project.targetAmount, "金額の進行")}</div>
+        <div class="number-card"><span>金額達成率</span><strong>${amountPercentText}</strong><small>${formatCurrency(project.currentAmount)} / ${formatOptionalCurrency(project.targetAmount, project.hasTargetAmount)}</small>${progressBar(project.currentAmount, project.targetAmount, "達成率")}</div>
+        <div class="number-card"><span>応援者の達成人数</span><strong>${formatCount(project.currentSupporters)}</strong><small>目標 ${formatOptionalCount(project.targetSupporters, project.hasTargetSupporters)} / ${supportersPercentText}</small>${progressBar(project.currentSupporters, project.targetSupporters, "応援人数の進行")}</div>
         <div class="number-card boost"><span>達成後ファン目標</span><strong>${formatCount(project.fanTargetAfterSuccess)}</strong><small>次の循環へ広げる人数</small></div>
         <div class="number-card amplify"><span>販売</span><strong>${salesProgressText(project)}</strong><small>${salesProgressNote(project)}</small></div>
       </div>
@@ -1092,7 +1212,7 @@ function renderProjectDetail(project) {
       <article class="project-story-body">
         <p class="eyebrow">Story</p>
         <h2>挑戦の詳細</h2>
-        <p>${project.detailDescription || project.shortDescription}</p>
+        ${renderRichProjectBody(project.detailDescription || project.shortDescription, project.bodyImageBlocks, project.title)}
       </article>
       <aside class="project-side-panel">
         <h2>起案者</h2>
@@ -1109,7 +1229,7 @@ function renderProjectDetail(project) {
     <section class="section project-gallery-section">
       <div class="section-head"><div><p class="eyebrow">Gallery</p><h2>詳細画像</h2></div></div>
       <div class="project-gallery">
-        ${detailImages.map((image) => `<figure><img src="${image.src}" alt="${image.caption || project.title}" /><figcaption>${image.caption || project.title}</figcaption></figure>`).join("")}
+        ${detailImages.map((image) => projectImageFigure(image, project.title)).join("")}
       </div>
     </section>
 
@@ -1151,7 +1271,11 @@ function projectWorkForm(project = {}) {
         <label>詳細本文<textarea name="detailDescription" placeholder="挑戦の背景、なぜ今やるのか、誰に届けたいのか、次の循環で何をしたいのかを書いてください。">${project.detailDescription || ""}</textarea></label>
         <div class="work-form-grid">
           <label>メイン画像URL<input name="mainImageUrl" type="url" placeholder="https://..." value="${project.mainImageUrl || ""}" /></label>
+          <label>タイトル複数画像URL<input name="titleImageUrls" type="text" placeholder="複数ある場合はカンマ区切り" value="${project.titleImageUrls?.map((image) => image.src).join(", ") || ""}" /></label>
           <label>詳細画像URL<input name="detailImageUrls" type="text" placeholder="複数ある場合はカンマ区切り" value="${project.detailImageUrls?.map((image) => image.src).join(", ") || ""}" /></label>
+          <label>本文中に入れたい画像<textarea name="bodyImageBlocks" placeholder="例: 2|https://...|この段落の後に入れる画像&#10;https://...|最後に入れる画像">${project.bodyImageBlocks?.map((image) => `${image.after}|${image.src}|${image.caption || ""}`).join("\n") || ""}</textarea></label>
+          <label>画像使用許可<input name="imageRightsConfirmed" type="text" placeholder="例: 自分たちで撮影 / 使用許可あり" value="${project.imageRightsConfirmed || ""}" /></label>
+          <label>画像メモ<input name="imageSubmissionNote" type="text" placeholder="差し替え希望、撮影者名、掲載注意など" value="${project.imageSubmissionNote || ""}" /></label>
           <label>商品種別<input name="productType" type="text" placeholder="Tシャツ、帽子、ステッカーなど" value="${project.productType || ""}" /></label>
           <label>BASE商品URL<input name="baseProductUrl" type="url" placeholder="https://..." value="${project.baseProductUrl || ""}" /></label>
           <label>目標金額<input name="targetAmount" type="number" min="0" placeholder="例: 500000" value="${project.targetAmount || ""}" /></label>
@@ -1213,7 +1337,11 @@ function bindProjectWorkForm() {
       "",
       "【画像URL】",
       `メイン画像: ${data.mainImageUrl || ""}`,
+      `タイトル複数画像: ${data.titleImageUrls || ""}`,
       `詳細画像: ${data.detailImageUrls || ""}`,
+      `本文中画像: ${data.bodyImageBlocks || ""}`,
+      `画像使用許可: ${data.imageRightsConfirmed || ""}`,
+      `画像メモ: ${data.imageSubmissionNote || ""}`,
       "",
       "【商品・目標】",
       `商品種別: ${data.productType || ""}`,
@@ -1249,6 +1377,47 @@ function bindProjectWorkForm() {
     } catch (error) {
       showToast("提出用テキストを生成しました");
     }
+  });
+}
+
+function bindProjectWorkApproval(project, workUrl) {
+  const copyUrlButton = projectWorkRoot?.querySelector("[data-copy-work-url]");
+  const approvalForm = projectWorkRoot?.querySelector("[data-approval-form]");
+  const approvalOutput = projectWorkRoot?.querySelector("[data-approval-output]");
+
+  copyUrlButton?.addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(copyUrlButton.dataset.copyWorkUrl || workUrl);
+      showToast("確認URLをコピーしました");
+    } catch (error) {
+      showToast("確認URLを表示しました");
+    }
+  });
+
+  approvalForm?.querySelectorAll("[data-copy-approval]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      const memo = approvalForm.elements.approvalMemo?.value || "";
+      const status = button.dataset.copyApproval === "ok" ? "この内容でOK" : "修正希望あり";
+      const text = [
+        "【レボファンディング 起案者確認】",
+        `project_id: ${project.id}`,
+        `Projectタイトル: ${project.title || ""}`,
+        `確認ページ: ${workUrl}`,
+        `確認結果: ${status}`,
+        "",
+        "【メモ】",
+        memo || "なし"
+      ].join("\n");
+
+      if (approvalOutput) approvalOutput.value = text;
+
+      try {
+        await navigator.clipboard.writeText(text);
+        showToast("確認内容をコピーしました");
+      } catch (error) {
+        showToast("確認内容を生成しました");
+      }
+    });
   });
 }
 
@@ -1310,8 +1479,8 @@ function renderProjectWorkStart(requestedId = "") {
         <article class="work-step todo"><span>商品</span><h3>商品案</h3><p>Tシャツ、トートバッグ、その他グッズなど、最初に展開したい商品を考えます。</p></article>
         <article class="work-step todo"><span>数字</span><h3>目標金額</h3><p>制作費、広報、次回展開を踏まえた目標金額を整理します。</p></article>
         <article class="work-step todo"><span>数字</span><h3>目標人数</h3><p>最初の応援者数、広げたい人数、達成後のファン募集目標人数を考えます。</p></article>
-        <article class="work-step todo"><span>画像</span><h3>見出し画像</h3><p>プロジェクトの印象を決めるメイン画像を準備します。</p></article>
-        <article class="work-step todo"><span>画像</span><h3>詳細説明に使う画像</h3><p>活動風景、商品案、制作途中、集合写真などを整理します。</p></article>
+        <article class="work-step todo"><span>画像</span><h3>見出し画像</h3><p>プロジェクトの印象を決めるメイン画像と、タイトル周辺に見せる複数画像を準備します。</p></article>
+        <article class="work-step todo"><span>画像</span><h3>本文に入れる画像</h3><p>活動風景、商品案、制作途中、集合写真などを、本文のどの位置に入れたいかまで整理します。</p></article>
         <article class="work-step todo"><span>リンク</span><h3>公式サイト / SNS</h3><p>起案者の公式サイト、SNS、関連ページのURLをまとめます。</p></article>
         <article class="work-step review"><span>運営</span><h3>運営へのメモ</h3><p>相談したいこと、確認してほしいこと、BASE登録後に反映してほしい内容をまとめます。</p></article>
       </div>
@@ -1344,9 +1513,10 @@ function renderProjectWork(project, requestedId = "") {
 
   const percent = progressPercent(project.currentAmount, project.targetAmount);
   const supportersPercent = progressPercent(project.currentSupporters, project.targetSupporters);
+  const supportersPercentText = percentText(project.currentSupporters, project.targetSupporters, project.hasTargetSupporters, "%");
   const workSteps = [
     { title: "想い・本文を書く", body: "挑戦の背景、なぜ今やるのか、目指す未来を入力します。", required: ["detailDescription", "shortDescription"] },
-    { title: "画像を提出する", body: "メイン画像、制作風景、商品イメージ、活動写真を提出します。", required: ["mainImageUrl"] },
+    { title: "画像を提出する", body: "タイトル複数画像、本文中に入れる画像、使用許可を提出します。", required: ["mainImageUrl", "titleImageUrls", "bodyImageBlocks"] },
     { title: "商品・目標を確認する", body: "商品種別、目標金額、目標人数、ファン目標を確認します。", required: ["productType", "targetAmount", "targetSupporters"] },
     { title: "BASEリンクを確認する", body: "購入ページが準備できたら、BASEの商品URLをProjectsに設定します。", required: ["baseProductUrl"] },
     { title: "運営確認へ進む", body: "内容が整ったら運営確認へ。問題なければpublishedで公開します。", required: ["publishedAt"] },
@@ -1354,7 +1524,18 @@ function renderProjectWork(project, requestedId = "") {
 
   const formButton = project.workFormUrl
     ? `<a class="button primary" href="${project.workFormUrl}" target="_blank" rel="noreferrer">詳細入力フォームを開く</a>`
-    : '<span class="button primary disabled">詳細入力フォーム準備中</span>';
+    : '<span class="button primary disabled">確認用URL発行済み</span>';
+  const workUrl = pageUrl(projectWorkUrl(project));
+  const previewImages = project.titleImageUrls.length ? project.titleImageUrls : project.detailImageUrls;
+  const confirmationText = [
+    "【起案者確認】",
+    `project_id: ${project.id}`,
+    `Projectタイトル: ${project.title || ""}`,
+    `確認ページ: ${workUrl}`,
+    "",
+    "この内容で問題ありません / 修正希望があります",
+    "修正希望がある場合は、どの写真・どの文章を直したいか記入してください。"
+  ].join("\n");
 
   document.title = `${project.title || "Project"} 作業ページ | レボファンディング`;
   projectWorkRoot.innerHTML = `
@@ -1366,18 +1547,33 @@ function renderProjectWork(project, requestedId = "") {
         <div class="project-status-row"><span class="status ${project.status === "published" ? "open" : "next"}">${project.statusLabel}</span><span>project_id: ${project.id}</span></div>
       </div>
       <div class="work-room-card">
-        <span>次にやること</span>
-        <strong>${project.status === "published" ? "公開済みです" : "入力内容を整えて運営確認へ"}</strong>
-        <p>${project.workNote || "詳細本文、画像、目標値、BASEリンクを整えると公開準備に進めます。"}</p>
-        <div class="project-cta-row">${formButton}<a class="button secondary" href="${projectDetailUrl(project)}">公開プレビューを見る</a></div>
+        <span>起案者確認</span>
+        <strong>${project.status === "published" ? "公開済みです" : "公開前の見え方を確認してください"}</strong>
+        <p>${project.workNote || "このページで文章、写真、数字、商品情報の見え方を確認できます。OK後に運営が公開設定へ進めます。"}</p>
+        <div class="project-cta-row">${formButton}<button class="button secondary" type="button" data-copy-work-url="${workUrl}">確認URLをコピー</button></div>
+      </div>
+    </section>
+
+    <section class="section project-preview-section">
+      <div class="section-head"><div><p class="eyebrow">Preview</p><h2>公開前プレビュー</h2></div><span class="section-note">下書きのため、一般公開一覧には表示されません。</span></div>
+      <div class="project-hero-detail work-preview-hero">
+        <div class="project-hero-copy">
+          <p class="eyebrow">${project.statusLabel} / ${project.category || "カテゴリ未設定"}</p>
+          <h1>${project.title || "Projectタイトル未設定"}</h1>
+          <p class="lead">${project.subtitle || "サブタイトル未設定"}</p>
+          <p>${project.shortDescription || "短い説明が未入力です。"}</p>
+        </div>
+        <div class="project-template-image">
+          ${previewImages.length ? `<div class="project-title-gallery">${previewImages.slice(0, 5).map((image) => `<img src="${image.src}" alt="${image.caption || project.title}" />`).join("")}</div>` : "<span>画像未設定</span>"}
+        </div>
       </div>
     </section>
 
     <section class="section project-number-section">
       <div class="section-head"><div><p class="eyebrow">Counters</p><h2>現在値と目標値</h2></div></div>
       <div class="project-number-grid work-number-grid">
-        <div class="number-card spark"><span>目標金額</span><strong>${formatCurrency(project.targetAmount)}</strong><small>達成金額 ${formatCurrency(project.currentAmount)}</small>${progressBar(project.currentAmount, project.targetAmount, "金額の進行")}</div>
-        <div class="number-card"><span>応援者の達成人数</span><strong>${formatCount(project.currentSupporters)}</strong><small>目標 ${formatCount(project.targetSupporters)} / ${supportersPercent}%</small>${progressBar(project.currentSupporters, project.targetSupporters, "応援人数の進行")}</div>
+        <div class="number-card spark"><span>目標金額</span><strong>${formatOptionalCurrency(project.targetAmount, project.hasTargetAmount)}</strong><small>達成金額 ${formatCurrency(project.currentAmount)}</small>${progressBar(project.currentAmount, project.targetAmount, "金額の進行")}</div>
+        <div class="number-card"><span>応援者の達成人数</span><strong>${formatCount(project.currentSupporters)}</strong><small>目標 ${formatOptionalCount(project.targetSupporters, project.hasTargetSupporters)} / ${supportersPercentText}</small>${progressBar(project.currentSupporters, project.targetSupporters, "応援人数の進行")}</div>
         <div class="number-card boost"><span>販売</span><strong>${salesProgressText(project)}</strong><small>${salesProgressNote(project)}</small></div>
         <div class="number-card amplify"><span>達成後ファン目標</span><strong>${formatCount(project.fanTargetAfterSuccess)}</strong><small>次の循環で広げる人数</small></div>
       </div>
@@ -1397,22 +1593,36 @@ function renderProjectWork(project, requestedId = "") {
 
     <section class="section project-story-layout">
       <article class="project-story-body">
-        <p class="eyebrow">Draft Preview</p>
-        <h2>入力内容の確認</h2>
-        <p><strong>短い説明:</strong> ${project.shortDescription || "未入力"}</p>
-        <p><strong>詳細本文:</strong> ${project.detailDescription || "未入力"}</p>
-        <p><strong>商品種別:</strong> ${project.productType || "未入力"}</p>
-        <p><strong>BASE URL:</strong> ${project.baseProductUrl || "未設定"}</p>
+        <p class="eyebrow">Story Preview</p>
+        <h2>本文と画像配置</h2>
+        ${renderRichProjectBody(project.detailDescription || project.shortDescription, project.bodyImageBlocks, project.title)}
+        ${project.imagePlacementNote ? `<p><strong>掲載位置メモ:</strong> ${project.imagePlacementNote}</p>` : ""}
       </article>
       <aside class="project-side-panel">
-        <h2>画像</h2>
-        ${project.mainImageUrl ? `<img class="creator-image" src="${project.mainImageUrl}" alt="${project.title}" />` : "<p>main_image_urlが未設定です。</p>"}
-        <p>公開用画像は、運営確認後にProjectsの画像URLへ反映します。</p>
+        <h2>起案者・画像素材</h2>
+        ${project.creatorImageUrl ? `<img class="creator-image" src="${project.creatorImageUrl}" alt="${project.creatorName || project.title}" />` : ""}
+        <h3>${project.creatorName || "起案者情報 未設定"}</h3>
+        <p>${project.creatorProfile || "起案者紹介は運営確認後に整えます。"}</p>
+        ${previewImages.length ? `<div class="work-image-list">${previewImages.map((image) => `<img class="creator-image" src="${image.src}" alt="${image.caption || project.title}" />`).join("")}</div>` : "<p>画像素材は未設定です。</p>"}
+        <p>${project.imageRightsConfirmed || "画像使用許可の確認待ち"}</p>
       </aside>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><div><p class="eyebrow">Approval</p><h2>起案者確認</h2></div></div>
+      <form class="work-input-form" data-approval-form>
+        <label>確認メモ<textarea name="approvalMemo" placeholder="この内容でOK、または修正したい箇所を書いてください。"></textarea></label>
+        <div class="project-cta-row">
+          <button class="button primary" type="button" data-copy-approval="ok">この内容でOKをコピー</button>
+          <button class="button secondary" type="button" data-copy-approval="change">修正希望をコピー</button>
+        </div>
+        <textarea class="work-submit-output" data-approval-output readonly>${confirmationText}</textarea>
+      </form>
     </section>
   `;
 
   bindProjectWorkForm();
+  bindProjectWorkApproval(project, workUrl);
 }
 
 async function loadProjectWork() {
