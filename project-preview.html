@@ -17,7 +17,7 @@
         grid-template-columns: minmax(0, 1fr) minmax(320px, 0.75fr);
         gap: clamp(24px, 5vw, 64px);
         align-items: center;
-        padding: clamp(56px, 8vw, 96px) clamp(20px, 5vw, 76px);
+        padding: clamp(38px, 6vw, 72px) clamp(20px, 5vw, 76px);
         background: linear-gradient(110deg, #fff7f7 0%, #f8fbff 58%, #eaf4ff 100%);
       }
       .preview-hero h1 {
@@ -47,6 +47,56 @@
       .preview-card h2 {
         margin-top: 0;
       }
+      .preview-card h3 {
+        margin: 28px 0 12px;
+      }
+      .preview-section {
+        padding: clamp(28px, 4vw, 56px) clamp(20px, 5vw, 76px);
+      }
+      .preview-stack {
+        display: grid;
+        gap: 18px;
+      }
+      .preview-field-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+      .preview-field {
+        min-height: 94px;
+        padding: 16px;
+        border: 1px solid rgba(17, 24, 39, 0.1);
+        border-radius: 14px;
+        background: #f9fafb;
+      }
+      .preview-field span {
+        display: block;
+        margin-bottom: 8px;
+        color: #6b7280;
+        font-size: 13px;
+        font-weight: 700;
+      }
+      .preview-field strong {
+        display: block;
+        color: #111827;
+        font-size: 17px;
+        line-height: 1.55;
+        overflow-wrap: anywhere;
+      }
+      .preview-note-list {
+        display: grid;
+        gap: 10px;
+        margin: 18px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+      .preview-note-list li {
+        padding: 14px 16px;
+        border: 1px solid rgba(37, 99, 235, 0.16);
+        border-radius: 14px;
+        background: #eff6ff;
+        color: #1f2937;
+      }
       .preview-image-grid {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -66,10 +116,55 @@
       .preview-image-grid img {
         aspect-ratio: 4 / 3;
       }
+      .preview-image-tile {
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(17, 24, 39, 0.1);
+        border-radius: 14px;
+        background: #eef2f7;
+      }
+      .preview-image-tile a {
+        display: block;
+        color: inherit;
+        text-decoration: none;
+      }
+      .preview-image-tile img {
+        display: block;
+      }
+      .preview-image-tile figcaption {
+        padding: 10px 12px;
+        color: #374151;
+        font-size: 13px;
+        font-weight: 700;
+      }
+      .preview-image-tile.is-missing img {
+        display: none;
+      }
+      .preview-image-tile.is-missing::before {
+        content: "画像の共有権限を確認してください";
+        display: grid;
+        min-height: 180px;
+        place-items: center;
+        padding: 18px;
+        color: #4b5563;
+        text-align: center;
+      }
       .preview-story p {
         color: #4b5563;
         font-size: 17px;
         line-height: 1.9;
+      }
+      .preview-story figure {
+        margin: 22px 0;
+      }
+      .preview-summary {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 22px;
+      }
+      .preview-summary .preview-field {
+        min-height: 82px;
       }
       .preview-actions {
         display: flex;
@@ -94,7 +189,9 @@
       }
       @media (max-width: 900px) {
         .preview-hero,
-        .preview-grid {
+        .preview-grid,
+        .preview-field-grid,
+        .preview-summary {
           grid-template-columns: 1fr;
         }
         .preview-image-grid {
@@ -175,10 +272,37 @@
         return `https://drive.google.com/thumbnail?id=${encodeURIComponent(match[1])}&sz=w1400`;
       }
 
+      function driveOpenUrl(value) {
+        const text = String(value || "").trim();
+        if (!text) return "";
+        const match = text.match(/[?&]id=([^&]+)/) || text.match(/\/file\/d\/([^/]+)/);
+        if (!match) return text;
+        return `https://drive.google.com/open?id=${encodeURIComponent(match[1])}`;
+      }
+
+      function escapeHtml(value) {
+        return String(value || "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+      }
+
+      function displayValue(value, fallback = "未入力") {
+        const text = String(value || "").trim();
+        return text ? escapeHtml(text) : `<span class="preview-muted">${fallback}</span>`;
+      }
+
+      function numberText(value, suffix = "") {
+        const number = Number(String(value || "").replace(/[^\d.-]/g, ""));
+        if (!Number.isFinite(number) || number <= 0) return "未入力";
+        return `${number.toLocaleString("ja-JP")}${suffix}`;
+      }
+
       function splitList(value) {
         return String(value || "")
-          .split(/\n|\|,/)
-          .flatMap((line) => line.split(","))
+          .split(/\r?\n|,|、/)
           .map((item) => item.trim())
           .filter(Boolean);
       }
@@ -194,6 +318,31 @@
             seen.add(src);
             return true;
           });
+      }
+
+      function imageEntries(...values) {
+        const seen = new Set();
+        return values
+          .flatMap(splitList)
+          .map((raw) => ({ raw, src: driveImageUrl(raw), href: driveOpenUrl(raw) }))
+          .filter((image) => image.src)
+          .filter((image) => {
+            if (seen.has(image.href)) return false;
+            seen.add(image.href);
+            return true;
+          })
+          .map((image, index) => ({ ...image, label: `画像${index + 1}` }));
+      }
+
+      function imageTile(image, alt) {
+        return `
+          <figure class="preview-image-tile">
+            <a href="${escapeHtml(image.href)}" target="_blank" rel="noopener">
+              <img src="${escapeHtml(image.src)}" alt="${escapeHtml(alt)}" onerror="this.closest('.preview-image-tile').classList.add('is-missing')" />
+              <figcaption>${escapeHtml(image.label)}を開く</figcaption>
+            </a>
+          </figure>
+        `;
       }
 
       function bodyImages(value) {
@@ -226,10 +375,24 @@
             if (match) used.add(imageIndex);
             return match;
           });
-          return `<p>${paragraph}</p>${inlineImages.map((image) => `<figure><img src="${image.src}" alt="${image.caption || project.title}" /><figcaption>${image.caption || "提出画像"}</figcaption></figure>`).join("")}`;
+          return `<p>${escapeHtml(paragraph)}</p>${inlineImages.map((image) => `<figure><img src="${escapeHtml(image.src)}" alt="${escapeHtml(image.caption || project.title)}" onerror="this.closest('figure').classList.add('is-missing')" /><figcaption>${escapeHtml(image.caption || "提出画像")}</figcaption></figure>`).join("")}`;
         }).join("");
         const endImages = images.filter((image, imageIndex) => image.after === "end" || !used.has(imageIndex));
-        return `${html}${endImages.map((image) => `<figure><img src="${image.src}" alt="${image.caption || project.title}" /><figcaption>${image.caption || "提出画像"}</figcaption></figure>`).join("")}`;
+        return `${html}${endImages.map((image) => `<figure><img src="${escapeHtml(image.src)}" alt="${escapeHtml(image.caption || project.title)}" onerror="this.closest('figure').classList.add('is-missing')" /><figcaption>${escapeHtml(image.caption || "提出画像")}</figcaption></figure>`).join("")}`;
+      }
+
+      function field(label, value, fallback) {
+        return `<div class="preview-field"><span>${escapeHtml(label)}</span><strong>${displayValue(value, fallback)}</strong></div>`;
+      }
+
+      function missingItems(project, mainImages, galleryImages) {
+        return [
+          !project.detail_description && "詳細本文が未入力です。公開前に本文を整える必要があります。",
+          !mainImages.length && "タイトル画像・メインビジュアルが未設定です。",
+          !galleryImages.length && "商品写真・本文用画像が未設定です。",
+          !project.base_product_url && "BASE商品URLが未設定です。",
+          !project.image_rights_confirmed && "画像の使用許可メモが未入力です。"
+        ].filter(Boolean);
       }
 
       function showToast(message) {
@@ -250,13 +413,14 @@
       }
 
       function render(project) {
-        const titleImages = imageList(project.title_image_urls, project.main_image_url, project.main_visual_uploads, project.product_image_uploads);
-        const galleryImages = imageList(project.detail_image_urls, project.product_image_uploads, project.body_image_uploads);
+        const titleImages = imageEntries(project.title_image_urls, project.main_image_url, project.main_visual_uploads);
+        const galleryImages = imageEntries(project.detail_image_urls, project.product_image_uploads, project.body_image_uploads, project.creator_profile_uploads);
         const storyImages = bodyImages(project.body_image_blocks);
         if (!storyImages.length) {
-          imageList(project.body_image_uploads).forEach((src) => storyImages.push({ after: "end", src, caption: "提出画像" }));
+          imageEntries(project.body_image_uploads).forEach((image) => storyImages.push({ after: "end", src: image.src, caption: image.label }));
         }
-        const mainImage = titleImages[0] || galleryImages[0] || "";
+        const mainImage = titleImages[0] || galleryImages[0] || null;
+        const missing = missingItems(project, titleImages, galleryImages);
         const currentUrl = location.href;
         document.title = `${project.title || "Project"} 起案者確認 | レボファンディング`;
 
@@ -264,14 +428,21 @@
           <section class="preview-hero">
             <div>
               <p class="eyebrow">Creator Preview</p>
-              <h1>${project.title || "Projectタイトル未設定"}</h1>
-              <p class="lead">${project.subtitle || project.short_description || "公開前の確認ページです。"}</p>
-              <div class="project-status-row"><span class="status next">${project.status || "draft"}</span><span>project_id: ${project.project_id}</span></div>
+              <h1>${displayValue(project.title, "Projectタイトル未設定")}</h1>
+              <p class="lead">${displayValue(project.subtitle || project.short_description, "短い説明は未入力です。")}</p>
+              <div class="project-status-row"><span class="status next">${displayValue(project.status || "draft")}</span><span>project_id: ${displayValue(project.project_id)}</span></div>
+              <div class="preview-summary">
+                ${field("目標金額", numberText(project.target_amount, "円"))}
+                ${field("目標応援人数", numberText(project.target_supporters, "人"))}
+                ${field("達成後ファン目標", numberText(project.fan_target_after_success, "人"))}
+                ${field("画像数", `${titleImages.length + galleryImages.length}点`)}
+              </div>
             </div>
             <div class="preview-panel">
               <span class="eyebrow">起案者確認</span>
               <h2>公開前の見え方を確認してください</h2>
               <p>文章、写真、数字、商品情報を確認し、問題なければOK、修正があればメモをコピーして運営へ送ってください。</p>
+              ${missing.length ? `<ul class="preview-note-list">${missing.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : ""}
               <div class="preview-actions">
                 <button class="button primary" type="button" data-copy-url>確認URLをコピー</button>
                 <button class="button secondary" type="button" data-scroll-approval>OK/修正を送る</button>
@@ -282,27 +453,41 @@
           <section class="preview-grid">
             <article class="preview-card preview-story">
               <p class="eyebrow">Preview</p>
-              <h2>${project.title || "Projectタイトル未設定"}</h2>
-              <p class="lead">${project.short_description || "短い説明は運営確認後に整えます。"}</p>
-              ${mainImage ? `<figure class="preview-main-image"><img src="${mainImage}" alt="${project.title || "メイン画像"}" /></figure>` : "<p class='preview-muted'>メイン画像は未設定です。</p>"}
-              <h2>本文と画像配置</h2>
+              <h2>${displayValue(project.title, "Projectタイトル未設定")}</h2>
+              <p class="lead">${displayValue(project.short_description, "短い説明は未入力です。")}</p>
+              ${mainImage ? `<figure class="preview-main-image preview-image-tile"><a href="${escapeHtml(mainImage.href)}" target="_blank" rel="noopener"><img src="${escapeHtml(mainImage.src)}" alt="${escapeHtml(project.title || "メイン画像")}" onerror="this.closest('.preview-image-tile').classList.add('is-missing')" /><figcaption>メイン画像を開く</figcaption></a></figure>` : "<p class='preview-muted'>メイン画像は未設定です。</p>"}
+              <h3>本文と画像配置</h3>
               ${renderStory(project, storyImages)}
+              ${project.image_placement_note ? `<h3>画像の掲載位置メモ</h3><p>${displayValue(project.image_placement_note)}</p>` : ""}
             </article>
 
             <aside class="preview-card">
               <h2>画像素材</h2>
-              ${galleryImages.length ? `<div class="preview-image-grid">${galleryImages.map((src) => `<img src="${src}" alt="${project.title || "提出画像"}" />`).join("")}</div>` : "<p class='preview-muted'>画像素材は未設定です。</p>"}
-              <h2>起案者</h2>
-              <p>${project.creator_name || "起案者名 未設定"}</p>
-              <p>${project.creator_profile || "プロフィールは運営確認後に整えます。"}</p>
-              <h2>目標</h2>
-              <p>目標金額: ${project.target_amount || "未設定"}円</p>
-              <p>目標応援人数: ${project.target_supporters || "未設定"}人</p>
-              <p>達成後ファン目標: ${project.fan_target_after_success || "未設定"}人</p>
+              ${[...titleImages, ...galleryImages].length ? `<div class="preview-image-grid">${[...titleImages, ...galleryImages].map((image) => imageTile(image, project.title || "提出画像")).join("")}</div>` : "<p class='preview-muted'>画像素材は未設定です。</p>"}
+              <h3>画像確認</h3>
+              <p>${displayValue(project.image_rights_confirmed, "画像の使用許可は未入力です。")}</p>
+              <p>${displayValue(project.image_submission_note, "画像についての補足メモは未入力です。")}</p>
             </aside>
           </section>
 
-          <section class="preview-grid" id="approval">
+          <section class="preview-section">
+            <article class="preview-card">
+              <p class="eyebrow">Submitted Data</p>
+              <h2>申請内容の整理</h2>
+              <div class="preview-field-grid">
+                ${field("起案者名", project.creator_name)}
+                ${field("プロフィール", project.creator_profile)}
+                ${field("商品種別", project.product_type)}
+                ${field("BASE商品URL", project.base_product_url)}
+                ${field("公式サイト / SNS", project.official_url)}
+                ${field("一人あたりの応援金額", numberText(project.supporter_unit_amount, "円"))}
+                ${field("現在の支援人数", numberText(project.current_supporters, "人"))}
+                ${field("販売状況", project.booster_status || project.status)}
+              </div>
+            </article>
+          </section>
+
+          <section class="preview-section" id="approval">
             <article class="preview-card">
               <p class="eyebrow">Approval</p>
               <h2>起案者確認</h2>
