@@ -3,6 +3,12 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script>
+      const projectId = new URLSearchParams(location.search).get("id");
+      if (projectId) {
+        location.replace(`project-preview.html?id=${encodeURIComponent(projectId)}`);
+      }
+    </script>
     <meta name="google-site-verification" content="R_e8E9Ga3FSMDd3Z_H1SpU8hkM8lMW25IpkPWFbMAxM" />
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-LPQ0HZ7KKJ"></script>

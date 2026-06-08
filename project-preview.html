@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>起案者確認ページ | レボファンディング</title>
+    <meta name="description" content="レボファンディングの起案者向け公開前確認ページです。" />
+    <link rel="icon" href="favicon.ico?v=20260602" sizes="any" />
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      .preview-root {
+        background: #f7f8fb;
+        min-height: 100vh;
+      }
+      .preview-hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(320px, 0.75fr);
+        gap: clamp(24px, 5vw, 64px);
+        align-items: center;
+        padding: clamp(56px, 8vw, 96px) clamp(20px, 5vw, 76px);
+        background: linear-gradient(110deg, #fff7f7 0%, #f8fbff 58%, #eaf4ff 100%);
+      }
+      .preview-hero h1 {
+        margin: 12px 0 18px;
+        font-size: clamp(44px, 8vw, 96px);
+        line-height: 0.96;
+      }
+      .preview-panel,
+      .preview-card {
+        border: 1px solid rgba(17, 24, 39, 0.1);
+        border-radius: 18px;
+        background: #fff;
+        box-shadow: 0 18px 48px rgba(17, 24, 39, 0.07);
+      }
+      .preview-panel {
+        padding: clamp(24px, 4vw, 42px);
+      }
+      .preview-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(320px, 0.45fr);
+        gap: 20px;
+        padding: clamp(36px, 5vw, 72px) clamp(20px, 5vw, 76px);
+      }
+      .preview-card {
+        padding: clamp(22px, 3vw, 34px);
+      }
+      .preview-card h2 {
+        margin-top: 0;
+      }
+      .preview-image-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+      .preview-image-grid img,
+      .preview-main-image img,
+      .preview-story img {
+        width: 100%;
+        border-radius: 12px;
+        background: #eef2f7;
+        object-fit: contain;
+      }
+      .preview-main-image img {
+        max-height: 460px;
+      }
+      .preview-image-grid img {
+        aspect-ratio: 4 / 3;
+      }
+      .preview-story p {
+        color: #4b5563;
+        font-size: 17px;
+        line-height: 1.9;
+      }
+      .preview-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 18px;
+      }
+      .preview-actions button {
+        border: 0;
+      }
+      .preview-output {
+        width: 100%;
+        min-height: 160px;
+        margin-top: 16px;
+        padding: 14px;
+        border: 1px solid rgba(17, 24, 39, 0.12);
+        border-radius: 12px;
+        resize: vertical;
+      }
+      .preview-muted {
+        color: #6b7280;
+      }
+      @media (max-width: 900px) {
+        .preview-hero,
+        .preview-grid {
+          grid-template-columns: 1fr;
+        }
+        .preview-image-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body class="preview-root">
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="レボファンディング トップへ">
+        <span class="brand-mark" aria-hidden="true">R</span>
+        <span><strong>レボファンディング</strong><small>Preview</small></span>
+      </a>
+      <nav class="nav" aria-label="主要ナビゲーション">
+        <a href="index.html">トップ</a>
+        <a href="challenger.html">挑戦する</a>
+        <a href="supporters.html">応援する</a>
+        <a href="representative.html">運営</a>
+      </nav>
+    </header>
+
+    <main id="preview-root">
+      <section class="section">
+        <div class="project-empty-state">
+          <strong>確認ページを読み込んでいます。</strong>
+          <span>Projectsシートの下書きを確認しています。</span>
+        </div>
+      </section>
+    </main>
+
+    <div class="toast" role="status" aria-live="polite">コピーしました</div>
+
+    <script>
+      const PROJECTS_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRcKmEgg9vkR0RHr8i1dbqnjOCZS7Julyl54k9tqUEBGxEejykf3X5eS4iZOKnsowGrtwiGZ7b7vRBN/pub?gid=563776916&single=true&output=csv";
+      const root = document.getElementById("preview-root");
+
+      function parseCsv(text) {
+        const rows = [];
+        let row = [];
+        let value = "";
+        let quoted = false;
+        for (let index = 0; index < text.length; index += 1) {
+          const char = text[index];
+          const next = text[index + 1];
+          if (char === '"' && quoted && next === '"') {
+            value += '"';
+            index += 1;
+          } else if (char === '"') {
+            quoted = !quoted;
+          } else if (char === "," && !quoted) {
+            row.push(value);
+            value = "";
+          } else if ((char === "\n" || char === "\r") && !quoted) {
+            if (char === "\r" && next === "\n") index += 1;
+            row.push(value);
+            if (row.some((cell) => cell !== "")) rows.push(row);
+            row = [];
+            value = "";
+          } else {
+            value += char;
+          }
+        }
+        row.push(value);
+        if (row.some((cell) => cell !== "")) rows.push(row);
+        const headers = rows.shift().map((header) => header.trim());
+        return rows.map((cells) => headers.reduce((record, header, index) => {
+          record[header] = cells[index] || "";
+          return record;
+        }, {}));
+      }
+
+      function driveImageUrl(value) {
+        const text = String(value || "").trim();
+        if (!text) return "";
+        const match = text.match(/[?&]id=([^&]+)/) || text.match(/\/file\/d\/([^/]+)/);
+        if (!match) return text;
+        return `https://drive.google.com/thumbnail?id=${encodeURIComponent(match[1])}&sz=w1400`;
+      }
+
+      function splitList(value) {
+        return String(value || "")
+          .split(/\n|\|,/)
+          .flatMap((line) => line.split(","))
+          .map((item) => item.trim())
+          .filter(Boolean);
+      }
+
+      function imageList(...values) {
+        const seen = new Set();
+        return values
+          .flatMap(splitList)
+          .map((src) => driveImageUrl(src))
+          .filter(Boolean)
+          .filter((src) => {
+            if (seen.has(src)) return false;
+            seen.add(src);
+            return true;
+          });
+      }
+
+      function bodyImages(value) {
+        return String(value || "")
+          .split(/\r?\n/)
+          .map((line) => line.trim())
+          .filter(Boolean)
+          .map((line) => {
+            const parts = line.split("|").map((part) => part.trim());
+            if (parts.length >= 3) return { after: Number(parts[0]) || "end", src: driveImageUrl(parts[1]), caption: parts.slice(2).join(" / ") };
+            if (parts.length === 2) return { after: "end", src: driveImageUrl(parts[0]), caption: parts[1] };
+            return { after: "end", src: driveImageUrl(parts[0]), caption: "" };
+          })
+          .filter((item) => item.src);
+      }
+
+      function paragraphs(text) {
+        return String(text || "")
+          .split(/\n{2,}|\r?\n/)
+          .map((item) => item.trim())
+          .filter(Boolean);
+      }
+
+      function renderStory(project, images) {
+        const blocks = paragraphs(project.detail_description || project.short_description || "詳細本文は運営確認後に整えます。");
+        const used = new Set();
+        const html = blocks.map((paragraph, index) => {
+          const inlineImages = images.filter((image, imageIndex) => {
+            const match = image.after === index + 1;
+            if (match) used.add(imageIndex);
+            return match;
+          });
+          return `<p>${paragraph}</p>${inlineImages.map((image) => `<figure><img src="${image.src}" alt="${image.caption || project.title}" /><figcaption>${image.caption || "提出画像"}</figcaption></figure>`).join("")}`;
+        }).join("");
+        const endImages = images.filter((image, imageIndex) => image.after === "end" || !used.has(imageIndex));
+        return `${html}${endImages.map((image) => `<figure><img src="${image.src}" alt="${image.caption || project.title}" /><figcaption>${image.caption || "提出画像"}</figcaption></figure>`).join("")}`;
+      }
+
+      function showToast(message) {
+        const toast = document.querySelector(".toast");
+        if (!toast) return;
+        toast.textContent = message;
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 1800);
+      }
+
+      async function copyText(text) {
+        try {
+          await navigator.clipboard.writeText(text);
+          showToast("確認内容をコピーしました");
+        } catch (error) {
+          showToast("確認内容を生成しました");
+        }
+      }
+
+      function render(project) {
+        const titleImages = imageList(project.title_image_urls, project.main_image_url, project.main_visual_uploads, project.product_image_uploads);
+        const galleryImages = imageList(project.detail_image_urls, project.product_image_uploads, project.body_image_uploads);
+        const storyImages = bodyImages(project.body_image_blocks);
+        if (!storyImages.length) {
+          imageList(project.body_image_uploads).forEach((src) => storyImages.push({ after: "end", src, caption: "提出画像" }));
+        }
+        const mainImage = titleImages[0] || galleryImages[0] || "";
+        const currentUrl = location.href;
+        document.title = `${project.title || "Project"} 起案者確認 | レボファンディング`;
+
+        root.innerHTML = `
+          <section class="preview-hero">
+            <div>
+              <p class="eyebrow">Creator Preview</p>
+              <h1>${project.title || "Projectタイトル未設定"}</h1>
+              <p class="lead">${project.subtitle || project.short_description || "公開前の確認ページです。"}</p>
+              <div class="project-status-row"><span class="status next">${project.status || "draft"}</span><span>project_id: ${project.project_id}</span></div>
+            </div>
+            <div class="preview-panel">
+              <span class="eyebrow">起案者確認</span>
+              <h2>公開前の見え方を確認してください</h2>
+              <p>文章、写真、数字、商品情報を確認し、問題なければOK、修正があればメモをコピーして運営へ送ってください。</p>
+              <div class="preview-actions">
+                <button class="button primary" type="button" data-copy-url>確認URLをコピー</button>
+                <button class="button secondary" type="button" data-scroll-approval>OK/修正を送る</button>
+              </div>
+            </div>
+          </section>
+
+          <section class="preview-grid">
+            <article class="preview-card preview-story">
+              <p class="eyebrow">Preview</p>
+              <h2>${project.title || "Projectタイトル未設定"}</h2>
+              <p class="lead">${project.short_description || "短い説明は運営確認後に整えます。"}</p>
+              ${mainImage ? `<figure class="preview-main-image"><img src="${mainImage}" alt="${project.title || "メイン画像"}" /></figure>` : "<p class='preview-muted'>メイン画像は未設定です。</p>"}
+              <h2>本文と画像配置</h2>
+              ${renderStory(project, storyImages)}
+            </article>
+
+            <aside class="preview-card">
+              <h2>画像素材</h2>
+              ${galleryImages.length ? `<div class="preview-image-grid">${galleryImages.map((src) => `<img src="${src}" alt="${project.title || "提出画像"}" />`).join("")}</div>` : "<p class='preview-muted'>画像素材は未設定です。</p>"}
+              <h2>起案者</h2>
+              <p>${project.creator_name || "起案者名 未設定"}</p>
+              <p>${project.creator_profile || "プロフィールは運営確認後に整えます。"}</p>
+              <h2>目標</h2>
+              <p>目標金額: ${project.target_amount || "未設定"}円</p>
+              <p>目標応援人数: ${project.target_supporters || "未設定"}人</p>
+              <p>達成後ファン目標: ${project.fan_target_after_success || "未設定"}人</p>
+            </aside>
+          </section>
+
+          <section class="preview-grid" id="approval">
+            <article class="preview-card">
+              <p class="eyebrow">Approval</p>
+              <h2>起案者確認</h2>
+              <label>確認メモ<textarea class="preview-output" data-memo placeholder="この内容でOK、または修正したい箇所を書いてください。"></textarea></label>
+              <div class="preview-actions">
+                <button class="button primary" type="button" data-approval="ok">この内容でOKをコピー</button>
+                <button class="button secondary" type="button" data-approval="change">修正希望をコピー</button>
+              </div>
+              <textarea class="preview-output" data-output readonly></textarea>
+            </article>
+          </section>
+        `;
+
+        root.querySelector("[data-copy-url]")?.addEventListener("click", () => copyText(currentUrl));
+        root.querySelector("[data-scroll-approval]")?.addEventListener("click", () => document.getElementById("approval")?.scrollIntoView({ behavior: "smooth" }));
+        root.querySelectorAll("[data-approval]").forEach((button) => {
+          button.addEventListener("click", () => {
+            const memo = root.querySelector("[data-memo]")?.value || "なし";
+            const status = button.dataset.approval === "ok" ? "この内容でOK" : "修正希望あり";
+            const text = [
+              "【レボファンディング 起案者確認】",
+              `project_id: ${project.project_id}`,
+              `Projectタイトル: ${project.title || ""}`,
+              `確認ページ: ${currentUrl}`,
+              `確認結果: ${status}`,
+              "",
+              "【メモ】",
+              memo
+            ].join("\n");
+            const output = root.querySelector("[data-output]");
+            if (output) output.value = text;
+            copyText(text);
+          });
+        });
+      }
+
+      async function init() {
+        const id = new URLSearchParams(location.search).get("id");
+        if (!id) {
+          root.innerHTML = "<section class='section'><div class='project-empty-state'><strong>project_idがありません。</strong><span>確認URLをもう一度開いてください。</span></div></section>";
+          return;
+        }
+
+        try {
+          const response = await fetch(PROJECTS_CSV_URL, { cache: "no-store" });
+          const projects = parseCsv(await response.text());
+          const project = projects.find((item) => item.project_id === id || item.id === id);
+          if (!project) throw new Error("Project not found");
+          render(project);
+        } catch (error) {
+          root.innerHTML = "<section class='section'><div class='project-empty-state'><strong>Projectが見つかりません。</strong><span>ProjectsシートのCSV公開、またはproject_idを確認してください。</span></div></section>";
+        }
+      }
+
+      init();
+    </script>
+  </body>
+</html>
