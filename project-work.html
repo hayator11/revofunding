@@ -534,10 +534,35 @@
         });
       }
 
+      function renderMissingProjectId() {
+        root.innerHTML = `
+          <section class="work-section">
+            <article class="work-card">
+              <p class="eyebrow">Project Work Room</p>
+              <h1>project_idがありません。</h1>
+              <p class="lead">作業ページは、起案者ごとのproject_id付きURLで開きます。</p>
+              <div class="work-form">
+                <label>project_id<input data-project-id-input value="revo-20260608-おのくん-2" /></label>
+                <div class="work-actions">
+                  <button class="button primary" type="button" data-open-project>このproject_idで開く</button>
+                  <a class="button secondary" href="project-work.html?id=revo-20260608-%E3%81%8A%E3%81%AE%E3%81%8F%E3%82%93-2">おのくん作業ページを開く</a>
+                </div>
+              </div>
+            </article>
+          </section>
+        `;
+        root.querySelector("[data-open-project]")?.addEventListener("click", () => {
+          const projectId = root.querySelector("[data-project-id-input]")?.value.trim();
+          if (projectId) {
+            location.href = `project-work.html?id=${encodeURIComponent(projectId)}`;
+          }
+        });
+      }
+
       async function init() {
         const id = new URLSearchParams(location.search).get("id");
         if (!id) {
-          root.innerHTML = "<section class='section'><div class='project-empty-state'><strong>project_idがありません。</strong><span>作業URLをもう一度開いてください。</span></div></section>";
+          renderMissingProjectId();
           return;
         }
 

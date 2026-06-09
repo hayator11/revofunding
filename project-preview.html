@@ -551,10 +551,26 @@
         });
       }
 
+      function renderMissingProjectId() {
+        root.innerHTML = `
+          <section class="preview-section">
+            <article class="preview-card">
+              <p class="eyebrow">Creator Preview</p>
+              <h1>project_idがありません。</h1>
+              <p class="lead">確認ページは、起案者ごとのproject_id付きURLで開きます。</p>
+              <div class="preview-actions">
+                <a class="button primary" href="project-preview.html?id=revo-20260608-%E3%81%8A%E3%81%AE%E3%81%8F%E3%82%93-2">おのくん確認ページを開く</a>
+                <a class="button secondary" href="project-work.html?id=revo-20260608-%E3%81%8A%E3%81%AE%E3%81%8F%E3%82%93-2">おのくん作業ページを開く</a>
+              </div>
+            </article>
+          </section>
+        `;
+      }
+
       async function init() {
         const id = new URLSearchParams(location.search).get("id");
         if (!id) {
-          root.innerHTML = "<section class='section'><div class='project-empty-state'><strong>project_idがありません。</strong><span>確認URLをもう一度開いてください。</span></div></section>";
+          renderMissingProjectId();
           return;
         }
 
