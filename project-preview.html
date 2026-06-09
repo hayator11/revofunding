@@ -300,6 +300,18 @@
         return `${number.toLocaleString("ja-JP")}${suffix}`;
       }
 
+      function draftStorageKey(projectId) {
+        return `revo-project-work-draft:${projectId}`;
+      }
+
+      function loadLocalDraft(projectId) {
+        try {
+          return JSON.parse(localStorage.getItem(draftStorageKey(projectId)) || "{}");
+        } catch (error) {
+          return {};
+        }
+      }
+
       function splitList(value) {
         return String(value || "")
           .split(/\r?\n|,|、/)
@@ -536,7 +548,7 @@
           const projects = parseCsv(await response.text());
           const project = projects.find((item) => item.project_id === id || item.id === id);
           if (!project) throw new Error("Project not found");
-          render(project);
+          render({ ...project, ...loadLocalDraft(id) });
         } catch (error) {
           root.innerHTML = "<section class='section'><div class='project-empty-state'><strong>Projectが見つかりません。</strong><span>ProjectsシートのCSV公開、またはproject_idを確認してください。</span></div></section>";
         }
