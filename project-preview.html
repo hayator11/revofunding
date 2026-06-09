@@ -187,6 +187,16 @@
       .preview-muted {
         color: #6b7280;
       }
+      .preview-mode-note {
+        margin: 18px 0 0;
+        padding: 14px 16px;
+        border: 1px solid rgba(37, 99, 235, 0.18);
+        border-radius: 14px;
+        background: #eff6ff;
+        color: #1f2937;
+        font-weight: 800;
+        line-height: 1.7;
+      }
       @media (max-width: 900px) {
         .preview-hero,
         .preview-grid,
@@ -434,6 +444,7 @@
         const mainImage = titleImages[0] || galleryImages[0] || null;
         const missing = missingItems(project, titleImages, galleryImages);
         const currentUrl = location.href;
+        const workUrl = `project-work.html?id=${encodeURIComponent(project.project_id || project.id || "")}`;
         document.title = `${project.title || "Project"} 起案者確認 | レボファンディング`;
 
         root.innerHTML = `
@@ -453,9 +464,11 @@
             <div class="preview-panel">
               <span class="eyebrow">起案者確認</span>
               <h2>公開前の見え方を確認してください</h2>
-              <p>文章、写真、数字、商品情報を確認し、問題なければOK、修正があればメモをコピーして運営へ送ってください。</p>
+              <p>このページは確認専用です。文章や数字を直す場合は作業ページへ戻って編集してください。</p>
+              <div class="preview-mode-note">編集する場所: 作業ページ / 確認する場所: この確認ページ</div>
               ${missing.length ? `<ul class="preview-note-list">${missing.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : ""}
               <div class="preview-actions">
+                <a class="button primary" href="${workUrl}">作業ページへ戻る</a>
                 <button class="button primary" type="button" data-copy-url>確認URLをコピー</button>
                 <button class="button secondary" type="button" data-scroll-approval>OK/修正を送る</button>
               </div>
@@ -503,8 +516,10 @@
             <article class="preview-card">
               <p class="eyebrow">Approval</p>
               <h2>起案者確認</h2>
+              <p class="preview-mode-note">修正がある場合は、ここに書く前に作業ページへ戻って内容を編集してください。</p>
               <label>確認メモ<textarea class="preview-output" data-memo placeholder="この内容でOK、または修正したい箇所を書いてください。"></textarea></label>
               <div class="preview-actions">
+                <a class="button secondary" href="${workUrl}">作業ページへ戻る</a>
                 <button class="button primary" type="button" data-approval="ok">この内容でOKをコピー</button>
                 <button class="button secondary" type="button" data-approval="change">修正希望をコピー</button>
               </div>
