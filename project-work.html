@@ -263,6 +263,7 @@
           return false;
         }
 
+        const editKey = new URLSearchParams(location.search).get("key") || "";
         await fetch(WORK_SAVE_ENDPOINT, {
           method: "POST",
           mode: "no-cors",
@@ -272,6 +273,7 @@
           body: JSON.stringify({
             action: "saveProjectWorkDraft",
             project_id: projectId,
+            edit_key: editKey,
             values
           })
         });
@@ -367,9 +369,10 @@
 
       function render(project) {
         const projectId = project.project_id || project.id;
+        const editKey = new URLSearchParams(location.search).get("key") || project.edit_key || "";
         const saved = loadLocalDraft(projectId);
         const data = { ...project, ...saved };
-        const previewUrl = `project-preview.html?id=${encodeURIComponent(projectId)}`;
+        const previewUrl = `project-preview.html?id=${encodeURIComponent(projectId)}${editKey ? `&key=${encodeURIComponent(editKey)}` : ""}`;
         document.title = `${data.title || "Project"} 作業ページ | レボファンディング`;
 
         root.innerHTML = `
@@ -378,7 +381,7 @@
               <p class="eyebrow">Project Work Room</p>
               <h1>${escapeHtml(data.title || "Projectタイトル未設定")}</h1>
               <p class="lead">ここで本文、画像メモ、目標、商品情報を整えます。入力内容はこのブラウザに下書き保存されます。</p>
-              <div class="project-status-row"><span class="status next">${escapeHtml(data.status || "draft")}</span><span>project_id: ${escapeHtml(projectId)}</span></div>
+              <div class="project-status-row"><span class="status next">${escapeHtml(data.status || "draft")}</span><span>project_id: ${escapeHtml(projectId)}</span>${editKey ? "<span>専用URL</span>" : "<span>編集キーなし</span>"}</div>
             </div>
             <div class="work-panel">
               <span class="eyebrow">流れ</span>
@@ -493,7 +496,7 @@
           const text = [
             "【レボファンディング 起案者作業内容】",
             `project_id: ${projectId}`,
-            `確認ページ: ${location.origin}${location.pathname.replace("project-work.html", "project-preview.html")}?id=${encodeURIComponent(projectId)}`,
+            `確認ページ: ${location.origin}${location.pathname.replace("project-work.html", "project-preview.html")}?id=${encodeURIComponent(projectId)}${editKey ? `&key=${encodeURIComponent(editKey)}` : ""}`,
             "",
             "【タイトル】",
             next.title || "",

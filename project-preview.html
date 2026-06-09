@@ -444,7 +444,8 @@
         const mainImage = titleImages[0] || galleryImages[0] || null;
         const missing = missingItems(project, titleImages, galleryImages);
         const currentUrl = location.href;
-        const workUrl = `project-work.html?id=${encodeURIComponent(project.project_id || project.id || "")}`;
+        const editKey = new URLSearchParams(location.search).get("key") || project.edit_key || "";
+        const workUrl = `project-work.html?id=${encodeURIComponent(project.project_id || project.id || "")}${editKey ? `&key=${encodeURIComponent(editKey)}` : ""}`;
         document.title = `${project.title || "Project"} 起案者確認 | レボファンディング`;
 
         root.innerHTML = `
