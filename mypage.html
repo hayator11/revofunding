@@ -4,69 +4,440 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="google-site-verification" content="R_e8E9Ga3FSMDd3Z_H1SpU8hkM8lMW25IpkPWFbMAxM" />
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LPQ0HZ7KKJ"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-LPQ0HZ7KKJ');
-    </script>
-    <title>応援者マイページ | レボファンディング</title>
+    <title>応援者確認ページ | レボファンディング</title>
+    <meta name="description" content="レボファンディングの応援者が、参加状況、称号、対象の挑戦を確認するページです。" />
     <link rel="icon" href="favicon.ico?v=20260602" sizes="any" />
     <link rel="icon" href="favicon.svg?v=20260602" type="image/svg+xml" />
     <link rel="icon" href="favicon-32.png?v=20260602" type="image/png" sizes="32x32" />
     <link rel="apple-touch-icon" href="apple-touch-icon.png?v=20260602" />
     <link rel="stylesheet" href="styles.css" />
+    <style>
+      .supporter-room {
+        min-height: 100vh;
+        background: #f5f5f7;
+      }
+      .supporter-hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(320px, 0.72fr);
+        gap: clamp(24px, 5vw, 64px);
+        align-items: center;
+        padding: clamp(42px, 7vw, 88px) clamp(20px, 5vw, 76px);
+        background: linear-gradient(110deg, #fff7f7 0%, #fbfbfd 55%, #eaf4ff 100%);
+      }
+      .supporter-hero h1 {
+        margin: 10px 0 16px;
+        font-size: clamp(42px, 8vw, 92px);
+        line-height: 0.96;
+      }
+      .supporter-panel,
+      .supporter-card {
+        border: 1px solid rgba(17, 24, 39, 0.1);
+        border-radius: 18px;
+        background: #fff;
+        box-shadow: 0 18px 48px rgba(17, 24, 39, 0.07);
+      }
+      .supporter-panel {
+        padding: clamp(24px, 4vw, 42px);
+      }
+      .supporter-section {
+        padding: clamp(30px, 5vw, 68px) clamp(20px, 5vw, 76px);
+      }
+      .supporter-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(320px, 0.46fr);
+        gap: 20px;
+      }
+      .supporter-card {
+        padding: clamp(22px, 3vw, 34px);
+      }
+      .supporter-card h2,
+      .supporter-card h3 {
+        margin-top: 0;
+      }
+      .supporter-status-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 18px;
+      }
+      .supporter-pill {
+        display: inline-flex;
+        align-items: center;
+        min-height: 36px;
+        padding: 7px 12px;
+        border: 1px solid rgba(37, 99, 235, 0.18);
+        border-radius: 999px;
+        background: #eff6ff;
+        color: #1d4ed8;
+        font-size: 13px;
+        font-weight: 900;
+      }
+      .supporter-pill.good {
+        border-color: rgba(22, 163, 74, 0.2);
+        background: #ecfdf5;
+        color: #15803d;
+      }
+      .supporter-pill.wait {
+        border-color: rgba(245, 158, 11, 0.22);
+        background: #fffbeb;
+        color: #b45309;
+      }
+      .supporter-pill.stop {
+        border-color: rgba(220, 38, 38, 0.18);
+        background: #fff1f2;
+        color: #be123c;
+      }
+      .supporter-list {
+        display: grid;
+        gap: 12px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      .supporter-list li,
+      .supporter-field {
+        padding: 14px 16px;
+        border: 1px solid rgba(17, 24, 39, 0.08);
+        border-radius: 14px;
+        background: #f9fafb;
+      }
+      .supporter-list span,
+      .supporter-field span {
+        display: block;
+        color: #6b7280;
+        font-size: 13px;
+        font-weight: 800;
+      }
+      .supporter-list strong,
+      .supporter-field strong {
+        display: block;
+        margin-top: 3px;
+        color: #111827;
+        font-size: clamp(18px, 2vw, 24px);
+        line-height: 1.35;
+      }
+      .supporter-form {
+        display: grid;
+        gap: 14px;
+      }
+      .supporter-form label {
+        display: grid;
+        gap: 7px;
+        color: #111827;
+        font-weight: 900;
+      }
+      .supporter-form input {
+        min-height: 54px;
+        width: 100%;
+        border: 1px solid rgba(17, 24, 39, 0.12);
+        border-radius: 12px;
+        background: #f9fafb;
+        padding: 0 14px;
+        color: #111827;
+        font: inherit;
+        font-weight: 800;
+      }
+      .supporter-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 18px;
+      }
+      .supporter-note {
+        margin-top: 14px;
+        color: #6b7280;
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 1.75;
+      }
+      .supporter-empty {
+        padding: clamp(28px, 5vw, 52px);
+        border: 1px solid rgba(17, 24, 39, 0.1);
+        border-radius: 18px;
+        background: #fff;
+      }
+      .supporter-loader {
+        display: grid;
+        gap: 8px;
+        padding: 32px;
+        color: #4b5563;
+        font-weight: 900;
+      }
+      @media (max-width: 900px) {
+        .supporter-hero,
+        .supporter-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
   </head>
-  <body>
+  <body class="supporter-room">
     <header class="site-header">
-      <a class="brand" href="index.html"><span class="brand-mark">R</span><span><strong>レボファンディング</strong><small>My Page</small></span></a>
+      <a class="brand" href="index.html" aria-label="レボファンディング トップへ">
+        <span class="brand-mark" aria-hidden="true">R</span>
+        <span><strong>レボファンディング</strong><small>Supporter Room</small></span>
+      </a>
       <nav class="nav" aria-label="主要ナビゲーション">
         <a href="index.html">トップ</a>
-        <a href="revolist.html">全体構造</a>
-        <a href="concept.html">仕組み</a>
         <a href="supporters.html">応援する</a>
-        <a href="shop.html">買って広げる</a>
-        <a href="challenger.html">挑戦する</a>
-        <a href="designers.html">作って参加</a>
-        <a href="revo-art.html">レボアート</a>
+        <a href="concept.html">仕組み</a>
         <a href="representative.html">運営</a>
       </nav>
     </header>
-    <main>
-      <section class="page-hero">
-        <p class="eyebrow">Supporter My Page</p>
-        <h1>参加履歴が、応援の価値になる。</h1>
-        <p class="lead">応援者への金銭リターンがないからこそ、早く信じたこと、広げたこと、継続したことを称号と履歴で残します。</p>
-      </section>
-      <section class="section profile-layout">
-        <div class="profile-card">
-          <div class="designer-avatar blue">応</div>
-          <h2>防災を広げたい人</h2>
-          <p>初期応援者 / 応援シェアメンバー / 継続応援者</p>
-          <div class="badge-wall"><span>初期応援者</span><span>応援シェアメンバー</span><span>更新案内登録</span></div>
-        </div>
-        <div class="dashboard-grid compact">
-          <div class="dash-card"><span>参加中の挑戦</span><strong>2件</strong></div>
-          <div class="dash-card"><span>紹介数</span><strong>8人</strong></div>
-          <div class="dash-card"><span>ファン化貢献</span><strong>14人</strong></div>
-          <div class="dash-card"><span>次回募集通知</span><strong>3件</strong></div>
-        </div>
-      </section>
-      <section class="section band">
-        <div class="section-head"><div><p class="eyebrow">History</p><h2>応援履歴</h2></div></div>
-        <div class="timeline">
-          <div class="timeline-item active"><span>2026.05.22</span><strong>防災×帽祭に初期応援者として参加</strong><p>応援グループに参加し、SNS共有を開始しました。</p></div>
-          <div class="timeline-item"><span>2026.05.23予定</span><strong>次回ロット通知を受け取る</strong><p>在庫が一定数以下になったら二次募集の案内が届きます。</p></div>
-          <div class="timeline-item"><span>次の称号</span><strong>持ち寄りアンバサダー</strong><p>紹介10人達成で称号付与予定です。</p></div>
+
+    <main id="supporter-root">
+      <section class="supporter-section">
+        <div class="supporter-empty">
+          <strong>応援者確認ページを読み込んでいます。</strong>
+          <p>参加状況を確認しています。</p>
         </div>
       </section>
     </main>
-    <footer class="site-footer"><div><strong>レボファンディング</strong><p>参加履歴を、応援の証に。</p></div><p>マイページはプロトタイプ表示です。</p>
-      <p class="footer-links"><a href="legal.html">法務・購入条件</a><span>特商法 / 返品 / 発送 / 個人情報</span></p>
-</footer>
+
     <div class="toast" role="status" aria-live="polite"></div>
-    <script src="script.js"></script>
+
+    <script src="site-config.js?v=20260611-supporter-room"></script>
+    <script>
+      const SUPPORTER_STATUS_ENDPOINT = window.REVO_SUPPORTER_STATUS_ENDPOINT || "";
+      const root = document.getElementById("supporter-root");
+
+      function params() {
+        return new URLSearchParams(location.search);
+      }
+
+      function escapeHtml(value) {
+        return String(value || "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+      }
+
+      function showToast(message) {
+        const toast = document.querySelector(".toast");
+        if (!toast) return;
+        toast.textContent = message;
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 1800);
+      }
+
+      function statusClass(status) {
+        if (status === "参加中" || status === "案内済み") return "good";
+        if (status === "保留" || status === "未確認") return "wait";
+        if (status === "停止") return "stop";
+        return "";
+      }
+
+      function statusStep(status) {
+        const steps = ["未確認", "案内済み", "参加中"];
+        const current = steps.indexOf(status);
+        return steps.map((step, index) => `<span class="supporter-pill ${index <= current ? "good" : ""}">${escapeHtml(step)}</span>`).join("");
+      }
+
+      function field(label, value, fallback = "未設定") {
+        return `<li><span>${escapeHtml(label)}</span><strong>${escapeHtml(value || fallback)}</strong></li>`;
+      }
+
+      function renderEntry(errorMessage = "") {
+        root.innerHTML = `
+          <section class="supporter-hero">
+            <div>
+              <p class="eyebrow">Supporter Room</p>
+              <h1>応援の状況を確認する</h1>
+              <p class="lead">フォーム送信後に届いた受付IDと確認キーで、参加状況、称号、対象の挑戦を確認できます。</p>
+            </div>
+            <div class="supporter-panel">
+              <p class="eyebrow">確認</p>
+              <h2>受付IDと確認キー</h2>
+              <form class="supporter-form" data-entry-form>
+                <label>受付ID<input name="id" placeholder="例: SP-001" autocomplete="off" /></label>
+                <label>確認キー<input name="key" placeholder="メールで届いた確認キー" autocomplete="off" /></label>
+                <button class="button primary" type="submit">確認する</button>
+              </form>
+              ${errorMessage ? `<p class="supporter-note">${escapeHtml(errorMessage)}</p>` : ""}
+            </div>
+          </section>
+        `;
+
+        root.querySelector("[data-entry-form]")?.addEventListener("submit", (event) => {
+          event.preventDefault();
+          const data = new FormData(event.currentTarget);
+          const id = String(data.get("id") || "").trim();
+          const key = String(data.get("key") || "").trim();
+          if (!id || !key) {
+            renderEntry("受付IDと確認キーを入力してください。");
+            return;
+          }
+          location.href = `mypage.html?id=${encodeURIComponent(id)}&key=${encodeURIComponent(key)}`;
+        });
+      }
+
+      function renderLoading() {
+        root.innerHTML = `
+          <section class="supporter-section">
+            <div class="supporter-empty supporter-loader">
+              <strong>参加状況を確認しています。</strong>
+              <span>少しだけお待ちください。</span>
+            </div>
+          </section>
+        `;
+      }
+
+      function renderNotConnected() {
+        root.innerHTML = `
+          <section class="supporter-hero">
+            <div>
+              <p class="eyebrow">Supporter Room</p>
+              <h1>応援者確認ページ</h1>
+              <p class="lead">このページは、応援者が自分の参加状況、称号、対象の挑戦を確認するためのページです。</p>
+              <div class="supporter-status-row"><span class="supporter-pill wait">接続準備中</span></div>
+            </div>
+            <div class="supporter-panel">
+              <p class="eyebrow">Next</p>
+              <h2>運営確認後に使えます</h2>
+              <p>Apps ScriptのウェブアプリURLを接続すると、受付IDと確認キーで自分の状態を確認できるようになります。</p>
+              <div class="supporter-actions">
+                <a class="button primary" href="supporters.html">応援者参加フォームへ</a>
+              </div>
+            </div>
+          </section>
+        `;
+      }
+
+      function renderSupporter(data) {
+        const supporter = data.supporter || {};
+        const status = supporter.status || "未確認";
+        document.title = `${supporter.nickname || "応援者"} 確認ページ | レボファンディング`;
+        root.innerHTML = `
+          <section class="supporter-hero">
+            <div>
+              <p class="eyebrow">Supporter Room</p>
+              <h1>${escapeHtml(supporter.nickname || "応援者")}</h1>
+              <p class="lead">${escapeHtml(supporter.target_challenge || "参加したい挑戦を確認中です。")}</p>
+              <div class="supporter-status-row">
+                <span class="supporter-pill ${statusClass(status)}">${escapeHtml(status)}</span>
+                <span class="supporter-pill">${escapeHtml(supporter.supporter_id || "")}</span>
+              </div>
+            </div>
+            <div class="supporter-panel">
+              <p class="eyebrow">Next</p>
+              <h2>${escapeHtml(supporter.next_action || "運営が内容を確認します。")}</h2>
+              <p class="supporter-note">参加状況は、運営確認後に更新されます。メールまたはLINEの案内もあわせて確認してください。</p>
+              <div class="supporter-actions">
+                <button class="button primary" type="button" data-copy-url>確認URLをコピー</button>
+                <a class="button secondary" href="supporters.html">応援ページを見る</a>
+              </div>
+            </div>
+          </section>
+
+          <section class="supporter-section">
+            <div class="supporter-grid">
+              <article class="supporter-card">
+                <p class="eyebrow">Status</p>
+                <h2>参加状況</h2>
+                <div class="supporter-status-row">${statusStep(status)}</div>
+                <ul class="supporter-list" style="margin-top:18px">
+                  ${field("対象の挑戦", supporter.target_challenge)}
+                  ${field("参加区分", supporter.join_type)}
+                  ${field("付与称号", supporter.badge)}
+                  ${field("紹介コード", supporter.referral_code)}
+                </ul>
+              </article>
+              <aside class="supporter-card">
+                <p class="eyebrow">Record</p>
+                <h2>応援内容</h2>
+                <ul class="supporter-list">
+                  ${field("協力できること", supporter.roles)}
+                  ${field("参加頻度", supporter.frequency)}
+                  ${field("LINE案内", supporter.line_open_chat_request)}
+                  ${field("メール案内", supporter.mail_request)}
+                </ul>
+              </aside>
+            </div>
+          </section>
+
+          <section class="supporter-section">
+            <article class="supporter-card">
+              <p class="eyebrow">Message</p>
+              <h2>応援メッセージ</h2>
+              <p class="lead">${escapeHtml(supporter.message || "応援メッセージは未入力です。")}</p>
+              <div class="supporter-status-row">
+                <span class="supporter-pill">同意確認: ${escapeHtml(supporter.agreement || "確認中")}</span>
+                <span class="supporter-pill">更新: ${escapeHtml(supporter.updated_at || "未設定")}</span>
+              </div>
+            </article>
+          </section>
+        `;
+
+        root.querySelector("[data-copy-url]")?.addEventListener("click", async () => {
+          try {
+            await navigator.clipboard.writeText(location.href);
+            showToast("確認URLをコピーしました");
+          } catch (error) {
+            showToast("URLをコピーできませんでした");
+          }
+        });
+      }
+
+      function jsonp(url) {
+        return new Promise((resolve, reject) => {
+          const callbackName = `revoSupporterCallback_${Date.now()}_${Math.floor(Math.random() * 100000)}`;
+          const script = document.createElement("script");
+          const timeout = setTimeout(() => {
+            cleanup();
+            reject(new Error("timeout"));
+          }, 12000);
+
+          function cleanup() {
+            clearTimeout(timeout);
+            delete window[callbackName];
+            script.remove();
+          }
+
+          window[callbackName] = (data) => {
+            cleanup();
+            resolve(data);
+          };
+
+          script.src = `${url}${url.includes("?") ? "&" : "?"}callback=${encodeURIComponent(callbackName)}`;
+          script.onerror = () => {
+            cleanup();
+            reject(new Error("load error"));
+          };
+          document.body.appendChild(script);
+        });
+      }
+
+      async function loadSupporter(id, key) {
+        if (!SUPPORTER_STATUS_ENDPOINT) {
+          renderNotConnected();
+          return;
+        }
+
+        renderLoading();
+        const url = `${SUPPORTER_STATUS_ENDPOINT}?action=getSupporterStatus&id=${encodeURIComponent(id)}&key=${encodeURIComponent(key)}`;
+        try {
+          const data = await jsonp(url);
+          if (!data || !data.ok) {
+            renderEntry(data && data.error ? data.error : "応援者情報を確認できませんでした。");
+            return;
+          }
+          renderSupporter(data);
+        } catch (error) {
+          renderEntry("確認ページに接続できませんでした。時間をおいてもう一度確認してください。");
+        }
+      }
+
+      const query = params();
+      const supporterId = query.get("id") || query.get("supporter_id") || "";
+      const supporterKey = query.get("key") || query.get("supporter_key") || "";
+
+      if (supporterId && supporterKey) {
+        loadSupporter(supporterId, supporterKey);
+      } else {
+        renderEntry();
+      }
+    </script>
   </body>
 </html>
