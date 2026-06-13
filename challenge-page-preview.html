@@ -1,0 +1,541 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>チャレンジページ確認案 | レボファンディング</title>
+    <meta name="description" content="レボファンディングのチャレンジページ情報仕様台帳 Ver 1.4 に基づく確認用ページです。" />
+    <link rel="icon" href="favicon.ico?v=20260602" sizes="any" />
+    <link rel="icon" href="favicon.svg?v=20260602" type="image/svg+xml" />
+    <link rel="icon" href="favicon-32.png?v=20260602" type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png?v=20260602" />
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      .challenge-spec-note {
+        margin: 0;
+        padding: 10px 18px;
+        border-bottom: 1px solid var(--line);
+        background: #fff7ed;
+        color: #9a3412;
+        font-size: 13px;
+        font-weight: 900;
+      }
+
+      .challenge-fv {
+        display: grid;
+        grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr);
+        gap: clamp(22px, 4vw, 46px);
+        align-items: start;
+        padding: clamp(24px, 4vw, 54px);
+        background: linear-gradient(115deg, #fff7f5, #fbfbfd 52%, #eef6ff);
+      }
+
+      .challenge-media,
+      .challenge-info,
+      .challenge-section-card,
+      .challenge-supporter-card {
+        border: 1px solid rgba(29, 29, 31, 0.1);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.92);
+        box-shadow: 0 18px 48px rgba(15, 23, 42, 0.08);
+      }
+
+      .challenge-main-visual {
+        display: grid;
+        min-height: clamp(320px, 44vw, 560px);
+        padding: clamp(24px, 5vw, 48px);
+        border-radius: 18px 18px 0 0;
+        background:
+          linear-gradient(140deg, rgba(247, 107, 84, 0.2), rgba(0, 122, 255, 0.16)),
+          url("onokun-a.jpeg") center / cover;
+        color: #fff;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .challenge-main-visual::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(17, 24, 39, 0.08), rgba(17, 24, 39, 0.58));
+      }
+
+      .challenge-main-visual > * {
+        position: relative;
+        z-index: 1;
+      }
+
+      .challenge-main-visual span {
+        align-self: start;
+        width: fit-content;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.18);
+        font-weight: 900;
+      }
+
+      .challenge-main-visual strong {
+        align-self: end;
+        max-width: 620px;
+        font-size: clamp(30px, 5vw, 64px);
+        line-height: 1.06;
+      }
+
+      .challenge-thumbs {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+        padding: 12px;
+      }
+
+      .challenge-thumb {
+        display: grid;
+        place-items: end start;
+        min-height: 96px;
+        padding: 10px;
+        border: 1px solid rgba(29, 29, 31, 0.08);
+        border-radius: 12px;
+        background: #f3f6fa;
+        color: #334155;
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .challenge-thumb:nth-child(1) {
+        background: linear-gradient(135deg, #ffe7df, #fff);
+      }
+
+      .challenge-thumb:nth-child(2) {
+        background: linear-gradient(135deg, #e7f3ff, #fff);
+      }
+
+      .challenge-thumb:nth-child(3) {
+        background: linear-gradient(135deg, #e9f9ef, #fff);
+      }
+
+      .challenge-thumb:nth-child(4) {
+        background: linear-gradient(135deg, #fff6d6, #fff);
+      }
+
+      .challenge-info {
+        padding: clamp(22px, 4vw, 38px);
+      }
+
+      .challenge-state-row,
+      .challenge-creator,
+      .challenge-deadline-row,
+      .challenge-avatar-row,
+      .challenge-step-row,
+      .challenge-meta-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .state-pill {
+        display: inline-flex;
+        align-items: center;
+        min-height: 34px;
+        padding: 7px 12px;
+        border-radius: 999px;
+        background: #ffe6df;
+        color: #b3311d;
+        font-weight: 900;
+      }
+
+      .round-pill {
+        display: inline-flex;
+        align-items: center;
+        min-height: 34px;
+        padding: 7px 12px;
+        border: 1px solid rgba(29, 29, 31, 0.1);
+        border-radius: 999px;
+        background: #fff;
+        color: #111827;
+        font-weight: 900;
+      }
+
+      .challenge-info h1 {
+        margin: 18px 0 12px;
+        font-size: clamp(34px, 5vw, 64px);
+        line-height: 1.04;
+      }
+
+      .challenge-creator {
+        margin: 0 0 22px;
+      }
+
+      .creator-photo {
+        display: inline-grid;
+        place-items: center;
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        background: #111827;
+        color: #fff;
+        font-weight: 900;
+      }
+
+      .challenge-progress-box {
+        padding: 18px;
+        border: 1px solid rgba(247, 107, 84, 0.28);
+        border-radius: 16px;
+        background: #fff7f5;
+      }
+
+      .challenge-progress-head {
+        display: flex;
+        justify-content: space-between;
+        gap: 14px;
+        margin-bottom: 12px;
+        color: #7f1d1d;
+        font-weight: 900;
+      }
+
+      .challenge-progress-head strong {
+        color: #111827;
+        font-size: clamp(30px, 5vw, 54px);
+        line-height: 1;
+      }
+
+      .challenge-progress-bar {
+        height: 12px;
+        overflow: hidden;
+        border-radius: 999px;
+        background: #f2d9d3;
+      }
+
+      .challenge-progress-bar span {
+        display: block;
+        width: 60%;
+        height: 100%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, #f76b54, #ff9a76);
+      }
+
+      .challenge-deadline-row {
+        justify-content: space-between;
+        margin: 18px 0;
+        padding: 14px 0;
+        border-top: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .challenge-deadline-row strong {
+        font-size: 24px;
+      }
+
+      .challenge-cta {
+        display: grid;
+        gap: 10px;
+        margin: 16px 0;
+      }
+
+      .challenge-step-row {
+        margin-top: 18px;
+        color: #4b5563;
+        font-size: 14px;
+        font-weight: 900;
+      }
+
+      .challenge-step-row span {
+        padding: 8px 10px;
+        border-radius: 999px;
+        background: #eefbf2;
+        color: #166534;
+      }
+
+      .challenge-step-row span.locked {
+        background: #f3f4f6;
+        color: #6b7280;
+      }
+
+      .challenge-avatar-row {
+        margin: 18px 0 8px;
+      }
+
+      .supporter-avatar {
+        display: inline-grid;
+        place-items: center;
+        width: 34px;
+        height: 34px;
+        margin-right: -6px;
+        border: 2px solid #fff;
+        border-radius: 50%;
+        background: #dbeafe;
+        color: #1d4ed8;
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .challenge-meta-row {
+        align-items: stretch;
+        margin-top: 18px;
+      }
+
+      .challenge-meta-row div {
+        flex: 1 1 150px;
+        padding: 14px;
+        border: 1px solid rgba(29, 29, 31, 0.08);
+        border-radius: 14px;
+        background: #fbfbfd;
+      }
+
+      .challenge-meta-row span,
+      .challenge-section-card span {
+        display: block;
+        color: #6b7280;
+        font-size: 13px;
+        font-weight: 900;
+      }
+
+      .challenge-meta-row strong {
+        display: block;
+        margin-top: 4px;
+        color: #111827;
+        font-size: 22px;
+      }
+
+      .challenge-body-preview {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(320px, 0.46fr);
+        gap: 18px;
+        padding: clamp(24px, 4vw, 54px);
+      }
+
+      .challenge-section-card,
+      .challenge-supporter-card {
+        padding: clamp(22px, 4vw, 38px);
+      }
+
+      .challenge-section-card h2,
+      .challenge-supporter-card h2 {
+        margin-top: 6px;
+        font-size: clamp(30px, 4.2vw, 52px);
+      }
+
+      .challenge-points {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 18px;
+      }
+
+      .challenge-points div,
+      .locked-boost {
+        padding: 16px;
+        border: 1px solid rgba(29, 29, 31, 0.08);
+        border-radius: 14px;
+        background: #f8fafc;
+        font-weight: 900;
+      }
+
+      .locked-boost {
+        margin-top: 18px;
+        background: #eff6ff;
+        color: #1d4ed8;
+      }
+
+      .challenge-tab-preview {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 18px 0 0;
+      }
+
+      .challenge-tab-preview span {
+        padding: 10px 12px;
+        border-radius: 999px;
+        background: #fff;
+        border: 1px solid var(--line);
+        color: #111827;
+      }
+
+      .badge-list {
+        display: grid;
+        gap: 10px;
+        margin: 18px 0 0;
+      }
+
+      .badge-list div {
+        padding: 14px;
+        border-radius: 14px;
+        background: #fff7ed;
+        color: #9a3412;
+        font-weight: 900;
+      }
+
+      @media (max-width: 980px) {
+        .challenge-fv,
+        .challenge-body-preview {
+          grid-template-columns: 1fr;
+        }
+
+        .challenge-points {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 720px) {
+        .challenge-fv,
+        .challenge-body-preview {
+          padding: 18px;
+        }
+
+        .challenge-thumbs {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .challenge-info h1 {
+          font-size: clamp(34px, 11vw, 48px);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="レボファンディング トップへ">
+        <span class="brand-mark" aria-hidden="true">R</span>
+        <span><strong>レボファンディング</strong><small>Challenge Preview</small></span>
+      </a>
+      <nav class="nav" aria-label="主要ナビゲーション">
+        <a href="index.html">トップ</a>
+        <a href="revolist.html">全体構造</a>
+        <a href="concept.html">仕組み</a>
+        <a href="supporters.html">応援する</a>
+        <a href="shop.html">買って広げる</a>
+        <a href="challenger.html">挑戦する</a>
+        <a href="representative.html">運営</a>
+      </nav>
+    </header>
+
+    <p class="challenge-spec-note">確認用ページです。本番のチャレンジページはまだ変更していません。</p>
+
+    <main>
+      <section class="challenge-fv" aria-labelledby="challenge-title">
+        <div class="challenge-media" aria-label="左ゾーン：ビジュアル">
+          <div class="challenge-main-visual">
+            <span>S1：挑戦者の顔が見える写真を置く場所</span>
+            <strong>最初の仲間を探している挑戦</strong>
+          </div>
+          <div class="challenge-thumbs" aria-label="サブサムネイル">
+            <div class="challenge-thumb">挑戦者</div>
+            <div class="challenge-thumb">制作過程</div>
+            <div class="challenge-thumb">立てられた旗</div>
+            <div class="challenge-thumb">応援者</div>
+          </div>
+        </div>
+
+        <aside class="challenge-info" aria-label="右ゾーン：挑戦内容">
+          <div class="challenge-state-row">
+            <span class="state-pill">スパーク募集中</span>
+            <span class="round-pill">第1巡目</span>
+          </div>
+
+          <h1 id="challenge-title">防災×帽祭 Tシャツプロジェクト</h1>
+
+          <div class="challenge-creator">
+            <span class="creator-photo">防</span>
+            <div>
+              <strong>防災×帽祭 実行チーム</strong>
+              <p class="muted-text">挑戦者の顔写真と名前は省略しない</p>
+            </div>
+          </div>
+
+          <div class="challenge-progress-box">
+            <div class="challenge-progress-head">
+              <div>
+                <span>進行中の組</span>
+                <strong>12 / 20人</strong>
+              </div>
+              <div>
+                <span>1人あたり</span>
+                <strong>10,000円</strong>
+              </div>
+            </div>
+            <div class="challenge-progress-bar" aria-label="20人中12人が参加"><span></span></div>
+            <p>2組目募集中。1人 10,000円 × 20人 = 1組 200,000円</p>
+          </div>
+
+          <div class="challenge-deadline-row">
+            <span>スパーク締切</span>
+            <strong>残り9日</strong>
+            <span>2026年6月22日</span>
+          </div>
+
+          <div class="challenge-meta-row">
+            <div><span>累計応援者</span><strong>32人</strong></div>
+            <div><span>目標金額</span><strong>200,000円</strong></div>
+          </div>
+
+          <div class="challenge-avatar-row" aria-label="直近の応援者">
+            <span class="supporter-avatar">A</span>
+            <span class="supporter-avatar">B</span>
+            <span class="supporter-avatar">C</span>
+            <span class="supporter-avatar">D</span>
+            <span class="supporter-avatar">E</span>
+            <strong>+27人</strong>
+          </div>
+
+          <div class="challenge-step-row">
+            <span>STEP1 スパーク達成まであと8人</span>
+            <span class="locked">STEP2 旗の募集は達成後に公開</span>
+          </div>
+
+          <div class="challenge-cta">
+            <a class="button primary" href="supporters.html#spark-room">最初の15人になる</a>
+            <a class="button secondary" href="#transparency">資金使途を見る</a>
+          </div>
+
+          <p class="notice-inline">シェアボタンはFVに小さく置いてよい。詳細説明はスクロール先へ。</p>
+        </aside>
+      </section>
+
+      <section class="challenge-body-preview" aria-label="FV下の構成">
+        <article class="challenge-section-card">
+          <span>FV直下</span>
+          <h2>このプロジェクトのポイント</h2>
+          <div class="challenge-points">
+            <div>防災を日常で話しやすくする</div>
+            <div>最初の仲間から旗が生まれる</div>
+            <div>達成後に同じURLでブーストへ拡張</div>
+          </div>
+          <div class="locked-boost">15人が集まると、この挑戦の「旗」の募集が始まります。（内容は達成後に公開）</div>
+          <div class="challenge-tab-preview">
+            <span>挑戦</span>
+            <span>巡の記録</span>
+            <span>応援コメント</span>
+          </div>
+        </article>
+
+        <aside class="challenge-supporter-card">
+          <span>旗の履歴書</span>
+          <h2>応援は、経歴になる。</h2>
+          <p>金額は表示しません。回数と本数だけを、応援者の履歴として残します。</p>
+          <div class="badge-list">
+            <div>はじめての旗</div>
+            <div>最初の15人になった回数</div>
+            <div>達成させた挑戦の数</div>
+          </div>
+        </aside>
+      </section>
+
+      <section id="transparency" class="section">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Transparency</p>
+            <h2>金額は主役にせず、透明性として置く。</h2>
+          </div>
+          <p>FVでは人数・旗本数を主役にし、金額は小さく併記します。資金使途の詳細、FAQ、注意書き全文はこの先のスクロール先で説明します。</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div><strong>レボファンディング</strong><p>チャレンジページ確認案</p></div>
+      <p>このページは台帳 Ver 1.4 の表示確認用です。</p>
+      <p class="footer-links"><a href="legal.html">法務・購入条件</a><span>特商法 / 返品 / 発送 / 個人情報</span></p>
+    </footer>
+  </body>
+</html>
