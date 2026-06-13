@@ -1,0 +1,85 @@
+:root {
+  color-scheme: light;
+
+  /* Base */
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --c-ink: #111827;
+  --c-body: #374151;
+  --c-muted: #6B7280;
+  --c-line: #E5E7EB;
+  --c-bg: #F6F7F9;
+  --c-surface: #FFFFFF;
+  --c-surface-soft: #F9FAFB;
+
+  /* Challenge types */
+  --c-kian: #F5333A;
+  --c-spark: #FF7A00;
+  --c-boost: #0A6CF0;
+  --c-art: #8A2BE2;
+
+  --c-kian-pale: #FFE6E8;
+  --c-spark-pale: #FFF0E0;
+  --c-boost-pale: #E7F0FF;
+  --c-art-pale: #F1E7FF;
+
+  /* Shared states */
+  --c-done: #1D9E75;
+  --c-rush: #D8420F;
+  --c-done-pale: #E8F7F1;
+  --c-rush-pale: #FFF0E8;
+
+  /* Metallic honors */
+  --c-gold: linear-gradient(135deg, #8C6100 0%, #D7A91F 18%, #FFF3B0 37%, #B87A00 56%, #F8D66D 74%, #A36C00 100%);
+  --c-gold-pale: linear-gradient(135deg, #FFF7CF 0%, #FFE7A0 45%, #F7CD63 100%);
+  --c-platinum: linear-gradient(135deg, #D7DEE8 0%, #FFFFFF 21%, #AEB8C7 42%, #F8FBFF 63%, #C5CEDB 82%, #FFFFFF 100%);
+  --c-platinum-pale: linear-gradient(135deg, #F8FBFF 0%, #E8EEF6 52%, #FFFFFF 100%);
+  --metal-highlight: linear-gradient(115deg, transparent 0%, rgba(255,255,255,0) 35%, rgba(255,255,255,0.82) 48%, rgba(255,255,255,0) 62%, transparent 100%);
+
+  /* Shape */
+  --ratio-card: 1200 / 630;
+  --radius-card: 12px;
+  --radius-button: 999px;
+  --shadow-card: 0 3px 12px rgba(0,0,0,0.07);
+  --bar-width: 5px;
+
+  /* Type */
+  --fs-caption: 12px;
+  --fs-body: 15px;
+  --fs-lead: 18px;
+  --fs-heading: 24px;
+  --fs-title: 32px;
+  --fs-display: 48px;
+  --lh-tight: 1.15;
+  --lh-body: 1.7;
+  --weight-regular: 400;
+  --weight-bold: 800;
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+}
+
+.rf-metal {
+  position: relative;
+  overflow: hidden;
+}
+
+.rf-metal::after {
+  content: "";
+  position: absolute;
+  inset: -45%;
+  background: var(--metal-highlight);
+  transform: translateX(-28%) rotate(12deg);
+  pointer-events: none;
+}
+
+.rf-gold {
+  background: var(--c-gold);
+}
+
+.rf-platinum {
+  background: var(--c-platinum);
+}
