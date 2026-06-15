@@ -1,0 +1,369 @@
+@import url("./tokens.css");
+
+.rf-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(520px, 1fr));
+  align-items: stretch;
+  gap: var(--space-4);
+}
+
+.rf-card {
+  --rf-accent: var(--c-spark);
+  --rf-pale: var(--c-spark-pale);
+  --rf-state: var(--rf-accent);
+  --rf-focal-x: 50%;
+  --rf-focal-y: 50%;
+  --rf-image-fit: cover;
+  --rf-image-scale: 1;
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--bar-width) minmax(0, 1fr);
+  aspect-ratio: auto;
+  height: auto;
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid var(--c-line);
+  border-radius: 0 var(--radius-card) var(--radius-card) 0;
+  background: var(--c-surface);
+  box-shadow: var(--shadow-card);
+  color: var(--c-ink);
+  width: 100%;
+  max-width: 100%;
+}
+
+.rf-card::before {
+  content: "";
+  background: var(--rf-accent);
+}
+
+.rf-card__inner {
+  min-width: 0;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto minmax(0, 1fr);
+}
+
+.rf-card__media {
+  position: relative;
+  aspect-ratio: var(--ratio-card);
+  width: 100%;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--rf-pale);
+}
+
+.rf-card__media img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: var(--rf-image-fit);
+  object-position: var(--rf-focal-x) var(--rf-focal-y);
+  transform: scale(var(--rf-image-scale));
+  transform-origin: var(--rf-focal-x) var(--rf-focal-y);
+}
+
+.rf-card__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--hero-overlay-bottom);
+  pointer-events: none;
+}
+
+.rf-card__badge-row {
+  position: absolute;
+  inset: var(--space-3) var(--space-3) auto var(--space-3);
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.rf-card__badge {
+  display: inline-flex;
+  min-height: 30px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-button);
+  background: var(--rf-accent);
+  color: var(--c-surface);
+  font-size: var(--fs-caption);
+  font-weight: var(--weight-bold);
+  box-shadow: var(--shadow-badge);
+}
+
+.rf-card__badge--state {
+  background: var(--rf-state);
+}
+
+.rf-card__body {
+  min-width: 0;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: auto auto auto auto auto;
+  align-content: start;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  overflow-wrap: anywhere;
+}
+
+.rf-card__title {
+  margin: 0;
+  font-size: clamp(18px, 2vw, var(--fs-heading));
+  line-height: var(--lh-tight);
+  letter-spacing: 0;
+  overflow-wrap: anywhere;
+}
+
+.rf-card__owner {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--c-body);
+  font-size: var(--fs-caption);
+  font-weight: var(--weight-bold);
+}
+
+.rf-card__owner span:last-child {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rf-card__avatar {
+  flex: 0 0 auto;
+  width: 30px;
+  height: 30px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--c-ink);
+  color: var(--c-surface);
+  font-size: var(--fs-caption);
+  font-weight: var(--weight-bold);
+}
+
+.rf-card__main {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-2);
+  align-items: start;
+}
+
+.rf-card__primary span,
+.rf-card__side span,
+.rf-card__formula span,
+.rf-card__meta span {
+  display: block;
+  color: var(--c-muted);
+  font-size: var(--fs-caption);
+  font-weight: var(--weight-bold);
+}
+
+.rf-card__primary strong {
+  display: block;
+  margin-top: var(--space-1);
+  color: var(--c-ink);
+  font-size: clamp(28px, 4vw, 44px);
+  line-height: 1;
+  overflow-wrap: anywhere;
+}
+
+.rf-card__side {
+  min-width: 0;
+  text-align: left;
+}
+
+.rf-card__side strong {
+  display: block;
+  margin-top: var(--space-1);
+  color: var(--c-ink);
+  font-size: clamp(18px, 2vw, var(--fs-heading));
+  line-height: 1;
+}
+
+.rf-card__bar {
+  height: 10px;
+  overflow: hidden;
+  border-radius: var(--radius-button);
+  background: var(--rf-pale);
+}
+
+.rf-card__bar span {
+  display: block;
+  width: var(--rf-progress, 0%);
+  height: 100%;
+  border-radius: inherit;
+  background: var(--rf-state);
+}
+
+.rf-card__formula {
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--c-line);
+  border-radius: calc(var(--radius-card) - 2px);
+  background: var(--c-surface-soft);
+}
+
+.rf-card__formula strong {
+  display: block;
+  margin-top: var(--space-1);
+  font-size: clamp(13px, 1.4vw, var(--fs-body));
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.rf-card__footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+  justify-content: space-between;
+}
+
+.rf-card__meta {
+  min-width: 0;
+}
+
+.rf-card__meta strong {
+  display: block;
+  margin-top: var(--space-1);
+  font-size: clamp(13px, 1.4vw, var(--fs-body));
+}
+
+.rf-card__cta {
+  display: inline-flex;
+  min-height: 34px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-button);
+  background: var(--rf-accent);
+  color: var(--c-surface);
+  font-size: var(--fs-caption);
+  font-weight: var(--weight-bold);
+  text-decoration: none;
+  text-align: center;
+}
+
+.rf-card--kian {
+  --rf-accent: var(--c-kian);
+  --rf-pale: var(--c-kian-pale);
+}
+
+.rf-card--spark {
+  --rf-accent: var(--c-spark);
+  --rf-pale: var(--c-spark-pale);
+}
+
+.rf-card--boost {
+  --rf-accent: var(--c-boost);
+  --rf-pale: var(--c-boost-pale);
+}
+
+.rf-card--art {
+  --rf-accent: var(--c-art);
+  --rf-pale: var(--c-art-pale);
+}
+
+.rf-card--done {
+  --rf-state: var(--c-done);
+  --rf-pale: var(--c-done-pale);
+}
+
+.rf-card--rush {
+  --rf-state: var(--c-rush);
+  --rf-pale: var(--c-rush-pale);
+}
+
+.rf-card--gold {
+  --rf-accent: var(--c-gold);
+  --rf-pale: var(--c-gold-pale);
+  --rf-state: var(--c-gold);
+}
+
+.rf-card--platinum {
+  --rf-accent: var(--c-platinum);
+  --rf-pale: var(--c-platinum-pale);
+  --rf-state: var(--c-platinum);
+}
+
+.rf-card.rf-metal::after {
+  display: none;
+}
+
+.rf-card--gold .rf-card__media,
+.rf-card--gold .rf-card__badge {
+  background: var(--c-gold);
+}
+
+.rf-card--platinum .rf-card__media,
+.rf-card--platinum .rf-card__badge {
+  background: var(--c-platinum);
+}
+
+.rf-card--gold .rf-card__media::before,
+.rf-card--platinum .rf-card__media::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: var(--metal-highlight);
+  pointer-events: none;
+}
+
+.rf-card--person .rf-card__media {
+  display: grid;
+  place-items: center;
+  padding: var(--space-5);
+}
+
+.rf-card__person-mark {
+  position: relative;
+  z-index: 2;
+  width: min(44%, 148px);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--c-surface) 72%, transparent);
+  color: var(--c-ink);
+  font-size: clamp(34px, 8vw, 64px);
+  font-weight: var(--weight-bold);
+  box-shadow: var(--shadow-card);
+}
+
+@media (max-width: 900px) {
+  .rf-card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .rf-card__body {
+    padding: var(--space-3);
+  }
+
+  .rf-card__footer {
+    align-items: stretch;
+  }
+
+  .rf-card__cta {
+    width: 100%;
+  }
+}
+
+@media (max-width: 520px) {
+  .rf-card__badge {
+    min-height: 28px;
+    padding-inline: var(--space-2);
+  }
+}
+
+.rf-card--person .rf-card__primary strong {
+  font-size: clamp(20px, 2.5vw, 28px);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
