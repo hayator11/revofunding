@@ -2,7 +2,7 @@
 
 .rf-card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(520px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   align-items: stretch;
   gap: var(--space-4);
 }
@@ -336,7 +336,7 @@
   box-shadow: var(--shadow-card);
 }
 
-@media (max-width: 900px) {
+@media (max-width: 767px) {
   .rf-card-grid {
     grid-template-columns: 1fr;
   }
