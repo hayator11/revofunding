@@ -1204,6 +1204,103 @@
   border-inline-start: var(--revo-card-accent-width) solid var(--revo-color-art);
 }
 
+.rf-art-hero {
+  grid-template-columns: minmax(0, 1.25fr) minmax(260px, 0.75fr);
+  gap: var(--revo-space-6);
+  max-width: none;
+  padding: var(--revo-space-7);
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 82% 18%, rgba(244, 114, 182, 0.2), transparent 28%),
+    radial-gradient(circle at 58% 90%, rgba(56, 189, 248, 0.16), transparent 34%),
+    linear-gradient(135deg, rgba(255, 241, 242, 0.98), rgba(255, 255, 255, 0.92) 54%, rgba(245, 243, 255, 0.92));
+  border: 1px solid rgba(139, 92, 246, 0.18);
+  border-inline-start: 0;
+  border-radius: var(--revo-radius-card);
+  box-shadow: var(--revo-shadow-card);
+}
+
+.rf-art-hero__copy {
+  display: grid;
+  gap: var(--revo-space-3);
+  min-width: 0;
+}
+
+.rf-art-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--revo-space-2);
+  margin-top: var(--revo-space-2);
+}
+
+.rf-art-hero__visual {
+  position: relative;
+  display: grid;
+  min-height: 280px;
+  overflow: hidden;
+  border: 1px solid rgba(139, 92, 246, 0.18);
+  border-radius: calc(var(--revo-radius-card) + var(--revo-space-1));
+  background:
+    linear-gradient(135deg, rgba(139, 92, 246, 0.13), rgba(255, 255, 255, 0.48)),
+    radial-gradient(circle at 34% 40%, rgba(251, 191, 36, 0.22), transparent 28%);
+}
+
+.rf-art-hero__visual::before,
+.rf-art-hero__visual::after {
+  content: "";
+  position: absolute;
+  inset-inline: 12%;
+  height: 4px;
+  background: linear-gradient(90deg, rgba(244, 114, 182, 0), rgba(244, 114, 182, 0.85), rgba(56, 189, 248, 0.72), rgba(251, 191, 36, 0));
+  border-radius: var(--revo-radius-pill);
+}
+
+.rf-art-hero__visual::before {
+  inset-block-start: 34%;
+  transform: rotate(-10deg);
+}
+
+.rf-art-hero__visual::after {
+  inset-block-end: 28%;
+  transform: rotate(8deg);
+}
+
+.rf-art-hero__shape {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(5rem, 34%, 8rem);
+  aspect-ratio: 1;
+  color: var(--revo-color-text-main);
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.92);
+  border-radius: 38% 62% 52% 48%;
+  box-shadow: 0 22px 50px rgba(139, 92, 246, 0.16);
+  font-size: var(--revo-font-size-16);
+  font-weight: var(--revo-font-weight-black);
+}
+
+.rf-art-hero__shape--wall {
+  inset-block-start: 15%;
+  inset-inline-start: 8%;
+  color: #2563eb;
+}
+
+.rf-art-hero__shape--car {
+  inset-block-start: 36%;
+  inset-inline-end: 10%;
+  color: #f97316;
+  border-radius: 60% 40% 45% 55%;
+}
+
+.rf-art-hero__shape--hat {
+  inset-block-end: 10%;
+  inset-inline-start: 28%;
+  color: #a855f7;
+  border-radius: 50% 50% 35% 65%;
+}
+
 .rf-art-detail__hero-grid {
   display: grid;
   grid-template-columns: minmax(180px, 0.8fr) minmax(0, 1.3fr) auto;
@@ -1266,6 +1363,68 @@
   margin-bottom: var(--revo-space-6);
 }
 
+.rf-art-feature {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(260px, 0.75fr);
+  gap: var(--revo-space-5);
+  align-items: stretch;
+  margin-bottom: var(--revo-space-6);
+}
+
+.rf-art-feature__main,
+.rf-art-feature__points,
+.rf-art-flow,
+.rf-art-final-cta {
+  min-width: 0;
+  padding: var(--revo-space-5);
+  background: var(--revo-color-bg-card);
+  border: 1px solid var(--revo-color-border);
+  border-radius: var(--revo-radius-card);
+  box-shadow: var(--revo-shadow-card);
+}
+
+.rf-art-feature__main {
+  display: grid;
+  gap: var(--revo-space-3);
+  background:
+    radial-gradient(circle at 94% 12%, rgba(139, 92, 246, 0.13), transparent 32%),
+    var(--revo-color-bg-card);
+}
+
+.rf-art-feature__main h2,
+.rf-art-flow h2,
+.rf-art-final-cta h2 {
+  margin: 0;
+  font-size: var(--revo-font-size-24);
+  line-height: var(--revo-line-height-heading);
+}
+
+.rf-art-feature__points {
+  display: grid;
+  gap: var(--revo-space-3);
+}
+
+.rf-art-feature-card {
+  display: grid;
+  gap: var(--revo-space-2);
+  padding: var(--revo-space-4);
+  background: var(--revo-color-bg-purple-soft);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  border-radius: var(--revo-radius-sm);
+}
+
+.rf-art-feature-card__label {
+  color: var(--revo-color-art);
+  font-size: var(--revo-font-size-14);
+  font-weight: var(--revo-font-weight-black);
+}
+
+.rf-art-feature-card p {
+  margin: 0;
+  color: var(--revo-color-text-sub);
+  font-size: var(--revo-font-size-14);
+}
+
 .rf-art-section__head {
   display: flex;
   flex-wrap: wrap;
@@ -1310,6 +1469,59 @@
   gap: var(--revo-space-5);
   align-items: stretch;
   margin-bottom: var(--revo-space-6);
+}
+
+.rf-art-flow {
+  display: grid;
+  gap: var(--revo-space-4);
+  margin-bottom: var(--revo-space-6);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(245, 243, 255, 0.78));
+}
+
+.rf-art-flow__list {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--revo-space-3);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.rf-art-flow__list li {
+  display: grid;
+  gap: var(--revo-space-2);
+  min-width: 0;
+  padding: var(--revo-space-4);
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(139, 92, 246, 0.16);
+  border-radius: var(--revo-radius-sm);
+}
+
+.rf-art-flow__list span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  aspect-ratio: 1;
+  color: #fff;
+  background: var(--revo-color-art);
+  border-radius: var(--revo-radius-pill);
+  font-size: var(--revo-font-size-caption);
+  font-weight: var(--revo-font-weight-black);
+}
+
+.rf-art-flow__list strong {
+  font-size: var(--revo-font-size-14);
+  line-height: var(--revo-line-height-caption);
+}
+
+.rf-art-flow__list p {
+  margin: 0;
+  color: var(--revo-color-text-sub);
+  font-size: var(--revo-font-size-caption);
+  line-height: var(--revo-line-height-caption);
+  overflow-wrap: anywhere;
 }
 
 .rf-card--art {
@@ -1467,9 +1679,14 @@
 }
 
 .rf-art-card__title {
+  display: -webkit-box;
+  overflow: hidden;
+  min-height: 3.2em;
   font-size: var(--revo-font-size-20);
   font-weight: var(--revo-font-weight-black);
   line-height: var(--revo-line-height-heading);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .rf-art-card__theme {
@@ -1495,11 +1712,24 @@
   font-weight: var(--revo-font-weight-bold);
 }
 
+.rf-art-card__short-message {
+  display: -webkit-box;
+  overflow: hidden;
+  min-height: 5.4em;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+}
+
 .rf-art-card__labels,
 .rf-art-detail__labels {
   display: flex;
   flex-wrap: wrap;
   gap: var(--revo-space-1);
+}
+
+.rf-art-card__labels {
+  min-height: 2.1em;
+  align-content: flex-start;
 }
 
 .rf-art-application {
@@ -1570,6 +1800,10 @@
   margin-top: auto;
 }
 
+.rf-art-card__actions {
+  width: 100%;
+}
+
 .rf-art-action,
 .rf-art-card__detail-link,
 .rf-art-detail__back-link {
@@ -1594,8 +1828,9 @@
 
 .rf-art-action--link {
   color: var(--revo-color-bg-card);
-  background: var(--revo-color-art);
+  background: linear-gradient(135deg, #f472b6 0%, var(--revo-color-art) 100%);
   border-color: var(--revo-color-art);
+  box-shadow: 0 14px 28px rgba(139, 92, 246, 0.18);
   cursor: pointer;
 }
 
@@ -1604,6 +1839,19 @@
   color: var(--revo-color-art);
   background: var(--revo-color-bg-purple-soft);
   border: 1px solid rgba(139, 92, 246, 0.28);
+}
+
+.rf-art-final-cta {
+  display: grid;
+  gap: var(--revo-space-3);
+  margin-bottom: var(--revo-space-6);
+  background:
+    radial-gradient(circle at 82% 20%, rgba(244, 114, 182, 0.16), transparent 30%),
+    linear-gradient(135deg, rgba(255, 241, 242, 0.98), rgba(245, 243, 255, 0.88));
+}
+
+.rf-art-final-cta .rf-art-action {
+  justify-self: start;
 }
 
 .rf-art-support-grid {
@@ -2389,6 +2637,16 @@
 }
 
 @media (max-width: 760px) {
+  .rf-art-hero,
+  .rf-art-feature,
+  .rf-art-flow__list {
+    grid-template-columns: 1fr;
+  }
+
+  .rf-art-hero__visual {
+    min-height: 220px;
+  }
+
   .revo-support-map-japan__grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -2465,6 +2723,9 @@
   }
 
   .rf-art-grid,
+  .rf-art-hero,
+  .rf-art-feature,
+  .rf-art-flow__list,
   .rf-art-support-grid,
   .rf-art-counter-grid,
   .rf-art-winning-spot-counters,
@@ -2477,6 +2738,11 @@
   }
 
   .rf-card--art,
+  .rf-art-hero,
+  .rf-art-feature__main,
+  .rf-art-feature__points,
+  .rf-art-flow,
+  .rf-art-final-cta,
   .rf-art-map-placeholder,
   .rf-art-counter-grid,
   .rf-art-winning-spot,

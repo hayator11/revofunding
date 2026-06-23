@@ -14,11 +14,40 @@
 <body class="rf-art-page-body">
   <main class="rf-art-page" data-revo-art-page="list">
     <header class="rf-art-hero">
-      <p class="rf-art-hero__eyebrow">レボアート</p>
-      <h1>応援の物語を、アートで全国へ広げる。</h1>
-      <p class="rf-art-hero__lead">レボアートは、ウォールアート・カーアート・ハットアートを通じて、応援や社会的メッセージを形にする企画です。</p>
-      <p class="rf-art-hero__text">参加は申請制です。申請内容を運営サイドで確認し、抽選・決定したものを当選レボアートスポットとして掲載していきます。</p>
+      <div class="rf-art-hero__copy">
+        <p class="rf-art-hero__eyebrow">レボアート特集</p>
+        <h1>アートの力で、応援を街に広げる。</h1>
+        <p class="rf-art-hero__lead">ウォールアート、カーアート、ハットアート。想いを可視化するレボアートで、挑戦者をひとりにしない応援の景色をつくります。</p>
+        <p class="rf-art-hero__text">参加は申請制です。申請内容を運営サイドで確認し、抽選・決定したものを当選レボアートスポットとして掲載していきます。</p>
+        <div class="rf-art-hero__actions" aria-label="レボアート特集の導線">
+          <a class="rf-art-action rf-art-action--link" href="https://docs.google.com/forms/d/e/1FAIpQLSdII732mhijp5vlt-iWxg1qCv-Uli03VYySpiQ3EapsZy0O_w/viewform?usp=dialog" target="_blank" rel="noopener noreferrer">申請受付へ</a>
+          <a class="rf-art-card__detail-link" href="#rf-art-categories">3つのレボアートを見る</a>
+        </div>
+      </div>
+      <div class="rf-art-hero__visual" aria-hidden="true">
+        <span class="rf-art-hero__shape rf-art-hero__shape--wall">Wall</span>
+        <span class="rf-art-hero__shape rf-art-hero__shape--car">Car</span>
+        <span class="rf-art-hero__shape rf-art-hero__shape--hat">Hat</span>
+      </div>
     </header>
+
+    <section class="rf-art-feature" aria-labelledby="rf-art-about-title">
+      <div class="rf-art-feature__main">
+        <span class="rf-art-badge">レボアートとは</span>
+        <h2 id="rf-art-about-title">日常にあるものを、応援のメディアに変える。</h2>
+        <p class="rf-art-text">レボアートは、アートを通じて挑戦者への応援を見える形にする取り組みです。壁、車、帽子など、日常の中にあるものを応援のメディアに変え、地域や人の想いをつなげていきます。</p>
+      </div>
+      <div class="rf-art-feature__points" aria-label="レボアートの特徴">
+        <div class="rf-art-feature-card">
+          <span class="rf-art-feature-card__label">見える応援</span>
+          <p>想いやメッセージを、街や人の動きの中で見える形にします。</p>
+        </div>
+        <div class="rf-art-feature-card">
+          <span class="rf-art-feature-card__label">申請制</span>
+          <p>運営確認・抽選・決定を経て、公開許可済みのスポットを掲載します。</p>
+        </div>
+      </div>
+    </section>
 
     <section class="rf-art-section" aria-labelledby="rf-art-application-title">
       <div class="rf-art-section__head">
@@ -30,9 +59,25 @@
 
     <div id="rf-art-message" class="rf-art-message">revo-art-data.json を読み込み中です。</div>
 
-    <section aria-label="レボアートカテゴリ一覧">
+    <section id="rf-art-categories" aria-label="レボアートカテゴリ一覧">
       <div id="rf-art-list" class="rf-art-grid"></div>
     </section>
+
+    <section class="rf-art-flow" aria-labelledby="rf-art-flow-title">
+      <div class="rf-art-section__head">
+        <span class="rf-art-badge">申請から掲載まで</span>
+        <h2 id="rf-art-flow-title">当選スポットは、運営確認を経て公開されます。</h2>
+      </div>
+      <ol class="rf-art-flow__list">
+        <li><span>1</span><strong>申請受付</strong><p>フォームからレボアートの申請内容を送ります。</p></li>
+        <li><span>2</span><strong>運営確認</strong><p>内容や公開条件を運営サイドで確認します。</p></li>
+        <li><span>3</span><strong>抽選・決定</strong><p>申請内容をもとに抽選・決定します。</p></li>
+        <li><span>4</span><strong>スポット掲載</strong><p>公開許可済みの当選レボアートスポットを掲載します。</p></li>
+        <li><span>5</span><strong>全国応援Mapへ</strong><p>公開許可済み地域として、応援の広がりを表示します。</p></li>
+      </ol>
+    </section>
+
+    <section id="rf-art-winning-spot" class="rf-art-winning-spot" aria-label="当選レボアートスポット掲載予定"></section>
 
     <section class="revo-support-map" aria-labelledby="revo-support-map-title">
       <div class="revo-support-map__head">
@@ -46,7 +91,12 @@
       <div id="revo-support-map" class="revo-support-map__body" aria-label="全国応援Map集計"></div>
     </section>
 
-    <section id="rf-art-winning-spot" class="rf-art-winning-spot" aria-label="当選レボアートスポット掲載予定"></section>
+    <section class="rf-art-final-cta" aria-labelledby="rf-art-final-cta-title">
+      <span class="rf-art-badge">申請受付中</span>
+      <h2 id="rf-art-final-cta-title">応援の景色を、あなたの場所から広げる。</h2>
+      <p class="rf-art-text">申請受付後、運営確認・抽選・決定を経て、公開許可済みのレボアートスポットを順次掲載します。</p>
+      <a class="rf-art-action rf-art-action--link" href="https://docs.google.com/forms/d/e/1FAIpQLSdII732mhijp5vlt-iWxg1qCv-Uli03VYySpiQ3EapsZy0O_w/viewform?usp=dialog" target="_blank" rel="noopener noreferrer">申請受付へ</a>
+    </section>
 
     <p class="rf-art-note">このページでは、レボアートの申請受付と当選レボアートスポット掲載の流れを確認できます。決済導線、外部SNSリンク、外部地図サービスは設置していません。</p>
   </main>
