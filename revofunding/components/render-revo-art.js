@@ -504,6 +504,125 @@
     return link;
   }
 
+  function getCategoryDetailCopy(categoryId) {
+    const details = {
+      wall: {
+        label: "壁や空間を、応援の景色に変えるレボアート",
+        title: "地域の壁や空間に、挑戦を応援する物語を描く",
+        whatYouCanDo: [
+          "地域の壁や施設の一角を、応援の物語が伝わる場所にできます。",
+          "店舗、施設、イベント会場など、公開できる空間を使って挑戦を可視化できます。",
+          "アーティストや地域の協力者と一緒に、まちに残る表現をつくれます。"
+        ],
+        targetExtra: [
+          "壁面や空間を提供できる地域・店舗・施設の方",
+          "地域やイベント会場でアート表現を広げたい方"
+        ]
+      },
+      car: {
+        label: "移動するアートで、応援のメッセージを街へ届ける",
+        title: "車両や移動導線を活かして、応援を可視化する",
+        whatYouCanDo: [
+          "車両や移動媒体を使い、応援のメッセージを街の中へ届けられます。",
+          "走行エリアやイベント参加を通じて、挑戦への接点を増やせます。",
+          "公開できる範囲で、地域名や活動内容と連動した紹介につなげられます。"
+        ],
+        targetExtra: [
+          "車両や移動媒体を活用して応援を広げたい方",
+          "地域巡回やイベント参加を通じて挑戦を届けたい方"
+        ]
+      },
+      hat: {
+        label: "帽子を通じて、個性と応援を身につけるレボアート",
+        title: "帽子に想いをのせて、人前に立つきっかけをつくる",
+        whatYouCanDo: [
+          "帽子をキャンバスにして、個性や応援の想いを表現できます。",
+          "防災×帽祭やランウェイなど、人前で想いを伝える企画とつなげられます。",
+          "制作、装飾、発表の形を通じて、挑戦を身近な表現にできます。"
+        ],
+        targetExtra: [
+          "帽子制作や装飾で応援を表現したい方",
+          "イベントやランウェイで想いを伝えたい方"
+        ]
+      }
+    };
+
+    return details[categoryId] || {
+      label: "応援をアートで広げるレボアート",
+      title: "挑戦を可視化する表現をつくる",
+      whatYouCanDo: [
+        "公開できる場所や表現を通じて、挑戦への応援を広げられます。",
+        "地域や活動の文脈に合わせて、応援の物語を伝えられます。"
+      ],
+      targetExtra: []
+    };
+  }
+
+  function createDetailSection(title, children, modifierClass) {
+    const section = document.createElement("section");
+    section.className = `rf-art-detail__section${modifierClass ? ` ${modifierClass}` : ""}`;
+    section.append(createTextElement("h2", "rf-art-detail__section-title", title));
+
+    for (const child of children) {
+      if (child) {
+        section.append(child);
+      }
+    }
+
+    return section;
+  }
+
+  function createDetailFlowList() {
+    const steps = [
+      ["1", "申請受付", "申請フォームから、カテゴリや公開可能な情報を送ります。"],
+      ["2", "運営確認", "内容、公開範囲、掲載に必要な情報を確認します。"],
+      ["3", "抽選・決定", "確認後、抽選・決定したものを掲載対象として扱います。"],
+      ["4", "レボアートスポットとして掲載", "公開許可済みの情報だけをカテゴリページで紹介します。"],
+      ["5", "全国応援Mapへ広がる", "地域名やカテゴリと連動し、応援の広がりを表示します。"]
+    ];
+
+    const list = document.createElement("ol");
+    list.className = "rf-art-detail-flow";
+
+    for (const [number, title, text] of steps) {
+      const item = document.createElement("li");
+      item.append(
+        createTextElement("span", "rf-art-detail-flow__number", number),
+        createTextElement("strong", "rf-art-detail-flow__title", title),
+        createTextElement("p", "rf-art-detail-flow__text", text)
+      );
+      list.append(item);
+    }
+
+    return list;
+  }
+
+  function createRelatedCategoryLinks(currentId, items) {
+    const nav = document.createElement("nav");
+    nav.className = "rf-art-detail-related";
+    nav.setAttribute("aria-label", "他のレボアートカテゴリ");
+
+    const title = createTextElement("h2", "rf-art-detail__section-title", "他のレボアートを見る");
+    const list = document.createElement("div");
+    list.className = "rf-art-detail-related__links";
+
+    for (const entry of Array.isArray(items) ? items : []) {
+      const id = getText(entry.id, "");
+      if (!id) {
+        continue;
+      }
+
+      const link = document.createElement("a");
+      link.className = id === currentId ? "rf-art-detail-related__link is-current" : "rf-art-detail-related__link";
+      link.href = `revo-art-detail.html?id=${encodeURIComponent(id)}`;
+      link.textContent = getText(entry.title, getCategoryName(id));
+      list.append(link);
+    }
+
+    nav.append(title, list, createBackLink());
+    return nav;
+  }
+
   function renderNotFound(container, message) {
     container.replaceChildren();
 
@@ -530,6 +649,7 @@
 
     const id = getRevoArtIdFromQuery();
     const item = Array.isArray(items) ? items.find((entry) => entry.id === id) : null;
+    const detailCopy = getCategoryDetailCopy(id);
 
     if (!item) {
       renderNotFound(container, message);
@@ -546,9 +666,9 @@
     const heroCopy = document.createElement("div");
     heroCopy.className = "rf-art-detail__hero-copy";
     heroCopy.append(
-      createTextElement("p", "rf-art-detail__eyebrow", "レボアート詳細"),
+      createTextElement("p", "rf-art-detail__eyebrow", getText(item.categoryName, "レボアート詳細")),
       createTextElement("h1", "rf-art-detail__title", getText(item.title, "レボアート")),
-      createTextElement("p", "rf-art-detail__lead", getText(item.shortMessage, getText(item.theme, "応援の物語をアートで広げる企画です。"))),
+      createTextElement("p", "rf-art-detail__lead", detailCopy.label),
       createApplicationSummaryBlock(item),
       createTextElement("p", "rf-art-application-summary__note", getText(item.applicationNote, "申請は先着順ではありません。運営サイドで確認・抽選・決定します。"))
     );
@@ -560,37 +680,54 @@
     heroTop.append(createCategoryVisual(item, "rf-art-visual--detail"), heroCopy, heroAction);
     header.append(
       heroTop,
-      createTextElement("p", "rf-art-detail__text", getText(item.description, "このレボアート企画は準備中です。"))
+      createTextElement("p", "rf-art-detail__text", getText(item.description, "応援の物語をアートで広げる企画です。"))
     );
 
     const detailLead = createTextElement("p", "rf-art-detail__lead-card", getText(item.detailLead, "詳細情報は準備中です。"));
 
-    const targetSection = document.createElement("section");
-    targetSection.className = "rf-art-detail__section";
-    targetSection.append(
-      createTextElement("h2", "rf-art-detail__section-title", "募集対象"),
-      createTextList(item.targetItems, "rf-art-detail__list")
-    );
+    const canDoSection = createDetailSection("このレボアートでできること", [
+      createTextElement("p", "rf-art-detail__text", detailCopy.title),
+      createTextList(detailCopy.whatYouCanDo, "rf-art-detail__list")
+    ]);
 
-    const stepsSection = document.createElement("section");
-    stepsSection.className = "rf-art-detail__section";
-    stepsSection.append(
-      createTextElement("h2", "rf-art-detail__section-title", "参加までの流れ"),
-      createTextList(item.participationSteps, "rf-art-detail__list")
-    );
+    const targetItems = [
+      "レボアートを設置・展開したい方",
+      "地域や活動をアートで応援したい方",
+      "挑戦者を可視化する場をつくりたい方",
+      "レボリストLabの取り組みに共感する方",
+      ...detailCopy.targetExtra
+    ];
 
-    const counterSection = document.createElement("section");
-    counterSection.className = "rf-art-detail__section";
-    counterSection.append(
-      createTextElement("h2", "rf-art-detail__section-title", "関連カウンター"),
-      createLabelList(item.relatedCounters, "rf-art-detail__labels")
-    );
+    const targetSection = createDetailSection("募集対象", [
+      createTextList(targetItems, "rf-art-detail__list"),
+      createTextElement("p", "rf-art-detail__subnote", "申請した時点で掲載が確定するものではありません。運営確認・抽選・決定を経て、公開許可済みの情報だけを掲載します。")
+    ]);
 
-    const mapBlock = document.createElement("section");
-    mapBlock.className = "rf-art-map-placeholder";
-    mapBlock.append(createPreparingMapBlock(getText(item.mapLabel, "全国展開準備中")));
+    const stepsSection = createDetailSection("申請から掲載までの流れ", [
+      createDetailFlowList()
+    ], "rf-art-detail__section--wide");
+
+    const publishSection = createDetailSection("掲載・紹介のされ方", [
+      createTextList([
+        "当選後、公開可能な情報をもとにレボアートスポットとして紹介します。",
+        "カテゴリページや全国応援Mapと連動し、応援の広がりを表示します。",
+        "地域名・カテゴリ・公開可能な紹介文を掲載します。",
+        "詳細住所や個人情報は掲載しません。"
+      ], "rf-art-detail__list")
+    ]);
 
     const notice = createTextElement("p", "rf-art-detail__notice", getText(item.notice, "公開許可を得た情報のみ掲載します。"));
+    const cautionSection = createDetailSection("申請前にご確認ください", [
+      createTextList([
+        "申請内容は運営確認後に掲載判断します。",
+        "すべての申請が掲載されるわけではありません。",
+        "公開できる情報のみ掲載します。",
+        "詳細住所・連絡先などの個人情報は公開しません。",
+        "画像・素材は公開許可のあるもののみ使用します。"
+      ], "rf-art-detail__list"),
+      notice
+    ]);
+
     const actions = document.createElement("div");
     actions.className = "rf-art-detail__actions";
     actions.append(createApplicationAction(item), createBackLink());
@@ -599,7 +736,9 @@
     winning.className = "rf-art-winning-spot";
     winning.append(createWinningRevoArtSpotByCategoryBlock(winningSpots, id));
 
-    container.append(header, detailLead, targetSection, stepsSection, counterSection, mapBlock, winning, notice, actions);
+    const related = createRelatedCategoryLinks(id, items);
+
+    container.append(header, detailLead, canDoSection, targetSection, stepsSection, publishSection, winning, cautionSection, actions, related);
 
     if (message) {
       message.textContent = "レボアート詳細を表示しています。";
