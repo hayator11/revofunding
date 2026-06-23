@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>レボファンディング スパーカー募集一覧</title>
   <link rel="stylesheet" href="../tokens/tokens.css">
-  <link rel="stylesheet" href="../components/cards.css">
+  <link rel="stylesheet" href="../components/cards.css?v=list-renewal-001">
   <style>
     * {
       box-sizing: border-box;
@@ -28,8 +28,15 @@
     .revo-sparker-page__hero {
       display: grid;
       gap: var(--revo-space-3);
-      max-width: 820px;
+      max-width: 920px;
       margin-bottom: var(--revo-space-6);
+      padding: var(--revo-space-6);
+      background:
+        radial-gradient(circle at 92% 12%, rgba(255, 190, 86, 0.22), transparent 34%),
+        linear-gradient(135deg, rgba(255, 245, 234, 0.98), rgba(255, 255, 255, 0.9));
+      border: 1px solid rgba(255, 159, 67, 0.28);
+      border-radius: var(--revo-radius-card);
+      box-shadow: var(--revo-shadow-card);
     }
 
     .revo-sparker-page__nav,
@@ -115,9 +122,15 @@
 
     .revo-sparker-list {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: var(--revo-space-5);
       align-items: stretch;
+    }
+
+    @media (max-width: 1100px) {
+      .revo-sparker-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
     }
 
     @media (max-width: 760px) {
@@ -126,26 +139,29 @@
         padding-block-start: var(--revo-space-6);
       }
 
+      .revo-sparker-page__hero {
+        padding: var(--revo-space-5);
+      }
+
       .revo-sparker-list {
         grid-template-columns: 1fr;
       }
     }
   </style>
-  <script src="../components/render-sparkers.js" defer></script>
+  <script src="../components/render-sparkers.js?v=list-renewal-001" defer></script>
 </head>
 <body>
   <main class="revo-sparker-page">
     <nav class="revo-sparker-page__nav" aria-label="スパーカー募集の戻る導線">
-      <a class="revo-sparker-page__link" href="spark.html">スパーク紹介へ戻る</a>
-      <a class="revo-sparker-page__link" href="list.html">挑戦一覧を見る</a>
+      <a class="revo-sparker-page__link" href="spark.html">スパークについて見る</a>
+      <a class="revo-sparker-page__link" href="list.html">参加の入口へ戻る</a>
     </nav>
 
     <header class="revo-sparker-page__hero">
       <p class="revo-sparker-page__eyebrow">スパーカー募集一覧</p>
-      <h1>最初の火を、一緒につける。</h1>
-      <p class="revo-sparker-page__lead">挑戦は、最初のひとりから動き出す。</p>
-      <p class="revo-sparker-page__text">スパーカーは、最初に共感し、最初に声を届けることで、挑戦の立ち上がりを支える仲間です。</p>
-      <p class="revo-sparker-page__text">挑戦の最初の仲間として関わるスパーカー募集を一覧で確認できます。気になる募集があれば、内容を確認して参加をご検討ください。</p>
+      <h1>最初の火をつける仲間を募集しています。</h1>
+      <p class="revo-sparker-page__lead">共感を届け、仲間を集め、挑戦のはじまりを支える関わり方です。</p>
+      <p class="revo-sparker-page__text">スパーカーとして参加できる挑戦を一覧で確認できます。気になる募集があれば、内容を確認して参加をご検討ください。</p>
     </header>
 
     <section class="revo-sparker-page__section" aria-labelledby="revo-sparker-about-title">
@@ -159,11 +175,11 @@
     </section>
 
     <nav class="revo-sparker-page__next" aria-label="次に見るページ">
-      <a class="revo-sparker-page__link" href="spark.html">スパーク紹介へ戻る</a>
-      <a class="revo-sparker-page__link" href="list.html">挑戦一覧を見る</a>
+      <a class="revo-sparker-page__link" href="spark.html">スパークについて見る</a>
+      <a class="revo-sparker-page__link" href="list.html">参加の入口へ戻る</a>
     </nav>
 
-    <p class="revo-sparker-page__note">各募集の受付状況はカード内の状態ラベルで確認できます。外部フォーム、決済導線、本番CTAリンクは設置していません。</p>
+    <p class="revo-sparker-page__note">各募集の受付状況はカード内の状態ラベルで確認できます。外部フォーム、決済導線、Googleフォームは設置していません。</p>
   </main>
 </body>
 </html>

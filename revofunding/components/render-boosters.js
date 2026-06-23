@@ -29,6 +29,16 @@
     return 0;
   }
 
+  function getRate(value, fallbackValue) {
+    const rate = getNumber(value);
+
+    if (rate > 0) {
+      return Math.max(0, Math.min(100, rate));
+    }
+
+    return Math.max(0, Math.min(100, getNumber(fallbackValue)));
+  }
+
   function createTextElement(tagName, className, text) {
     const element = document.createElement(tagName);
     element.className = className;
@@ -75,35 +85,28 @@
     return media;
   }
 
-  function createAccumulationItem(label, value) {
-    const item = document.createElement("div");
-    item.className = "revo-booster-card__accumulation-item";
-
-    const labelElement = createTextElement("span", "revo-booster-card__accumulation-label", label);
-    const valueElement = createTextElement("span", "revo-booster-card__accumulation-value", value);
-
-    item.append(labelElement, valueElement);
-    return item;
-  }
-
-  function getProgressWidth(rateLabel) {
-    if (rateLabel === "0%") {
-      return "0%";
+  function getStatusLabel(project) {
+    if (project && project.status === "completed") {
+      return "達成済み";
     }
 
-    return "0%";
+    if (project && project.status === "published") {
+      return "ブースター募集中";
+    }
+
+    return "順次受付予定";
   }
 
-  function createAccumulationProgress(booster) {
-    const rateLabel = getText(booster.achievementRateLabel, "0%");
+  function createProgressBlock(project) {
+    const rate = getRate(project && project.boostAchievementRate, project && project.progressRate);
     const progress = document.createElement("div");
     progress.className = "revo-booster-card__progress";
 
     const progressHead = document.createElement("div");
     progressHead.className = "revo-booster-card__progress-head";
 
-    const progressLabel = createTextElement("span", "revo-booster-card__progress-label", "次の節目に対する積み上げ率");
-    const progressValue = createTextElement("span", "revo-booster-card__progress-value", rateLabel);
+    const progressLabel = createTextElement("span", "revo-booster-card__progress-label", "達成率");
+    const progressValue = createTextElement("span", "revo-booster-card__progress-value", `${rate}%`);
     progressHead.append(progressLabel, progressValue);
 
     const progressTrack = document.createElement("div");
@@ -112,46 +115,30 @@
 
     const progressFill = document.createElement("div");
     progressFill.className = "revo-booster-card__progress-fill";
-    progressFill.style.width = getProgressWidth(rateLabel);
+    progressFill.style.width = `${rate}%`;
 
     progressTrack.append(progressFill);
     progress.append(progressHead, progressTrack);
     return progress;
   }
 
-  function createAccumulationBlock(booster) {
-    const block = document.createElement("section");
-    block.className = "revo-booster-card__accumulation";
-    block.setAttribute("aria-label", "応援パッケージの積み上げ状況");
+  function createProjectMap(projects) {
+    const projectMap = new Map();
 
-    const modelText = createTextElement(
-      "p",
-      "revo-booster-card__accumulation-text",
-      getText(booster.boostModelText, "応援を広げる関わり方を確認できます。")
-    );
-
-    const status = document.createElement("div");
-    status.className = "revo-booster-card__accumulation-status";
-    status.append(
-      createAccumulationItem("現在", `${getText(booster.displayAccumulatedPackageCount, "0")} ${getText(booster.packageUnitLabel, "応援パッケージ")}`),
-      createAccumulationItem("次の節目", getText(booster.displayMilestonePackageCount, "確認中")),
-      createAccumulationItem("次の節目まで", `あと${getText(booster.displayRemainingToMilestone, "確認中")}`),
-      createAccumulationItem("積み上げ率", getText(booster.achievementRateLabel, "確認中"))
-    );
-
-    const progress = createAccumulationProgress(booster);
-
-    block.append(modelText, progress, status);
-
-    if (booster.isUnlimitedAccumulation === true) {
-      const continuityLabel = createTextElement("span", "revo-booster-card__accumulation-badge", "積み上げ継続型");
-      block.append(continuityLabel);
+    if (!Array.isArray(projects)) {
+      return projectMap;
     }
 
-    return block;
+    for (const project of projects) {
+      if (project && typeof project.id === "string") {
+        projectMap.set(project.id, project);
+      }
+    }
+
+    return projectMap;
   }
 
-  function createCard(booster, projectTitle) {
+  function createCard(booster, project) {
     const card = document.createElement("article");
     card.className = "revo-booster-card";
 
@@ -160,87 +147,78 @@
     const header = document.createElement("div");
     header.className = "revo-booster-card__header";
 
-    const title = createTextElement("h3", "revo-booster-card__title", getText(booster.title, "ブースター募集"));
-    const role = createTextElement("p", "revo-booster-card__role", getText(booster.boosterRole, "挑戦を広げる人"));
-    header.append(title, role);
+    const status = createTextElement("span", "revo-booster-card__status", getStatusLabel(project));
+    const title = createTextElement("h3", "revo-booster-card__title", getText(booster.title, getText(project && project.title, "ブースター募集")));
+    const role = createTextElement("p", "revo-booster-card__role", getText(booster.boosterRole, getText(project && project.revoMeisterRole, "挑戦を広げる人")));
+    header.append(status, title, role);
 
-    const description = createTextElement("p", "revo-booster-card__description", getText(booster.description, "このブースター募集の内容を確認できます。"));
-    const accumulation = createAccumulationBlock(booster);
+    const description = createTextElement("p", "revo-booster-card__description", getText(booster.description, getText(project && project.description, "このブースター募集の内容を確認できます。")));
 
-    const boosterTypes = Array.isArray(booster.boosterTypes) ? booster.boosterTypes : [];
-    const typeList = createChipList(boosterTypes, "revo-booster-card__chips");
+    const typeList = createChipList(Array.isArray(booster.boosterTypes) ? booster.boosterTypes : [], "revo-booster-card__chips");
+    const labels = Array.isArray(booster.labels) ? booster.labels : [];
+    const labelList = createChipList(labels, "revo-booster-card__labels");
 
     const metrics = document.createElement("div");
     metrics.className = "revo-booster-card__metrics";
     metrics.append(
-      createMetric("必要な仲間", getNumber(booster.neededCount)),
-      createMetric("参加予定", getNumber(booster.currentCount)),
-      createMetric("関係する組", getNumber(booster.groupCount))
+      createMetric("残り人数", getText(project && project.boostRemainingPeople, "集計準備中")),
+      createMetric("目標人数", getText(project && project.boostTargetPeople, "受付後に反映")),
+      createMetric("達成率", `${getRate(project && project.boostAchievementRate, project && project.progressRate)}%`),
+      createMetric("達成回数", getText(project && project.boostAchievedCount, "集計準備中")),
+      createMetric("目標回数", getText(project && project.boostTargetCount, "受付後に反映")),
+      createMetric("目標期日", getText(project && project.boostTargetDate, "受付後に反映"))
     );
 
-    const labels = Array.isArray(booster.labels) ? booster.labels : [];
-    const labelList = createChipList(labels, "revo-booster-card__labels");
+    const progress = createProgressBlock(project);
+    const related = createTextElement("p", "revo-booster-card__related", `関連する挑戦：${getText(project && project.title, fallbackProjectTitle)}`);
 
-    const related = createTextElement("p", "revo-booster-card__related", `関連する挑戦：${projectTitle}`);
-
-    const action = document.createElement("span");
-    action.className = "revo-booster-card__action";
-    action.textContent = getText(booster.ctaLabel, "順次受付予定");
-
-    card.append(media, header, description, accumulation);
+    card.append(media, header, description);
 
     if (typeList.childElementCount > 0) {
       card.append(typeList);
     }
 
-    card.append(metrics);
+    card.append(progress, metrics);
 
     if (labelList.childElementCount > 0) {
       card.append(labelList);
     }
 
-    card.append(related, action);
+    card.append(related);
+
+    if (project && typeof project.id === "string") {
+      const action = document.createElement("a");
+      action.className = "revo-booster-card__action";
+      action.href = `detail.html?id=${encodeURIComponent(project.id)}`;
+      action.textContent = "募集を見る";
+      card.append(action);
+    }
+
     return card;
-  }
-
-  function createProjectTitleMap(projects) {
-    const projectTitleMap = new Map();
-
-    if (!Array.isArray(projects)) {
-      return projectTitleMap;
-    }
-
-    for (const project of projects) {
-      if (project && typeof project.id === "string" && typeof project.title === "string") {
-        projectTitleMap.set(project.id, project.title);
-      }
-    }
-
-    return projectTitleMap;
   }
 
   function renderBoosters({ container, messageContainer, boosters, projects }) {
     container.replaceChildren();
 
-    const projectTitleMap = createProjectTitleMap(projects);
+    const projectMap = createProjectMap(projects);
     const sortedBoosters = Array.isArray(boosters)
       ? [...boosters].sort((a, b) => getNumber(a.displayOrder) - getNumber(b.displayOrder))
       : [];
 
     if (sortedBoosters.length === 0) {
       if (messageContainer) {
-        messageContainer.textContent = "現在表示できるブースター募集案内はありません。";
+        messageContainer.textContent = "現在表示できるブースター募集はありません。";
       }
       return;
     }
 
     for (const booster of sortedBoosters) {
-      const projectTitle = projectTitleMap.get(booster.relatedProjectId) || fallbackProjectTitle;
-      container.append(createCard(booster, projectTitle));
+      const project = projectMap.get(booster.relatedProjectId);
+      container.append(createCard(booster, project));
     }
 
     if (messageContainer) {
-      messageContainer.textContent = "ブースター募集を一覧で表示しています。気になる募集があれば、内容を確認して参加をご検討ください。";
+      messageContainer.textContent = "現在表示できる募集を掲載しています。新しい募集は順次追加されます。";
     }
   }
 

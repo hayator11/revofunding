@@ -29,6 +29,16 @@
     return 0;
   }
 
+  function getRate(value, fallbackValue) {
+    const rate = getNumber(value);
+
+    if (rate > 0) {
+      return Math.max(0, Math.min(100, rate));
+    }
+
+    return Math.max(0, Math.min(100, getNumber(fallbackValue)));
+  }
+
   function createTextElement(tagName, className, text) {
     const element = document.createElement(tagName);
     element.className = className;
@@ -75,24 +85,28 @@
     return media;
   }
 
-  function getProgressWidth(progressLabel) {
-    if (progressLabel.includes("0%")) {
-      return "0%";
+  function getStatusLabel(project) {
+    if (project && project.status === "completed") {
+      return "達成済み";
     }
 
-    return "0%";
+    if (project && project.status === "published") {
+      return "スパーカー募集中";
+    }
+
+    return "順次受付予定";
   }
 
-  function createProgressBlock(sparker) {
-    const progressLabelText = getText(sparker.progressLabel, "最初の仲間集まり率は確認中です");
+  function createProgressBlock(project) {
+    const rate = getRate(project && project.sparkAchievementRate, project && project.progressRate);
     const progress = document.createElement("div");
     progress.className = "revo-sparker-card__progress";
 
     const progressHead = document.createElement("div");
     progressHead.className = "revo-sparker-card__progress-head";
 
-    const progressContext = createTextElement("span", "revo-sparker-card__progress-label", "最初の仲間集まり率");
-    const progressValue = createTextElement("span", "revo-sparker-card__progress-value", progressLabelText);
+    const progressContext = createTextElement("span", "revo-sparker-card__progress-label", "達成率");
+    const progressValue = createTextElement("span", "revo-sparker-card__progress-value", `${rate}%`);
     progressHead.append(progressContext, progressValue);
 
     const progressTrack = document.createElement("div");
@@ -101,16 +115,30 @@
 
     const progressFill = document.createElement("div");
     progressFill.className = "revo-sparker-card__progress-fill";
-    progressFill.style.width = getProgressWidth(progressLabelText);
-
-    const progressNote = createTextElement("p", "revo-sparker-card__progress-note", "ブーストへ進む準備が整う節目として扱います。");
+    progressFill.style.width = `${rate}%`;
 
     progressTrack.append(progressFill);
-    progress.append(progressHead, progressTrack, progressNote);
+    progress.append(progressHead, progressTrack);
     return progress;
   }
 
-  function createCard(sparker, projectTitle) {
+  function createProjectMap(projects) {
+    const projectMap = new Map();
+
+    if (!Array.isArray(projects)) {
+      return projectMap;
+    }
+
+    for (const project of projects) {
+      if (project && typeof project.id === "string") {
+        projectMap.set(project.id, project);
+      }
+    }
+
+    return projectMap;
+  }
+
+  function createCard(sparker, project) {
     const card = document.createElement("article");
     card.className = "revo-sparker-card";
 
@@ -119,33 +147,31 @@
     const header = document.createElement("div");
     header.className = "revo-sparker-card__header";
 
-    const title = createTextElement("h3", "revo-sparker-card__title", getText(sparker.title, "スパーカー募集"));
-    const role = createTextElement("p", "revo-sparker-card__role", getText(sparker.sparkerRole, "最初の火をつける仲間"));
-    header.append(title, role);
+    const status = createTextElement("span", "revo-sparker-card__status", getStatusLabel(project));
+    const title = createTextElement("h3", "revo-sparker-card__title", getText(sparker.title, getText(project && project.title, "スパーカー募集")));
+    const role = createTextElement("p", "revo-sparker-card__role", getText(sparker.sparkerRole, getText(project && project.revoMeisterRole, "最初の火をつける仲間")));
+    header.append(status, title, role);
 
-    const description = createTextElement("p", "revo-sparker-card__description", getText(sparker.description, "このスパーカー募集の内容を確認できます。"));
+    const description = createTextElement("p", "revo-sparker-card__description", getText(sparker.description, getText(project && project.description, "このスパーカー募集の内容を確認できます。")));
 
-    const sparkerTypes = Array.isArray(sparker.sparkerTypes) ? sparker.sparkerTypes : [];
-    const typeList = createChipList(sparkerTypes, "revo-sparker-card__chips");
+    const typeList = createChipList(Array.isArray(sparker.sparkerTypes) ? sparker.sparkerTypes : [], "revo-sparker-card__chips");
+    const labels = Array.isArray(sparker.labels) ? sparker.labels : [];
+    const labelList = createChipList(labels, "revo-sparker-card__labels");
 
     const metrics = document.createElement("div");
     metrics.className = "revo-sparker-card__metrics";
     metrics.append(
-      createMetric("必要なスパーカー", getNumber(sparker.neededSparkerCount)),
-      createMetric("参加予定", getNumber(sparker.currentSparkerCount)),
-      createMetric("関係する組", getNumber(sparker.groupCount))
+      createMetric("達成人数", getText(project && project.sparkAchievedPeople, "集計準備中")),
+      createMetric("目標人数", getText(project && project.sparkTargetPeople, "受付後に反映")),
+      createMetric("達成率", `${getRate(project && project.sparkAchievementRate, project && project.progressRate)}%`),
+      createMetric("目標期日", getText(project && project.sparkTargetDate, "受付後に反映")),
+      createMetric("目標組数", getText(project && project.sparkTargetGroups, "受付後に反映")),
+      createMetric("達成組数", getText(project && project.sparkAchievedGroups, "集計準備中")),
+      createMetric("目標金額", getText(project && project.sparkTargetAmount, "受付後に反映"))
     );
 
-    const progress = createProgressBlock(sparker);
-
-    const labels = Array.isArray(sparker.labels) ? sparker.labels : [];
-    const labelList = createChipList(labels, "revo-sparker-card__labels");
-
-    const related = createTextElement("p", "revo-sparker-card__related", `関連する挑戦：${projectTitle}`);
-
-    const action = document.createElement("span");
-    action.className = "revo-sparker-card__action";
-    action.textContent = getText(sparker.ctaLabel, "順次受付予定");
+    const progress = createProgressBlock(project);
+    const related = createTextElement("p", "revo-sparker-card__related", `関連する挑戦：${getText(project && project.title, fallbackProjectTitle)}`);
 
     card.append(media, header, description);
 
@@ -153,54 +179,47 @@
       card.append(typeList);
     }
 
-    card.append(metrics, progress);
+    card.append(progress, metrics);
 
     if (labelList.childElementCount > 0) {
       card.append(labelList);
     }
 
-    card.append(related, action);
+    card.append(related);
+
+    if (project && typeof project.id === "string") {
+      const action = document.createElement("a");
+      action.className = "revo-sparker-card__action";
+      action.href = `detail.html?id=${encodeURIComponent(project.id)}`;
+      action.textContent = "募集を見る";
+      card.append(action);
+    }
+
     return card;
-  }
-
-  function createProjectTitleMap(projects) {
-    const projectTitleMap = new Map();
-
-    if (!Array.isArray(projects)) {
-      return projectTitleMap;
-    }
-
-    for (const project of projects) {
-      if (project && typeof project.id === "string" && typeof project.title === "string") {
-        projectTitleMap.set(project.id, project.title);
-      }
-    }
-
-    return projectTitleMap;
   }
 
   function renderSparkers({ container, messageContainer, sparkers, projects }) {
     container.replaceChildren();
 
-    const projectTitleMap = createProjectTitleMap(projects);
+    const projectMap = createProjectMap(projects);
     const sortedSparkers = Array.isArray(sparkers)
       ? [...sparkers].sort((a, b) => getNumber(a.displayOrder) - getNumber(b.displayOrder))
       : [];
 
     if (sortedSparkers.length === 0) {
       if (messageContainer) {
-        messageContainer.textContent = "現在表示できるスパーカー募集案内はありません。";
+        messageContainer.textContent = "現在表示できるスパーカー募集はありません。";
       }
       return;
     }
 
     for (const sparker of sortedSparkers) {
-      const projectTitle = projectTitleMap.get(sparker.relatedProjectId) || fallbackProjectTitle;
-      container.append(createCard(sparker, projectTitle));
+      const project = projectMap.get(sparker.relatedProjectId);
+      container.append(createCard(sparker, project));
     }
 
     if (messageContainer) {
-      messageContainer.textContent = "スパーカー募集を一覧で表示しています。気になる募集があれば、内容を確認して参加をご検討ください。";
+      messageContainer.textContent = "現在表示できる募集を掲載しています。新しい募集は順次追加されます。";
     }
   }
 
