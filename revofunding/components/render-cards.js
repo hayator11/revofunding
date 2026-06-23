@@ -5,10 +5,8 @@
 
 (() => {
   const modifierByType = {
-    normal: "revo-card--normal",
     spark: "revo-card--spark",
-    boost: "revo-card--boost",
-    done: "revo-card--done"
+    boost: "revo-card--boost"
   };
 
   function appendTextElement(parent, tagName, className, text) {

@@ -437,6 +437,7 @@
       border: 0;
       border-radius: 14px;
       box-shadow: 0 18px 40px rgba(15, 23, 42, 0.11);
+      min-height: 525px;
     }
 
     .revo-top-featured .revo-card::before {
@@ -444,15 +445,16 @@
     }
 
     .revo-top-featured .revo-card__media {
+      aspect-ratio: 1200 / 630;
       max-height: none;
       background: radial-gradient(circle at 28% 30%, rgba(255, 255, 255, 0.58), transparent 28%),
-        linear-gradient(135deg, rgba(244, 63, 94, 0.18), rgba(255, 183, 77, 0.22));
+        linear-gradient(135deg, color-mix(in srgb, var(--revo-card-accent) 18%, white), color-mix(in srgb, var(--revo-card-accent-2, #ff8a3d) 22%, white));
     }
 
     .revo-top-featured .revo-card__media-placeholder {
       color: #fff;
       background: linear-gradient(135deg, rgba(15, 23, 42, 0.26), rgba(15, 23, 42, 0.05)),
-        linear-gradient(135deg, var(--revo-card-accent), #ffb84d);
+        linear-gradient(135deg, var(--revo-card-accent), var(--revo-card-accent-2, #ffb84d));
       border-bottom: 0;
       font-size: 13px;
     }
@@ -478,20 +480,108 @@
 
     .revo-top-featured .revo-card__progress-track {
       height: 8px;
-      background: #fff1f2;
+      background: color-mix(in srgb, var(--revo-card-accent) 14%, white);
     }
 
     .revo-top-featured .revo-card__stats {
-      border: 0;
-      gap: 6px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 4px;
+      margin-top: auto;
       padding: 2px 0 0;
+      border: 0;
+    }
+
+    .revo-top-featured .revo-card__stats-primary,
+    .revo-top-featured .revo-card__stats-secondary {
+      display: contents;
+    }
+
+    .revo-top-featured .revo-card__stat {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      gap: 4px;
+      align-items: center;
+      min-height: 30px;
+      padding: 4px 6px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+    }
+
+    .revo-top-featured .revo-card__stat-label,
+    .revo-top-featured .revo-card__stat-value {
+      display: block;
+      overflow-wrap: anywhere;
+      white-space: normal;
+    }
+
+    .revo-top-featured .revo-card__stat-label {
+      margin: 0;
+      color: #64748b;
+      font-size: 9px;
+      font-weight: 900;
+      line-height: 1.25;
+    }
+
+    .revo-top-featured .revo-card__stat-value,
+    .revo-top-featured .revo-card__stat--primary .revo-card__stat-value,
+    .revo-top-featured .revo-card__stat--compact .revo-card__stat-value,
+    .revo-top-featured .revo-card__stat--amount .revo-card__stat-value {
+      margin: 0;
+      color: #111827;
+      font-size: 10px;
+      font-weight: 900;
+      line-height: 1.25;
+      white-space: normal;
+    }
+
+    .revo-top-featured .revo-card__stat--compact + .revo-card__stat--compact::before {
+      display: none;
+    }
+
+    .revo-top-featured .revo-card__metric-progress {
+      position: relative;
+      grid-column: 1 / -1;
+      height: 5px;
+      overflow: hidden;
+      background: #e2e8f0;
+      border-radius: 999px;
+    }
+
+    .revo-top-featured .revo-card__metric-progress::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: var(--metric-progress, 0%);
+      background: linear-gradient(90deg, var(--revo-card-accent), var(--revo-card-accent-2, #ff8a3d));
+      border-radius: inherit;
+    }
+
+    .revo-top-featured .revo-card {
+      --revo-card-accent-2: #38bdf8;
+    }
+
+    .revo-top-featured .revo-card--spark {
+      --revo-card-accent: #fb923c;
+      --revo-card-accent-2: #facc15;
+    }
+
+    .revo-top-featured .revo-card--boost {
+      --revo-card-accent: #2563eb;
+      --revo-card-accent-2: #38bdf8;
+    }
+
+    .revo-top-featured .revo-card--art {
+      --revo-card-accent: #8b5cf6;
+      --revo-card-accent-2: #fb7185;
     }
 
     .revo-top-featured .revo-card__action {
       min-height: 40px;
       border: 0;
       border-radius: 8px;
-      background: linear-gradient(135deg, #f43f5e 0%, #ff8a3d 100%);
+      background: linear-gradient(135deg, var(--revo-card-accent) 0%, var(--revo-card-accent-2, #ff8a3d) 100%);
     }
 
     .revo-program-section {
@@ -506,10 +596,11 @@
     }
 
     .revo-program-card {
-      --program-accent: #f43f5e;
-      --program-accent-2: #ff8a3d;
+      --program-accent: #fb923c;
+      --program-accent-2: #facc15;
       display: flex;
       flex-direction: column;
+      min-height: 525px;
       min-width: 0;
       overflow: hidden;
       border: 1px solid rgba(226, 232, 240, 0.92);
@@ -519,8 +610,8 @@
     }
 
     .revo-program-card--boost {
-      --program-accent: #fb923c;
-      --program-accent-2: #facc15;
+      --program-accent: #2563eb;
+      --program-accent-2: #38bdf8;
     }
 
     .revo-program-card--art {
@@ -582,9 +673,9 @@
       display: flex;
       flex: 1 1 auto;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
       min-width: 0;
-      padding: 16px;
+      padding: 14px;
     }
 
     .revo-program-card__title {
@@ -592,6 +683,11 @@
       font-size: 18px;
       font-weight: 900;
       line-height: 1.35;
+      min-height: calc(18px * 1.35 * 2);
+      display: -webkit-box;
+      overflow: hidden;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
       overflow-wrap: anywhere;
     }
 
@@ -600,6 +696,11 @@
       color: #64748b;
       font-size: 13px;
       line-height: 1.6;
+      min-height: calc(13px * 1.6 * 2);
+      display: -webkit-box;
+      overflow: hidden;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
       overflow-wrap: anywhere;
     }
 
@@ -627,17 +728,22 @@
     .revo-program-card__stats {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 6px;
+      gap: 4px;
       margin-top: auto;
       padding-top: 2px;
     }
 
     .revo-program-card__stat {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      gap: 4px;
+      align-items: center;
       min-width: 0;
-      padding: 6px 8px;
+      min-height: 30px;
+      padding: 4px 6px;
       background: #f8fafc;
       border: 1px solid #e2e8f0;
-      border-radius: 9px;
+      border-radius: 8px;
     }
 
     .revo-program-card__stat--wide {
@@ -652,15 +758,15 @@
 
     .revo-program-card__stat-label {
       color: #64748b;
-      font-size: 10px;
+      font-size: 9px;
       font-weight: 900;
       line-height: 1.25;
     }
 
     .revo-program-card__stat-value {
-      margin-top: 2px;
+      margin-top: 0;
       color: #111827;
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 900;
       line-height: 1.25;
     }
@@ -668,7 +774,7 @@
     .revo-program-card__progress {
       position: relative;
       grid-column: 1 / -1;
-      height: 6px;
+      height: 5px;
       overflow: hidden;
       background: #e2e8f0;
       border-radius: 999px;
@@ -688,7 +794,7 @@
       align-items: center;
       justify-content: center;
       width: 100%;
-      min-height: 42px;
+      min-height: 38px;
       margin-top: 4px;
       color: #fff;
       background: linear-gradient(135deg, var(--program-accent), var(--program-accent-2));
@@ -958,6 +1064,52 @@
         grid-template-columns: 1fr;
       }
 
+      .revo-program-card__body {
+        gap: 5px;
+        padding: 12px;
+      }
+
+      .revo-top-featured .revo-card__body {
+        gap: 5px;
+        padding: 12px;
+      }
+
+      .revo-program-card__title,
+      .revo-program-card__text,
+      .revo-top-featured .revo-card__title,
+      .revo-top-featured .revo-card__description {
+        min-height: auto;
+      }
+
+      .revo-program-card__stats,
+      .revo-top-featured .revo-card__stats {
+        gap: 3px;
+      }
+
+      .revo-program-card__stat,
+      .revo-top-featured .revo-card__stat {
+        min-height: 26px;
+        padding: 3px 5px;
+      }
+
+      .revo-program-card__stat-label,
+      .revo-top-featured .revo-card__stat-label {
+        font-size: 8px;
+      }
+
+      .revo-program-card__stat-value,
+      .revo-top-featured .revo-card__stat-value,
+      .revo-top-featured .revo-card__stat--primary .revo-card__stat-value,
+      .revo-top-featured .revo-card__stat--compact .revo-card__stat-value,
+      .revo-top-featured .revo-card__stat--amount .revo-card__stat-value {
+        font-size: 9px;
+      }
+
+      .revo-program-card__action,
+      .revo-top-featured .revo-card__action {
+        min-height: 36px;
+      }
+
       .revo-top-map-panel,
       .revo-top-trust,
       .revo-list-entry {
@@ -968,14 +1120,113 @@
   <script src="../components/render-cards.js" defer></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
   <script src="../components/render-support-map.js" defer></script>
-  <script defer>
-    document.addEventListener("DOMContentLoaded", async () => {
-      const container = document.getElementById("revo-list-page");
-      const messageContainer = document.getElementById("revo-list-page-message");
+	  <script defer>
+	    document.addEventListener("DOMContentLoaded", async () => {
+	      const container = document.getElementById("revo-list-page");
+	      const messageContainer = document.getElementById("revo-list-page-message");
 
-      if (!window.RevoCards || !container) {
-        if (messageContainer) {
-          messageContainer.textContent = "カード描画の準備ができませんでした。";
+	      const clampProgress = (value) => {
+	        const number = Number(value);
+	        if (!Number.isFinite(number)) {
+	          return 0;
+	        }
+	        return Math.max(0, Math.min(100, number));
+	      };
+
+	      const countPair = (currentDisplay, targetDisplay, fallbackDisplay) => {
+	        if (currentDisplay && targetDisplay) {
+	          return `${currentDisplay} / ${targetDisplay}`;
+	        }
+	        return fallbackDisplay || "-";
+	      };
+
+	      const createMetric = (label, value) => {
+	        const metric = document.createElement("div");
+	        metric.className = "revo-card__stat revo-card__stat--compact";
+
+	        const labelNode = document.createElement("span");
+	        labelNode.className = "revo-card__stat-label";
+	        labelNode.textContent = label;
+
+	        const valueNode = document.createElement("span");
+	        valueNode.className = "revo-card__stat-value";
+	        valueNode.textContent = value || "-";
+
+	        metric.append(labelNode, valueNode);
+	        return metric;
+	      };
+
+	      const createMetricProgress = (project) => {
+	        const progress = document.createElement("span");
+	        progress.className = "revo-card__metric-progress";
+	        progress.setAttribute("aria-hidden", "true");
+	        progress.style.setProperty("--metric-progress", `${clampProgress(project.progressRate)}%`);
+	        return progress;
+	      };
+
+	      const remainingSupporterDisplay = (project) => {
+	        const current = Number(project.currentSupporterCount);
+	        const target = Number(project.targetSupporterCount);
+	        if (Number.isFinite(current) && Number.isFinite(target)) {
+	          return `${Math.max(0, target - current)}人`;
+	        }
+	        return "集計準備中";
+	      };
+
+	      const metricsForProject = (project) => {
+	        const type = project.type;
+	        const sparkRate = project.sparkAchievementRate ?? project.progressRate ?? 0;
+	        const boostRate = project.boostAchievementRate ?? project.progressRate ?? 0;
+
+	        if (type === "spark") {
+	          return [
+	            createMetric("達成人数", project.sparkAchievedPeople || project.currentSupporterCountDisplay || project.supporterCountDisplay || "集計準備中"),
+	            createMetric("目標人数", project.sparkTargetPeople || project.targetSupporterCountDisplay || "受付後に反映"),
+	            createMetric("達成率", `${sparkRate}%`),
+	            createMetricProgress(project),
+	            createMetric("目標期日", project.sparkTargetDate || "受付後に反映"),
+	            createMetric("目標組数", project.sparkTargetGroups || project.targetGroupCountDisplay || "受付後に反映"),
+	            createMetric("達成組数", project.sparkAchievedGroups || project.currentGroupCountDisplay || "集計準備中"),
+	            createMetric("目標金額", project.sparkTargetAmount || project.targetAmountDisplay || "受付後に反映")
+	          ];
+	        }
+
+	        if (type === "boost") {
+	          return [
+	            createMetric("残り人数", project.boostRemainingPeople || remainingSupporterDisplay(project)),
+	            createMetric("目標人数", project.boostTargetPeople || project.targetSupporterCountDisplay || "受付後に反映"),
+	            createMetric("達成率", `${boostRate}%`),
+	            createMetricProgress(project),
+	            createMetric("達成回数", project.boostAchievedCount || project.currentGroupCountDisplay || "集計準備中"),
+	            createMetric("目標回数", project.boostTargetCount || project.targetGroupCountDisplay || "受付後に反映"),
+	            createMetric("目標期日", project.boostTargetDate || "受付後に反映")
+	          ];
+	        }
+
+	        return [
+	          createMetric("達成率", progressRate),
+	          createMetricProgress(project),
+	          createMetric("地域", project.prefecture || project.area || "公開地域"),
+	          createMetric("応援者", countPair(project.currentSupporterCountDisplay, project.targetSupporterCountDisplay, project.supporterCountDisplay)),
+	          createMetric("目標金額", project.targetAmountDisplay || "受付後に反映"),
+	          createMetric("詳細", "詳細を見る")
+	        ];
+	      };
+
+	      const applyFeaturedCardMetrics = (cards, projects) => {
+	        cards.forEach((card, index) => {
+	          const project = projects[index];
+	          const stats = card.querySelector(".revo-card__stats");
+	          if (!project || !stats) {
+	            return;
+	          }
+	          stats.replaceChildren(...metricsForProject(project));
+	        });
+	      };
+
+	      if (!window.RevoCards || !container) {
+	        if (messageContainer) {
+	          messageContainer.textContent = "カード描画の準備ができませんでした。";
         }
         return;
       }
@@ -985,16 +1236,29 @@
           messageContainer.textContent = "projects-data.json を読み込み中です。";
         }
 
-        const projects = await window.RevoCards.loadRevoProjects("../data/projects-data.json");
-        window.RevoCards.renderRevoCards({
-          container,
-          projects,
-          messageContainer
-        });
-      } catch (error) {
-        container.replaceChildren();
+	        const cacheToken = new URLSearchParams(window.location.search).get("t") || "featured-spark-boost";
+	        const projects = await window.RevoCards.loadRevoProjects(`../data/projects-data.json?t=${encodeURIComponent(cacheToken)}`);
+	        const featuredProjects = projects
+	          .filter((project) => (
+	            project.featured === true &&
+	            project.status !== "hidden" &&
+	            (project.type === "spark" || project.type === "boost")
+	          ))
+	          .slice(0, 4);
+
+	        if (messageContainer && featuredProjects.length < 4) {
+	          messageContainer.textContent = `featured: true のスパーカー / ブースターが${featuredProjects.length}件です。`;
+	        }
+
+	        const cards = window.RevoCards.renderRevoCards({
+	          container,
+	          projects: featuredProjects,
+	          messageContainer: featuredProjects.length >= 4 ? messageContainer : null
+	        });
+	        applyFeaturedCardMetrics(cards, featuredProjects);
+	      } catch (error) {
         if (messageContainer) {
-          messageContainer.textContent = "projects-data.json を読み込めませんでした。ローカルで表示できない場合は、簡易サーバー経由で確認してください。";
+          messageContainer.textContent = "projects-data.json を読み込めませんでした。静的カードを表示しています。";
         }
         console.error(error);
       }
@@ -1074,7 +1338,7 @@
         </div>
         <div id="revo-list-page-message" class="revo-list-page__message">projects-data.json から注目プロジェクトを表示しています。</div>
         <div id="revo-list-page" class="revo-list-grid" aria-label="挑戦一覧">
-          <article class="revo-card revo-card--normal">
+          <article class="revo-card revo-card--spark">
             <div class="revo-card__media"><div class="revo-card__media-placeholder">画像プレースホルダー</div></div>
             <div class="revo-card__body">
               <span class="revo-card__badge">地域の一歩</span>
@@ -1082,17 +1346,16 @@
               <p class="revo-card__description">地域にある小さな願いを、応援者と参加する組の広がりで育てる挑戦です。</p>
               <div class="revo-card__progress"><div class="revo-card__progress-track"><div class="revo-card__progress-bar" style="width: 64%;"></div></div></div>
               <div class="revo-card__stats">
-                <div class="revo-card__stats-primary">
-                  <div class="revo-card__stat revo-card__stat--primary"><span class="revo-card__stat-label">支援者</span><span class="revo-card__stat-value">32人 / 50人</span></div>
-                  <div class="revo-card__stat revo-card__stat--primary"><span class="revo-card__stat-label">組数</span><span class="revo-card__stat-value">1組 / 3組</span></div>
-                </div>
-                <div class="revo-card__stats-secondary">
-                  <div class="revo-card__stat revo-card__stat--compact revo-card__stat--amount"><span class="revo-card__stat-label">現在</span><span class="revo-card__stat-value">128,000円</span></div>
-                  <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">残り</span><span class="revo-card__stat-value">8日</span></div>
-                  <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">達成率</span><span class="revo-card__stat-value">64%</span></div>
-                </div>
+                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">達成人数</span><span class="revo-card__stat-value">32人</span></div>
+                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">目標人数</span><span class="revo-card__stat-value">50人</span></div>
+                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">達成率</span><span class="revo-card__stat-value">64%</span></div>
+                <span class="revo-card__metric-progress" aria-hidden="true" style="--metric-progress: 64%;"></span>
+                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">目標期日</span><span class="revo-card__stat-value">受付後に反映</span></div>
+                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">目標組数</span><span class="revo-card__stat-value">3組</span></div>
+                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">達成組数</span><span class="revo-card__stat-value">1組</span></div>
+                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">目標金額</span><span class="revo-card__stat-value">200,000円</span></div>
               </div>
-              <div class="revo-card__actions"><a class="revo-card__action" href="detail.html?id=project-normal-001">応援する</a></div>
+              <div class="revo-card__actions"><a class="revo-card__action" href="detail.html?id=project-normal-001">最初の仲間になる</a></div>
             </div>
           </article>
           <article class="revo-card revo-card--spark">
@@ -1102,17 +1365,16 @@
               <h2 class="revo-card__title">最初の仲間と動き出す挑戦</h2>
               <p class="revo-card__description">最初の応援者が集まり、制作や準備へ進む空気を育てる挑戦です。</p>
               <div class="revo-card__progress"><div class="revo-card__progress-track"><div class="revo-card__progress-bar" style="width: 60%;"></div></div></div>
-              <div class="revo-card__stats">
-                <div class="revo-card__stats-primary">
-                  <div class="revo-card__stat revo-card__stat--primary"><span class="revo-card__stat-label">支援者</span><span class="revo-card__stat-value">12人 / 20人</span></div>
-                  <div class="revo-card__stat revo-card__stat--primary"><span class="revo-card__stat-label">組数</span><span class="revo-card__stat-value">0組 / 1組</span></div>
-                </div>
-                <div class="revo-card__stats-secondary">
-                  <div class="revo-card__stat revo-card__stat--compact revo-card__stat--amount"><span class="revo-card__stat-label">現在</span><span class="revo-card__stat-value">1,280,000円</span></div>
-                  <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">残り</span><span class="revo-card__stat-value">9日</span></div>
-                  <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">達成率</span><span class="revo-card__stat-value">60%</span></div>
-                </div>
-              </div>
+	              <div class="revo-card__stats">
+	                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">達成人数</span><span class="revo-card__stat-value">12人</span></div>
+	                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">目標人数</span><span class="revo-card__stat-value">20人</span></div>
+	                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">達成率</span><span class="revo-card__stat-value">60%</span></div>
+	                <span class="revo-card__metric-progress" aria-hidden="true" style="--metric-progress: 60%;"></span>
+	                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">目標期日</span><span class="revo-card__stat-value">受付後に反映</span></div>
+	                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">目標組数</span><span class="revo-card__stat-value">1組</span></div>
+	                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">達成組数</span><span class="revo-card__stat-value">0組</span></div>
+	                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">目標金額</span><span class="revo-card__stat-value">2,000,000円</span></div>
+	              </div>
               <div class="revo-card__actions"><a class="revo-card__action" href="detail.html?id=project-spark-001">この挑戦の、最初の仲間になる</a></div>
             </div>
           </article>
@@ -1123,18 +1385,35 @@
               <h2 class="revo-card__title">仲間の旗を次へ広げる挑戦</h2>
               <p class="revo-card__description">動き始めた応援の旗を、次の地域や参加する組へ広げていく挑戦です。</p>
               <div class="revo-card__progress"><div class="revo-card__progress-track"><div class="revo-card__progress-bar" style="width: 42%;"></div></div></div>
-              <div class="revo-card__stats">
-                <div class="revo-card__stats-primary">
-                  <div class="revo-card__stat revo-card__stat--primary"><span class="revo-card__stat-label">支援者</span><span class="revo-card__stat-value">58人 / 100人</span></div>
-                  <div class="revo-card__stat revo-card__stat--primary"><span class="revo-card__stat-label">組数</span><span class="revo-card__stat-value">3組 / 5組</span></div>
-                </div>
-                <div class="revo-card__stats-secondary">
-                  <div class="revo-card__stat revo-card__stat--compact revo-card__stat--amount"><span class="revo-card__stat-label">現在</span><span class="revo-card__stat-value">12,800,000円</span></div>
-                  <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">残り</span><span class="revo-card__stat-value">14日</span></div>
-                  <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">達成率</span><span class="revo-card__stat-value">42%</span></div>
-                </div>
-              </div>
+	              <div class="revo-card__stats">
+	                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">残り人数</span><span class="revo-card__stat-value">42人</span></div>
+	                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">目標人数</span><span class="revo-card__stat-value">100人</span></div>
+	                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">達成率</span><span class="revo-card__stat-value">42%</span></div>
+	                <span class="revo-card__metric-progress" aria-hidden="true" style="--metric-progress: 42%;"></span>
+	                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">達成回数</span><span class="revo-card__stat-value">3組</span></div>
+	                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">目標回数</span><span class="revo-card__stat-value">5組</span></div>
+	                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">目標期日</span><span class="revo-card__stat-value">受付後に反映</span></div>
+	              </div>
               <div class="revo-card__actions"><a class="revo-card__action" href="detail.html?id=project-boost-001">旗を立てる</a></div>
+            </div>
+          </article>
+          <article class="revo-card revo-card--boost">
+            <div class="revo-card__media"><div class="revo-card__media-placeholder">画像プレースホルダー</div></div>
+            <div class="revo-card__body">
+              <span class="revo-card__badge">応援の記録</span>
+              <h2 class="revo-card__title">応援の広がりを次へつなぐ挑戦</h2>
+              <p class="revo-card__description">集まった応援者と参加する組の広がりを記録し、次の一歩へつなぐ挑戦です。</p>
+              <div class="revo-card__progress"><div class="revo-card__progress-track"><div class="revo-card__progress-bar" style="width: 100%;"></div></div></div>
+              <div class="revo-card__stats">
+                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">残り人数</span><span class="revo-card__stat-value">0人</span></div>
+                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">目標人数</span><span class="revo-card__stat-value">20人</span></div>
+                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">達成率</span><span class="revo-card__stat-value">100%</span></div>
+                <span class="revo-card__metric-progress" aria-hidden="true" style="--metric-progress: 100%;"></span>
+                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">達成回数</span><span class="revo-card__stat-value">5回</span></div>
+                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">目標回数</span><span class="revo-card__stat-value">5回</span></div>
+                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">目標期日</span><span class="revo-card__stat-value">達成済み</span></div>
+              </div>
+              <div class="revo-card__actions"><a class="revo-card__action" href="detail.html?id=project-done-001">応援の記録を見る</a></div>
             </div>
           </article>
         </div>
