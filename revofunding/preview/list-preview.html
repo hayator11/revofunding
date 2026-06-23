@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>一覧ページ検品用プレビュー</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <link rel="stylesheet" href="../components/cards.css">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--revo-color-text-main);
+      background: var(--revo-color-bg-base);
+      font-family: var(--revo-font-family-base), var(--revo-font-family-jp);
+      line-height: var(--revo-line-height-body);
+    }
+
+    .list-preview {
+      width: min(100% - var(--revo-space-6), var(--revo-width-wide));
+      margin: 0 auto;
+      padding: var(--revo-space-8) 0 var(--revo-space-12);
+    }
+
+    .list-preview__notice,
+    .list-preview__note,
+    .list-preview__message {
+      padding: var(--revo-space-4) var(--revo-space-5);
+      border: 1px solid var(--revo-color-border);
+      border-radius: var(--revo-radius-card);
+      background: var(--revo-color-bg-card);
+      color: var(--revo-color-text-sub);
+      font-size: var(--revo-font-size-14);
+    }
+
+    .list-preview__notice {
+      margin-bottom: var(--revo-space-6);
+      border-color: var(--revo-color-border-blue);
+      background: var(--revo-color-bg-blue-soft);
+      font-weight: var(--revo-font-weight-bold);
+    }
+
+    .list-preview__header {
+      margin-bottom: var(--revo-space-6);
+    }
+
+    .list-preview__header h1 {
+      margin: 0;
+      font-size: var(--revo-font-size-heading);
+      line-height: var(--revo-line-height-heading);
+    }
+
+    .list-preview__header p {
+      max-width: 720px;
+      margin: var(--revo-space-2) 0 0;
+      color: var(--revo-color-text-sub);
+      font-size: var(--revo-font-size-lead);
+    }
+
+    .list-preview__note {
+      margin-bottom: var(--revo-space-6);
+    }
+
+    .list-preview__note p {
+      margin: 0 0 var(--revo-space-2);
+      color: var(--revo-color-text-main);
+      font-weight: var(--revo-font-weight-bold);
+    }
+
+    .list-preview__note ul {
+      margin: 0;
+      padding-inline-start: var(--revo-space-5);
+    }
+
+    .list-preview__message {
+      margin-bottom: var(--revo-space-4);
+    }
+
+    .list-preview__grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--revo-space-5);
+      align-items: stretch;
+    }
+
+    @media (max-width: 960px) {
+      .list-preview__grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      .list-preview {
+        width: min(100% - var(--revo-space-4), var(--revo-width-wide));
+        padding-block-start: var(--revo-space-6);
+      }
+
+      .list-preview__grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+  <script src="./card-data-preview.js" defer></script>
+</head>
+<body>
+  <!-- このページは一覧ページの検品用プレビューです。本番ページではありません。 -->
+  <main class="list-preview">
+    <div class="list-preview__notice">このページは一覧ページの検品用プレビューです。本番ページではありません。</div>
+
+    <header class="list-preview__header">
+      <h1>一覧ページ検品用プレビュー</h1>
+      <p>デスクトップ3列、タブレット2列、スマホ1列で、支援者数・組数を主指標にしたカードの見え方を確認します。</p>
+    </header>
+
+    <section class="list-preview__note" aria-label="検品メモ">
+      <p>検品メモ</p>
+      <ul>
+        <li>このページは本番一覧ページではありません。</li>
+        <li>デスクトップ3列、タブレット2列、スマホ1列を想定します。</li>
+        <li>レボファンディングでは金額より支援者数・組数を主指標にします。</li>
+        <li>金額は補助情報として確認します。</li>
+        <li>4列表示はカード幅が崩れない場合のみ将来検討します。</li>
+        <li>本文エリアが大きすぎず、3列表示で縦長になりすぎないかを確認します。</li>
+        <li>支援者数・組数が大きな箱ではなく情報帯として見えるかを確認します。</li>
+        <li>金額・残り日数・達成率が補助メタ情報として見えるかを確認します。</li>
+      </ul>
+    </section>
+
+    <div id="revo-list-preview-message" class="list-preview__message">projects-data.json を読み込み中です。</div>
+    <div id="revo-list-preview" class="list-preview__grid" aria-label="プロジェクト一覧プレビュー"></div>
+  </main>
+</body>
+</html>

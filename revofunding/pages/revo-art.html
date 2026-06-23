@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>レボファンディング レボアート</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="../components/cards.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
+  <script src="../components/render-revo-art.js?v=20260622-revo-art-images" defer></script>
+  <script src="../components/render-support-map.js" defer></script>
+</head>
+<body class="rf-art-page-body">
+  <main class="rf-art-page" data-revo-art-page="list">
+    <header class="rf-art-hero">
+      <p class="rf-art-hero__eyebrow">レボアート</p>
+      <h1>応援の物語を、アートで全国へ広げる。</h1>
+      <p class="rf-art-hero__lead">レボアートは、ウォールアート・カーアート・ハットアートを通じて、応援や社会的メッセージを形にする企画です。</p>
+      <p class="rf-art-hero__text">参加は申請制です。申請内容を運営サイドで確認し、抽選・決定したものを当選レボアートスポットとして掲載していきます。</p>
+    </header>
+
+    <section class="rf-art-section" aria-labelledby="rf-art-application-title">
+      <div class="rf-art-section__head">
+        <span class="rf-art-badge">申請制</span>
+        <h2 id="rf-art-application-title">先着順ではありません</h2>
+      </div>
+      <p class="rf-art-text">申請した時点で掲載が確定するものではありません。運営サイドで内容を確認し、抽選・決定したものだけを当選レボアートスポットとして扱います。</p>
+    </section>
+
+    <div id="rf-art-message" class="rf-art-message">revo-art-data.json を読み込み中です。</div>
+
+    <section aria-label="レボアートカテゴリ一覧">
+      <div id="rf-art-list" class="rf-art-grid"></div>
+    </section>
+
+    <section class="revo-support-map" aria-labelledby="revo-support-map-title">
+      <div class="revo-support-map__head">
+        <span class="revo-support-map__badge">公開許可済み地域</span>
+        <h2 id="revo-support-map-title" class="revo-support-map__title">全国応援Map</h2>
+        <p class="revo-support-map__lead">起案者、スパーカー、ブースター、認定アーティスト、レボアートスポットの広がりを、公開許可済みの地域情報で表示します。</p>
+        <p class="revo-support-map__note">詳細住所や連絡先は表示せず、市町村レベルの公開情報だけを扱います。</p>
+      </div>
+
+      <div id="revo-support-map-message" class="revo-support-map__message" aria-live="polite">全国応援Map情報を読み込み中です。</div>
+      <div id="revo-support-map" class="revo-support-map__body" aria-label="全国応援Map集計"></div>
+    </section>
+
+    <section id="rf-art-winning-spot" class="rf-art-winning-spot" aria-label="当選レボアートスポット掲載予定"></section>
+
+    <p class="rf-art-note">このページでは、レボアートの申請受付と当選レボアートスポット掲載の流れを確認できます。決済導線、外部SNSリンク、外部地図サービスは設置していません。</p>
+  </main>
+</body>
+</html>

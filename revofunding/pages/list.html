@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>レボファンディング 挑戦一覧</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="../components/cards.css">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--revo-color-text-main);
+      background: var(--revo-color-bg-base);
+      font-family: var(--revo-font-family-base), var(--revo-font-family-jp);
+      line-height: var(--revo-line-height-body);
+    }
+
+    .revo-list-page {
+      width: min(100% - var(--revo-space-6), var(--revo-width-wide));
+      margin: 0 auto;
+      padding: var(--revo-space-8) 0 var(--revo-space-12);
+    }
+
+    .revo-list-page__header {
+      margin-bottom: var(--revo-space-6);
+    }
+
+    .revo-list-page__header h1 {
+      margin: 0;
+      font-size: var(--revo-font-size-heading);
+      line-height: var(--revo-line-height-heading);
+    }
+
+    .revo-list-page__header p,
+    .revo-list-page__message,
+    .revo-list-page__note {
+      color: var(--revo-color-text-sub);
+      font-size: var(--revo-font-size-14);
+    }
+
+    .revo-list-page__header p {
+      max-width: 720px;
+      margin: var(--revo-space-2) 0 0;
+      font-size: var(--revo-font-size-lead);
+    }
+
+    .revo-list-page__note,
+    .revo-list-page__message {
+      margin-bottom: var(--revo-space-4);
+      padding: var(--revo-space-3) var(--revo-space-4);
+      border: 1px solid var(--revo-color-border);
+      border-radius: var(--revo-radius-card);
+      background: var(--revo-color-bg-card);
+    }
+
+    .revo-list-entry-section {
+      display: grid;
+      gap: var(--revo-space-3);
+      margin-bottom: var(--revo-space-6);
+    }
+
+    .revo-list-entry-section__head {
+      display: grid;
+      gap: var(--revo-space-1);
+      max-width: 760px;
+    }
+
+    .revo-list-entry-section__title,
+    .revo-list-entry-section__text {
+      margin: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .revo-list-entry-section__title {
+      font-size: var(--revo-font-size-20);
+      line-height: var(--revo-line-height-heading);
+    }
+
+    .revo-list-entry-section__text {
+      color: var(--revo-color-text-sub);
+      font-size: var(--revo-font-size-14);
+    }
+
+    .revo-list-entry-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--revo-space-5);
+      align-items: stretch;
+    }
+
+    .revo-list-entry {
+      --revo-list-entry-accent: var(--revo-color-art);
+      --revo-list-entry-bg: var(--revo-color-bg-purple-soft);
+      --revo-list-entry-border: rgba(139, 92, 246, 0.28);
+      display: grid;
+      gap: var(--revo-space-3);
+      align-content: start;
+      min-width: 0;
+      padding: var(--revo-space-5);
+      padding-inline-start: calc(var(--revo-space-5) + var(--revo-card-accent-width));
+      position: relative;
+      overflow: hidden;
+      color: var(--revo-color-text-main);
+      background: var(--revo-color-bg-card);
+      border: 1px solid var(--revo-color-border);
+      border-radius: var(--revo-radius-card);
+      box-shadow: var(--revo-shadow-card);
+    }
+
+    .revo-list-entry::before {
+      content: "";
+      position: absolute;
+      inset-block: 0;
+      inset-inline-start: 0;
+      width: var(--revo-card-accent-width);
+      background: var(--revo-list-entry-accent);
+    }
+
+    .revo-list-entry--spark {
+      --revo-list-entry-accent: #f97316;
+      --revo-list-entry-bg: rgba(249, 115, 22, 0.1);
+      --revo-list-entry-border: rgba(249, 115, 22, 0.26);
+    }
+
+    .revo-list-entry--boost {
+      --revo-list-entry-accent: #2563eb;
+      --revo-list-entry-bg: rgba(37, 99, 235, 0.1);
+      --revo-list-entry-border: rgba(37, 99, 235, 0.24);
+    }
+
+    .revo-list-entry__badge {
+      display: inline-flex;
+      width: fit-content;
+      max-width: 100%;
+      padding: var(--revo-space-1) var(--revo-space-3);
+      color: var(--revo-list-entry-accent);
+      background: var(--revo-list-entry-bg);
+      border: 1px solid var(--revo-list-entry-border);
+      border-radius: var(--revo-radius-pill);
+      font-size: var(--revo-font-size-caption);
+      font-weight: var(--revo-font-weight-bold);
+      line-height: var(--revo-line-height-caption);
+    }
+
+    .revo-list-entry__title,
+    .revo-list-entry__text {
+      margin: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .revo-list-entry__title {
+      font-size: var(--revo-font-size-20);
+      line-height: var(--revo-line-height-heading);
+    }
+
+    .revo-list-entry__text {
+      max-width: 720px;
+      color: var(--revo-color-text-sub);
+      font-size: var(--revo-font-size-14);
+    }
+
+    .revo-list-entry__action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: fit-content;
+      max-width: 100%;
+      margin-top: auto;
+      min-height: var(--revo-space-6);
+      padding: var(--revo-space-2) var(--revo-space-4);
+      color: var(--revo-list-entry-accent);
+      background: var(--revo-list-entry-bg);
+      border: 1px solid var(--revo-list-entry-border);
+      border-radius: var(--revo-radius-pill);
+      font-size: var(--revo-font-size-14);
+      font-weight: var(--revo-font-weight-bold);
+      line-height: var(--revo-line-height-caption);
+      text-decoration: none;
+    }
+
+    .revo-list-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--revo-space-5);
+      align-items: stretch;
+    }
+
+    @media (max-width: 960px) {
+      .revo-list-grid,
+      .revo-list-entry-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      .revo-list-page {
+        width: min(100% - var(--revo-space-4), var(--revo-width-wide));
+        padding-block-start: var(--revo-space-6);
+      }
+
+      .revo-list-grid,
+      .revo-list-entry-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .revo-list-entry {
+        padding: var(--revo-space-4);
+        padding-inline-start: calc(var(--revo-space-4) + var(--revo-card-accent-width));
+      }
+
+      .revo-list-entry__action {
+        width: 100%;
+      }
+    }
+  </style>
+  <script src="../components/render-cards.js" defer></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
+  <script src="../components/render-support-map.js" defer></script>
+  <script defer>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const container = document.getElementById("revo-list-page");
+      const messageContainer = document.getElementById("revo-list-page-message");
+
+      if (!window.RevoCards || !container) {
+        if (messageContainer) {
+          messageContainer.textContent = "カード描画の準備ができませんでした。";
+        }
+        return;
+      }
+
+      try {
+        if (messageContainer) {
+          messageContainer.textContent = "projects-data.json を読み込み中です。";
+        }
+
+        const projects = await window.RevoCards.loadRevoProjects("../data/projects-data.json");
+        window.RevoCards.renderRevoCards({
+          container,
+          projects,
+          messageContainer
+        });
+      } catch (error) {
+        container.replaceChildren();
+        if (messageContainer) {
+          messageContainer.textContent = "projects-data.json を読み込めませんでした。ローカルで表示できない場合は、簡易サーバー経由で確認してください。";
+        }
+        console.error(error);
+      }
+    });
+  </script>
+</head>
+<body>
+  <!-- このページはレボファンディング本体の一覧ページ最小実装です。 -->
+  <!-- 本体共通カード描画JS render-cards.js を利用しています。 -->
+  <!-- 決済導線・詳細ページ遷移はまだ実装していません。 -->
+  <main class="revo-list-page">
+    <header class="revo-list-page__header">
+      <h1>応援したい挑戦を見つける</h1>
+      <p>金額だけではなく、応援者と仲間の広がりから挑戦を見つける一覧です。</p>
+    </header>
+
+    <div class="revo-list-page__note">公開中の情報を一覧で確認できます。参加の入口や詳細ページから、関わり方を確認できます。</div>
+    <section class="revo-list-entry-section" aria-labelledby="revo-list-entry-section-title">
+      <div class="revo-list-entry-section__head">
+        <h2 id="revo-list-entry-section-title" class="revo-list-entry-section__title">参加の入口</h2>
+        <p class="revo-list-entry-section__text">最初の火をつける、応援を広げる、アートで関わる。あなたに合う入口から参加できます。</p>
+      </div>
+
+      <div class="revo-list-entry-grid">
+        <article class="revo-list-entry revo-list-entry--spark">
+          <span class="revo-list-entry__badge">最初の仲間</span>
+          <h3 class="revo-list-entry__title">スパーク</h3>
+          <p class="revo-list-entry__text">最初の火をつける段階。挑戦のはじまりに、最初の仲間を集めます。</p>
+          <a class="revo-list-entry__action" href="spark.html">スパークを見る</a>
+        </article>
+
+        <article class="revo-list-entry revo-list-entry--boost">
+          <span class="revo-list-entry__badge">応援を広げる</span>
+          <h3 class="revo-list-entry__title">ブースト</h3>
+          <p class="revo-list-entry__text">応援を次の人・場・地域へ広げていく段階。広げる仲間と一緒に進めます。</p>
+          <a class="revo-list-entry__action" href="boost.html">ブーストを見る</a>
+        </article>
+
+        <article class="revo-list-entry">
+          <span class="revo-list-entry__badge">アートで関わる</span>
+          <h3 class="revo-list-entry__title">レボアート</h3>
+          <p class="revo-list-entry__text">ウォールアート・カーアート・ハットアートを通じて、応援の物語を全国へ広げていく企画です。</p>
+          <a class="revo-list-entry__action" href="revo-art.html">レボアートを見る</a>
+        </article>
+      </div>
+    </section>
+    <div id="revo-list-page-message" class="revo-list-page__message">projects-data.json を読み込み中です。</div>
+    <div id="revo-list-page" class="revo-list-grid" aria-label="挑戦一覧"></div>
+
+    <section class="revo-support-map" aria-labelledby="revo-support-map-title">
+      <div class="revo-support-map__head">
+        <span class="revo-support-map__badge">公開許可済み地域</span>
+        <h2 id="revo-support-map-title" class="revo-support-map__title">全国応援Map</h2>
+        <p class="revo-support-map__lead">起案者、スパーカー、ブースター、認定アーティスト、レボアートスポットの広がりを、公開許可済みの地域情報で表示します。</p>
+        <p class="revo-support-map__note">詳細住所や連絡先は表示せず、市町村レベルの公開情報だけを扱います。</p>
+      </div>
+
+      <div id="revo-support-map-message" class="revo-support-map__message" aria-live="polite">全国応援Map情報を読み込み中です。</div>
+      <div id="revo-support-map" class="revo-support-map__body" aria-label="全国応援Map集計"></div>
+    </section>
+  </main>
+</body>
+</html>

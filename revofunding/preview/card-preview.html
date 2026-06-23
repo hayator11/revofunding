@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>cards.css 検品用プレビュー</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <link rel="stylesheet" href="../components/cards.css">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--revo-color-text-main);
+      background: var(--revo-color-bg-base);
+      font-family: var(--revo-font-family-base), var(--revo-font-family-jp);
+      line-height: var(--revo-line-height-body);
+    }
+
+    .preview {
+      width: min(100% - var(--revo-space-6), var(--revo-width-wide));
+      margin: 0 auto;
+      padding: var(--revo-space-8) 0 var(--revo-space-12);
+    }
+
+    .notice {
+      margin-bottom: var(--revo-space-6);
+      padding: var(--revo-space-4) var(--revo-space-5);
+      border: 1px solid var(--revo-color-border-blue);
+      border-radius: var(--revo-radius-card);
+      background: var(--revo-color-bg-blue-soft);
+      color: var(--revo-color-text-sub);
+      font-size: var(--revo-font-size-14);
+      font-weight: var(--revo-font-weight-bold);
+    }
+
+    .preview-memo {
+      margin: 0 0 var(--revo-space-6);
+      padding: var(--revo-space-4) var(--revo-space-5);
+      border: 1px solid var(--revo-color-border-pink);
+      border-radius: var(--revo-radius-card);
+      background: var(--revo-color-bg-pink-soft);
+      color: var(--revo-color-text-sub);
+      font-size: var(--revo-font-size-14);
+    }
+
+    .preview-heading {
+      margin-bottom: var(--revo-space-6);
+    }
+
+    .preview-heading h1 {
+      margin: 0;
+      font-size: var(--revo-font-size-heading);
+      line-height: var(--revo-line-height-heading);
+    }
+
+    .preview-heading p {
+      margin: var(--revo-space-2) 0 0;
+      color: var(--revo-color-text-sub);
+      font-size: var(--revo-font-size-lead);
+    }
+
+    .preview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: var(--revo-space-4);
+      align-items: stretch;
+    }
+
+    .preview-label {
+      margin: 0 0 var(--revo-space-3);
+      color: var(--revo-color-text-muted);
+      font-size: var(--revo-font-size-caption);
+      font-weight: var(--revo-font-weight-bold);
+    }
+  </style>
+</head>
+<body>
+  <!-- このページは cards.css の検品用プレビューです。本番ページではありません。 -->
+  <main class="preview">
+    <div class="notice">このページは cards.css の検品用プレビューです。本番ページではありません。</div>
+    <!-- 検品メモ: 画像と文字・情報エリアの比率は1:1〜1:1.5を目安にする。金額は100,000,000円でも崩れないこと。タイトルは20〜26文字以内、説明文は40〜55文字以内を推奨。本番登録時に文字数と金額表示を確認する前提。 -->
+    <div class="preview-memo">検品メモ：画像と情報エリアは1:1〜1:1.5が目安。100,000,000円でも崩れず、達成率と現在金額が主役に見えるか確認します。</div>
+
+    <div class="preview-heading">
+      <h1>cards.css 検品用プレビュー</h1>
+      <p>共通カードの枠、画像枠、数字情報、CTA風パーツ、修飾クラスの差を確認します。</p>
+    </div>
+
+    <div class="preview-grid">
+      <section aria-labelledby="card-normal">
+        <p class="preview-label" id="card-normal">通常カード</p>
+        <article class="revo-card">
+          <div class="revo-card__media">
+            <div class="revo-card__media-placeholder">画像プレースホルダー</div>
+          </div>
+          <div class="revo-card__body">
+            <span class="revo-card__badge">検品用</span>
+            <h2 class="revo-card__title">地域の挑戦をみんなで応援</h2>
+            <p class="revo-card__description">地域の小さな挑戦を、最初の仲間と一緒に育てる検品カードです。</p>
+            <div class="revo-card__progress">
+              <div class="revo-card__progress-track">
+                <div class="revo-card__progress-bar" style="width: 64%;"></div>
+              </div>
+            </div>
+            <div class="revo-card__stats">
+              <div class="revo-card__stats-primary">
+                <div class="revo-card__stat revo-card__stat--primary">
+                  <span class="revo-card__stat-label">達成率</span>
+                  <span class="revo-card__stat-value">64%</span>
+                </div>
+                <div class="revo-card__stat revo-card__stat--primary revo-card__stat--amount">
+                  <span class="revo-card__stat-label">現在</span>
+                  <span class="revo-card__stat-value">12,800,000円</span>
+                </div>
+              </div>
+              <div class="revo-card__stats-secondary">
+                <div class="revo-card__stat revo-card__stat--compact revo-card__stat--amount">
+                  <span class="revo-card__stat-label">目標</span>
+                  <span class="revo-card__stat-value">20,000,000円</span>
+                </div>
+                <div class="revo-card__stat revo-card__stat--compact">
+                  <span class="revo-card__stat-label">支援者</span>
+                  <span class="revo-card__stat-value">32人</span>
+                </div>
+                <div class="revo-card__stat revo-card__stat--compact">
+                  <span class="revo-card__stat-label">残り</span>
+                  <span class="revo-card__stat-value">8日</span>
+                </div>
+              </div>
+            </div>
+            <div class="revo-card__actions">
+              <span class="revo-card__action">応援する</span>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section aria-labelledby="card-spark">
+        <p class="preview-label" id="card-spark">sparkカード</p>
+        <article class="revo-card revo-card--spark">
+          <div class="revo-card__media">
+            <div class="revo-card__media-placeholder">画像プレースホルダー</div>
+          </div>
+          <div class="revo-card__body">
+            <span class="revo-card__badge">最初の仲間</span>
+            <h2 class="revo-card__title">最初の仲間を募る挑戦</h2>
+            <p class="revo-card__description">20人の仲間が集まると、制作準備へ進む想定の検品カードです。</p>
+            <div class="revo-card__progress">
+              <div class="revo-card__progress-track">
+                <div class="revo-card__progress-bar" style="width: 60%;"></div>
+              </div>
+            </div>
+            <div class="revo-card__stats">
+              <div class="revo-card__stats-primary">
+                <div class="revo-card__stat revo-card__stat--primary">
+                  <span class="revo-card__stat-label">達成率</span>
+                  <span class="revo-card__stat-value">60%</span>
+                </div>
+                <div class="revo-card__stat revo-card__stat--primary revo-card__stat--amount">
+                  <span class="revo-card__stat-label">現在</span>
+                  <span class="revo-card__stat-value">1,280,000円</span>
+                </div>
+              </div>
+              <div class="revo-card__stats-secondary">
+                <div class="revo-card__stat revo-card__stat--compact revo-card__stat--amount">
+                  <span class="revo-card__stat-label">目標</span>
+                  <span class="revo-card__stat-value">2,000,000円</span>
+                </div>
+                <div class="revo-card__stat revo-card__stat--compact">
+                  <span class="revo-card__stat-label">支援者</span>
+                  <span class="revo-card__stat-value">12人</span>
+                </div>
+                <div class="revo-card__stat revo-card__stat--compact">
+                  <span class="revo-card__stat-label">残り</span>
+                  <span class="revo-card__stat-value">9日</span>
+                </div>
+              </div>
+            </div>
+            <div class="revo-card__actions">
+              <span class="revo-card__action">この挑戦の、最初の仲間になる</span>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section aria-labelledby="card-boost">
+        <p class="preview-label" id="card-boost">boostカード</p>
+        <article class="revo-card revo-card--boost">
+          <div class="revo-card__media">
+            <div class="revo-card__media-placeholder">画像プレースホルダー</div>
+          </div>
+          <div class="revo-card__body">
+            <span class="revo-card__badge">旗を広げる</span>
+            <h2 class="revo-card__title">旗を立てて広げる挑戦</h2>
+            <p class="revo-card__description">最初の仲間から生まれた旗を、次の応援につなげる検品カードです。</p>
+            <div class="revo-card__progress">
+              <div class="revo-card__progress-track">
+                <div class="revo-card__progress-bar" style="width: 42%;"></div>
+              </div>
+            </div>
+            <div class="revo-card__stats">
+              <div class="revo-card__stats-primary">
+                <div class="revo-card__stat revo-card__stat--primary">
+                  <span class="revo-card__stat-label">達成率</span>
+                  <span class="revo-card__stat-value">42%</span>
+                </div>
+                <div class="revo-card__stat revo-card__stat--primary">
+                  <span class="revo-card__stat-label">現在</span>
+                  <span class="revo-card__stat-value">42本</span>
+                </div>
+              </div>
+              <div class="revo-card__stats-secondary">
+                <div class="revo-card__stat revo-card__stat--compact">
+                  <span class="revo-card__stat-label">目標</span>
+                  <span class="revo-card__stat-value">100本</span>
+                </div>
+                <div class="revo-card__stat revo-card__stat--compact">
+                  <span class="revo-card__stat-label">支援者</span>
+                  <span class="revo-card__stat-value">58人</span>
+                </div>
+                <div class="revo-card__stat revo-card__stat--compact">
+                  <span class="revo-card__stat-label">残り</span>
+                  <span class="revo-card__stat-value">14日</span>
+                </div>
+              </div>
+            </div>
+            <div class="revo-card__actions">
+              <span class="revo-card__action">旗を立てる</span>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section aria-labelledby="card-done">
+        <p class="preview-label" id="card-done">doneカード</p>
+        <article class="revo-card revo-card--done">
+          <div class="revo-card__media">
+            <div class="revo-card__media-placeholder">画像プレースホルダー</div>
+          </div>
+          <div class="revo-card__body">
+            <span class="revo-card__badge">達成</span>
+            <h2 class="revo-card__title">応援が形になった挑戦</h2>
+            <p class="revo-card__description">達成後の色と数字の見え方を確認するための検品カードです。</p>
+            <div class="revo-card__progress">
+              <div class="revo-card__progress-track">
+                <div class="revo-card__progress-bar" style="width: 100%;"></div>
+              </div>
+            </div>
+            <div class="revo-card__stats">
+              <div class="revo-card__stats-primary">
+                <div class="revo-card__stat revo-card__stat--primary">
+                  <span class="revo-card__stat-label">達成率</span>
+                  <span class="revo-card__stat-value">100%</span>
+                </div>
+                <div class="revo-card__stat revo-card__stat--primary revo-card__stat--amount">
+                  <span class="revo-card__stat-label">現在</span>
+                  <span class="revo-card__stat-value">100,000,000円</span>
+                </div>
+              </div>
+              <div class="revo-card__stats-secondary">
+                <div class="revo-card__stat revo-card__stat--compact revo-card__stat--amount">
+                  <span class="revo-card__stat-label">目標</span>
+                  <span class="revo-card__stat-value">100,000,000円</span>
+                </div>
+                <div class="revo-card__stat revo-card__stat--compact">
+                  <span class="revo-card__stat-label">支援者</span>
+                  <span class="revo-card__stat-value">20人</span>
+                </div>
+                <div class="revo-card__stat revo-card__stat--compact">
+                  <span class="revo-card__stat-label">残り</span>
+                  <span class="revo-card__stat-value">完了</span>
+                </div>
+              </div>
+            </div>
+            <div class="revo-card__actions">
+              <span class="revo-card__action">応援の記録を見る</span>
+            </div>
+          </div>
+        </article>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

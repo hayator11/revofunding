@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>tokens.css 検品用プレビュー</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--revo-color-text-main);
+      background: var(--revo-color-bg-base);
+      font-family: var(--revo-font-family-base), var(--revo-font-family-jp);
+      line-height: var(--revo-line-height-body);
+    }
+
+    .preview {
+      width: min(100% - var(--revo-space-8), var(--revo-width-wide));
+      margin: 0 auto;
+      padding: var(--revo-space-10) 0 var(--revo-space-16);
+    }
+
+    .notice {
+      margin-bottom: var(--revo-space-8);
+      padding: var(--revo-space-4) var(--revo-space-5);
+      border: 1px solid var(--revo-color-border-blue);
+      border-radius: var(--revo-radius-card);
+      background: var(--revo-color-bg-blue-soft);
+      color: var(--revo-color-text-sub);
+      font-size: var(--revo-font-size-14);
+      font-weight: var(--revo-font-weight-bold);
+    }
+
+    .section {
+      margin-top: var(--revo-space-6);
+      padding: var(--revo-space-6);
+      border: 1px solid var(--revo-color-border);
+      border-radius: var(--revo-radius-panel);
+      background: var(--revo-color-bg-card);
+      box-shadow: var(--revo-shadow-sm);
+    }
+
+    h1,
+    h2 {
+      margin: 0;
+      line-height: var(--revo-line-height-heading);
+    }
+
+    h1 {
+      font-size: var(--revo-font-size-heading);
+      font-weight: var(--revo-font-weight-black);
+    }
+
+    h2 {
+      margin-bottom: var(--revo-space-4);
+      font-size: var(--revo-font-size-20);
+      font-weight: var(--revo-font-weight-bold);
+    }
+
+    .lead {
+      margin: var(--revo-space-2) 0 0;
+      color: var(--revo-color-text-sub);
+      font-size: var(--revo-font-size-lead);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: var(--revo-space-4);
+    }
+
+    .sample {
+      min-height: 88px;
+      padding: var(--revo-space-4);
+      border: 1px solid var(--revo-color-border);
+      border-radius: var(--revo-radius-card);
+      background: var(--revo-color-bg-muted);
+    }
+
+    .swatch {
+      min-height: 96px;
+      display: flex;
+      align-items: end;
+      padding: var(--revo-space-3);
+      border-radius: var(--revo-radius-card);
+      color: var(--revo-color-text-inverse);
+      font-size: var(--revo-font-size-caption);
+      font-weight: var(--revo-font-weight-bold);
+      box-shadow: var(--revo-shadow-sm);
+    }
+
+    .swatch.light {
+      color: var(--revo-color-text-main);
+      border: 1px solid var(--revo-color-border);
+    }
+
+    .label {
+      display: block;
+      margin-bottom: var(--revo-space-2);
+      color: var(--revo-color-text-muted);
+      font-size: var(--revo-font-size-caption);
+      font-weight: var(--revo-font-weight-bold);
+    }
+
+    .text-main {
+      color: var(--revo-color-text-main);
+    }
+
+    .text-sub {
+      color: var(--revo-color-text-sub);
+    }
+
+    .text-muted {
+      color: var(--revo-color-text-muted);
+    }
+
+    .border-sample {
+      border: 1px solid var(--revo-color-border);
+      background: var(--revo-color-bg-card);
+    }
+
+    .border-strong {
+      border: 1px solid var(--revo-color-border-strong);
+      background: var(--revo-color-bg-card);
+    }
+
+    .type-list {
+      display: grid;
+      gap: var(--revo-space-3);
+    }
+
+    .space-row {
+      display: flex;
+      align-items: center;
+      gap: var(--revo-space-3);
+    }
+
+    .space-box {
+      height: var(--revo-space-5);
+      background: var(--revo-color-brand-pink);
+      border-radius: var(--revo-radius-xs);
+    }
+
+    .radius-box {
+      min-height: 72px;
+      background: var(--revo-color-bg-blue-soft);
+      border: 1px solid var(--revo-color-border-blue);
+    }
+
+    .shadow-box {
+      min-height: 84px;
+      background: var(--revo-color-bg-card);
+      border: 1px solid var(--revo-color-border);
+      border-radius: var(--revo-radius-card);
+    }
+
+    .width-sample {
+      max-width: var(--revo-width-narrow);
+      padding: var(--revo-space-4);
+      border: 1px solid var(--revo-color-border);
+      border-radius: var(--revo-radius-card);
+      background: var(--revo-color-bg-soft);
+    }
+
+    .motion-sample {
+      width: var(--revo-space-16);
+      height: var(--revo-space-4);
+      border-radius: var(--revo-radius-pill);
+      background: var(--revo-color-brand-blue);
+      transition: width var(--revo-duration-base) var(--revo-ease-standard);
+    }
+
+    .motion-sample:hover {
+      width: var(--revo-space-20);
+    }
+  </style>
+</head>
+<body>
+  <!-- このページは tokens.css の検品用プレビューです。本番ページではありません。 -->
+  <main class="preview">
+    <div class="notice">このページは tokens.css の検品用プレビューです。本番ページではありません。</div>
+
+    <header class="section">
+      <h1>tokens.css 検品用プレビュー</h1>
+      <p class="lead">本体用デザイントークンの色、文字、余白、角丸、影などを目視確認します。</p>
+    </header>
+
+    <section class="section" aria-labelledby="brand-colors">
+      <h2 id="brand-colors">ブランドカラー</h2>
+      <div class="grid">
+        <div class="swatch" style="background: var(--revo-color-brand-blue);">ブルー</div>
+        <div class="swatch" style="background: var(--revo-color-brand-blue-light);">ライトブルー</div>
+        <div class="swatch" style="background: var(--revo-color-brand-pink);">ピンク</div>
+        <div class="swatch light" style="background: var(--revo-color-brand-white);">白</div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="function-colors">
+      <h2 id="function-colors">機能色</h2>
+      <div class="grid">
+        <div class="swatch" style="background: var(--revo-color-founder);">起案者</div>
+        <div class="swatch" style="background: var(--revo-color-spark);">最初の仲間</div>
+        <div class="swatch" style="background: var(--revo-color-boost);">旗を広げる</div>
+        <div class="swatch" style="background: var(--revo-color-art);">レボアート</div>
+        <div class="swatch" style="background: var(--revo-color-success);">達成</div>
+        <div class="swatch" style="background: var(--revo-color-rush);">追い込み</div>
+        <div class="swatch light" style="background: var(--revo-gradient-gold);">金</div>
+        <div class="swatch light" style="background: var(--revo-gradient-platinum);">プラチナ</div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="background-colors">
+      <h2 id="background-colors">背景色</h2>
+      <div class="grid">
+        <div class="sample" style="background: var(--revo-color-bg-base);"><span class="label">ベース</span></div>
+        <div class="sample" style="background: var(--revo-color-bg-card);"><span class="label">カード背景</span></div>
+        <div class="sample" style="background: var(--revo-color-bg-soft);"><span class="label">サブ背景</span></div>
+        <div class="sample" style="background: var(--revo-color-bg-pink-soft);"><span class="label">ピンク淡色</span></div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="text-colors">
+      <h2 id="text-colors">テキスト色</h2>
+      <div class="type-list">
+        <div class="sample text-main"><span class="label">メイン</span>挑戦の内容が読みやすい濃い文字色です。</div>
+        <div class="sample text-sub"><span class="label">サブ</span>説明文や補足に使う落ち着いた文字色です。</div>
+        <div class="sample text-muted"><span class="label">控えめ</span>日付や注記に使う控えめな文字色です。</div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="borders">
+      <h2 id="borders">境界線色</h2>
+      <div class="grid">
+        <div class="sample border-sample"><span class="label">通常の境界線</span></div>
+        <div class="sample border-strong"><span class="label">強めの境界線</span></div>
+        <div class="sample" style="border-color: var(--revo-color-border-blue);"><span class="label">ブルー境界線</span></div>
+        <div class="sample" style="border-color: var(--revo-color-border-pink);"><span class="label">ピンク境界線</span></div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="type">
+      <h2 id="type">フォント・文字サイズ・行間</h2>
+      <div class="type-list">
+        <div class="sample" style="font-size: var(--revo-font-size-caption); line-height: var(--revo-line-height-caption);">小さい文字。注記や補足を想定したサイズです。</div>
+        <div class="sample" style="font-size: var(--revo-font-size-body); line-height: var(--revo-line-height-body);">標準の文字。本文として読みやすい行間を確認します。</div>
+        <div class="sample" style="font-size: var(--revo-font-size-heading); line-height: var(--revo-line-height-heading); font-weight: var(--revo-font-weight-black);">大きい見出し</div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="spacing">
+      <h2 id="spacing">余白</h2>
+      <div class="type-list">
+        <div class="space-row"><span class="label">space 2</span><span class="space-box" style="width: var(--revo-space-2);"></span></div>
+        <div class="space-row"><span class="label">space 4</span><span class="space-box" style="width: var(--revo-space-4);"></span></div>
+        <div class="space-row"><span class="label">space 8</span><span class="space-box" style="width: var(--revo-space-8);"></span></div>
+        <div class="space-row"><span class="label">space 16</span><span class="space-box" style="width: var(--revo-space-16);"></span></div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="radii">
+      <h2 id="radii">角丸</h2>
+      <div class="grid">
+        <div class="sample radius-box" style="border-radius: var(--revo-radius-sm);"><span class="label">小さい角丸</span></div>
+        <div class="sample radius-box" style="border-radius: var(--revo-radius-card);"><span class="label">カード用角丸</span></div>
+        <div class="sample radius-box" style="border-radius: var(--revo-radius-panel);"><span class="label">パネル用角丸</span></div>
+        <div class="sample radius-box" style="border-radius: var(--revo-radius-pill);"><span class="label">丸いラベル</span></div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="shadows">
+      <h2 id="shadows">影</h2>
+      <div class="grid">
+        <div class="sample shadow-box" style="box-shadow: var(--revo-shadow-sm);"><span class="label">小さい影</span></div>
+        <div class="sample shadow-box" style="box-shadow: var(--revo-shadow-card);"><span class="label">カード用の影</span></div>
+        <div class="sample shadow-box" style="box-shadow: var(--revo-shadow-panel);"><span class="label">浮き上がる影</span></div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="widths">
+      <h2 id="widths">最大幅</h2>
+      <div class="width-sample">
+        狭めの読み物幅を確認します。長い文章でも横に広がりすぎないかを見るための検品です。
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="motion">
+      <h2 id="motion">アニメーション時間</h2>
+      <p class="text-sub">下のバーにカーソルを重ねると、基本の変化時間を確認できます。</p>
+      <div class="motion-sample" aria-label="アニメーション時間の検品"></div>
+    </section>
+  </main>
+</body>
+</html>
