@@ -44,19 +44,105 @@
     return action;
   }
 
-  function countPair(currentDisplay, targetDisplay, fallbackDisplay) {
-    if (currentDisplay && targetDisplay) {
-      return `${currentDisplay} / ${targetDisplay}`;
+  function hasDisplayValue(value) {
+    if (value === undefined || value === null) {
+      return false;
     }
-    return fallbackDisplay || "-";
+
+    if (typeof value === "number") {
+      return Number.isFinite(value);
+    }
+
+    return String(value).trim() !== "" && String(value) !== "NaN" && String(value) !== "undefined";
   }
 
-  function clampProgress(value) {
-    const number = Number(value);
-    if (!Number.isFinite(number)) {
-      return 0;
+  function displayValue(...values) {
+    for (const value of values) {
+      if (hasDisplayValue(value)) {
+        return value;
+      }
     }
+    return "";
+  }
+
+  function countPair(currentDisplay, targetDisplay, fallbackDisplay) {
+    if (hasDisplayValue(currentDisplay) && hasDisplayValue(targetDisplay)) {
+      return `${currentDisplay} / ${targetDisplay}`;
+    }
+    return displayValue(fallbackDisplay) || "-";
+  }
+
+  function numericValue(...values) {
+    for (const value of values) {
+      if (!hasDisplayValue(value)) {
+        continue;
+      }
+
+      const number = Number(value);
+      if (Number.isFinite(number)) {
+        return number;
+      }
+    }
+    return 0;
+  }
+
+  function clampProgress(...values) {
+    const number = numericValue(...values);
     return Math.max(0, Math.min(100, number));
+  }
+
+  function percentDisplay(...values) {
+    return `${clampProgress(...values)}%`;
+  }
+
+  function metricConfigForProject(project) {
+    if (project.type === "boost") {
+      const rate = clampProgress(project.boostAchievementRate, project.progressRate);
+      return {
+        progressRate: rate,
+        primary: [
+          ["残り人数", displayValue(project.boostRemainingPeople) || "-"],
+          ["目標人数", displayValue(project.boostTargetPeople, project.targetSupporterCountDisplay) || "受付後に反映"]
+        ],
+        secondary: [
+          ["達成率", percentDisplay(project.boostAchievementRate, project.progressRate)],
+          ["達成回数", displayValue(project.boostAchievedCount) || "-"],
+          ["目標回数", displayValue(project.boostTargetCount) || "受付後に反映"],
+          ["目標期日", displayValue(project.boostTargetDate, project.remainingDaysDisplay) || "受付後に反映"]
+        ]
+      };
+    }
+
+    if (project.type === "spark") {
+      const rate = clampProgress(project.sparkAchievementRate, project.progressRate);
+      return {
+        progressRate: rate,
+        primary: [
+          ["達成人数", displayValue(project.sparkAchievedPeople, project.currentSupporterCountDisplay, project.supporterCountDisplay) || "集計準備中"],
+          ["目標人数", displayValue(project.sparkTargetPeople, project.targetSupporterCountDisplay) || "受付後に反映"]
+        ],
+        secondary: [
+          ["達成率", percentDisplay(project.sparkAchievementRate, project.progressRate)],
+          ["目標期日", displayValue(project.sparkTargetDate, project.remainingDaysDisplay) || "受付後に反映"],
+          ["目標組数", displayValue(project.sparkTargetGroups, project.targetGroupCountDisplay) || "受付後に反映"],
+          ["達成組数", displayValue(project.sparkAchievedGroups, project.currentGroupCountDisplay) || "集計準備中"],
+          ["目標金額", displayValue(project.sparkTargetAmount, project.targetAmountDisplay, project.currentAmountDisplay) || "受付後に反映"]
+        ]
+      };
+    }
+
+    return {
+      progressRate: clampProgress(project.progressRate),
+      primary: [
+        ["支援者", countPair(project.currentSupporterCountDisplay, project.targetSupporterCountDisplay, project.supporterCountDisplay)],
+        ["組数", countPair(project.currentGroupCountDisplay, project.targetGroupCountDisplay, "")]
+      ],
+      secondary: [
+        ["現在", displayValue(project.currentAmountDisplay) || "-"],
+        ["残り", displayValue(project.remainingDaysDisplay) || "-"],
+        ["達成率", percentDisplay(project.progressRate)]
+      ]
+    };
   }
 
   function isLocalImagePath(src) {
@@ -108,9 +194,11 @@
     const progressTrack = document.createElement("div");
     progressTrack.className = "revo-card__progress-track";
 
+    const cardMetrics = metricConfigForProject(project);
+
     const progressBar = document.createElement("div");
     progressBar.className = "revo-card__progress-bar";
-    progressBar.style.width = `${clampProgress(project.progressRate)}%`;
+    progressBar.style.width = `${cardMetrics.progressRate}%`;
 
     progressTrack.appendChild(progressBar);
     progress.appendChild(progressTrack);
@@ -121,38 +209,19 @@
 
     const primaryStats = document.createElement("div");
     primaryStats.className = "revo-card__stats-primary";
-    primaryStats.appendChild(createStat(
-      "支援者",
-      countPair(
-        project.currentSupporterCountDisplay,
-        project.targetSupporterCountDisplay,
-        project.supporterCountDisplay
-      ),
-      ["revo-card__stat--primary"]
-    ));
-    primaryStats.appendChild(createStat(
-      "組数",
-      countPair(project.currentGroupCountDisplay, project.targetGroupCountDisplay, ""),
-      ["revo-card__stat--primary"]
-    ));
+    cardMetrics.primary.forEach(([label, value]) => {
+      primaryStats.appendChild(createStat(label, value, ["revo-card__stat--primary"]));
+    });
 
     const secondaryStats = document.createElement("div");
     secondaryStats.className = "revo-card__stats-secondary";
-    secondaryStats.appendChild(createStat(
-      "現在",
-      project.currentAmountDisplay,
-      ["revo-card__stat--compact", "revo-card__stat--amount"]
-    ));
-    secondaryStats.appendChild(createStat(
-      "残り",
-      project.remainingDaysDisplay,
-      ["revo-card__stat--compact"]
-    ));
-    secondaryStats.appendChild(createStat(
-      "達成率",
-      `${project.progressRate || 0}%`,
-      ["revo-card__stat--compact"]
-    ));
+    cardMetrics.secondary.forEach(([label, value]) => {
+      const modifiers = ["revo-card__stat--compact"];
+      if (label.includes("金額") || label === "現在") {
+        modifiers.push("revo-card__stat--amount");
+      }
+      secondaryStats.appendChild(createStat(label, value, modifiers));
+    });
 
     stats.appendChild(primaryStats);
     stats.appendChild(secondaryStats);
