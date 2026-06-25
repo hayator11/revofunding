@@ -563,6 +563,238 @@ Sheet列をそのままJSON化しない。公開JSONへ入れる列は許可リ�
 - commit
 - push
 
+## Sheet→公開用JSON 変換テスト結果
+
+この章は、Google Sheet実列からV2公開用JSONへ安全に変換できるかを、Projectsタブの代表1件で確認した結果を記録する。
+
+このテストは確認用であり、サイトJSONの書き換えや本番反映ではない。Apps Script作成、JSON生成、Google Sheet編集、URL差し替えはまだ行わない。
+
+### Projects変換サンプル
+
+確認対象:
+
+```text
+Projectsタブ 代表行:
+project_id = revo-20260606-おのくんキャラバンレボアート
+```
+
+公開用JSON変換サンプル:
+
+```json
+{
+  "id": "revo-20260606-おのくんキャラバンレボアート",
+  "type": "spark",
+  "status": "published",
+  "featured": false,
+  "title": "おのくんキャラバンレボアート",
+  "description": "クリエイターの挑戦として申請されました。",
+  "longDescription": "廃棄予定のペンキや地域の課題を、アートと応援の力で見たくなる形へ変えるプロジェクトです。",
+  "category": "クリエイター",
+  "image": "revo-funding-guide.png",
+  "mainImageUrl": "revo-funding-guide.png",
+  "images": ["revo-funding-guide.png"],
+  "organizerName": "おのくんキャラバン",
+  "operatorProfile": "おのくん、レボリストLab、防災×帽祭と連動し、地域とアートをつなぐ活動です。",
+  "sparkAchievedPeople": "0人",
+  "sparkTargetPeople": "20人",
+  "sparkAchievementRate": 0,
+  "sparkTargetDate": "",
+  "sparkTargetGroups": "",
+  "sparkAchievedGroups": "",
+  "sparkTargetAmount": "200,000円"
+}
+```
+
+注意:
+
+- このサンプルは変換確認用であり、本番JSONではない。
+- `type: "spark"` と `featured: false` は、Sheet実列から直接取得できたものではなく、現時点では仮補完・運営追記候補である。
+- このまま自動反映しない。
+- メール、key付きURL、管理URL、メール文面、担当者、運営メモは含めていない。
+
+### スパーカー変換結果
+
+| Sheet列 / 計算元 | V2 JSON項目 | 変換結果 | 現時点の扱い |
+| --- | --- | --- | --- |
+| `current_supporters` | `sparkAchievedPeople` | `0人` | 変換可能 |
+| `target_supporters` | `sparkTargetPeople` | `20人` | 変換可能 |
+| `current_supporters / target_supporters * 100` | `sparkAchievementRate` | `0` | 変換可能。0除算時は `NaN` を出さない |
+| `target_amount` | `sparkTargetAmount` | `200,000円` | 変換可能 |
+
+未接続項目:
+
+| V2 JSON項目 | 現時点の扱い |
+| --- | --- |
+| `sparkTargetDate` | 未接続 / 運営追記候補 / Sheet列追加確認候補 |
+| `sparkTargetGroups` | 未接続 / 運営追記候補 / Sheet列追加確認候補 |
+| `sparkAchievedGroups` | 未接続 / 運営追記候補 / Sheet列追加確認候補 |
+
+未接続項目には架空値を入れない。
+
+### ブースター変換結果
+
+| Sheet列 / 計算元 | V2 JSON項目 | 変換候補 | 現時点の扱い |
+| --- | --- | --- | --- |
+| `booster_target_supporters` | `boostTargetPeople` | 人数表示へ整形 | 候補あり |
+| `booster_target_supporters - booster_current_supporters` | `boostRemainingPeople` | 残り人数を算出 | 候補あり |
+| `booster_current_supporters / booster_target_supporters * 100` | `boostAchievementRate` | 達成率を算出 | 候補あり |
+
+補足:
+
+- 今回の代表行では `booster_target_supporters` が空欄のため、ブースターJSONとしては未完成。
+- `boostAchievedCount` / `boostTargetCount` / `boostTargetDate` は未接続。
+- 人数基準か回数基準かは要確認。
+- 計算不能時に `NaN` を出さない。
+
+### Public Counters確認結果
+
+確認済み候補:
+
+```text
+activeChallenges
+totalSupporters
+totalFans
+totalBadges
+productsMade
+supportersCount
+soldCount
+salesAmount
+```
+
+整理:
+
+| カウンター | 用途候補 | 現時点の扱い |
+| --- | --- | --- |
+| `activeChallenges` | V2トップ候補 | 表示名・意味の確認後に反映 |
+| `totalSupporters` | V2トップ候補 | 表示名・意味の確認後に反映 |
+| `totalFans` | V2トップ候補 | 表示名・意味の確認後に反映 |
+| `totalBadges` | 将来の称号・バッジ候補 | まだ未接続 |
+| `productsMade` | 制作数候補 | まだ未接続 |
+| `supportersCount` | 応援者数候補 | 個別挑戦との紐づけ確認が必要 |
+| `soldCount` | 内部 / 運営確認後候補 | そのまま表示しない |
+| `salesAmount` | 内部 / 運営確認後候補 | そのまま表示しない |
+
+Mapや地域カウンターへ直接使う列は未確認。
+
+Public Countersは、そのまま表示しない。表示名・意味を運営確認してから反映する。
+
+### Supporters集計の未接続点
+
+確認済み列:
+
+```text
+参加したいレボチャレンジ
+参加区分
+参加ステータス
+```
+
+未確認:
+
+```text
+project_id 相当の明確な列
+spark / boost 判別列
+```
+
+Form Eの回答を達成人数・参加数へ使うには、Projectsとの紐づけルールが必要。
+
+現状ではSupportersとProjectsの接続キーが未確定である。
+
+修復候補:
+
+- Supporters側に `project_id` または `project_key` を持たせる。
+- `参加したいレボチャレンジ` からProjectsの `project_id` へ変換するマスタを持つ。
+- `参加区分` から `spark` / `boost` を判定するルールを決める。
+
+### Map反映の未接続点
+
+Sheet側に確認できたもの:
+
+```text
+活動地域
+```
+
+未確認:
+
+```text
+isMapPublished
+mapOptOut
+googleMapEnabled
+googleMapPermission
+googleMapUrl
+```
+
+現時点では `revo-support-map-data.json` の静的JSON維持が安全である。
+
+Map反映には運営追記列または追加確認列が必要。
+
+必要な列候補:
+
+```text
+isMapPublished
+mapOptOut
+googleMapEnabled
+googleMapPermission
+googleMapUrl
+mapRegion
+mapCity
+mapCategory
+```
+
+注意:
+
+- 通常Mapに `googleMapEnabled` を必須にしない。
+- Google Map URLは自動生成しない。
+- 詳細住所は公開しない。
+
+### 未接続項目一覧
+
+以下は現在Sheet→V2 JSONへ未接続であり、運営追記列、変換ルール、または追加確認が必要である。
+
+```text
+type
+featured
+sparkTargetDate
+sparkTargetGroups
+sparkAchievedGroups
+boostAchievedCount
+boostTargetCount
+boostTargetDate
+Map公開許可系フラグ一式
+```
+
+### 破綻リスク
+
+- Sheet行をそのままJSON化すると、メール・key付きURL・管理URLが混入する。
+- `type` がSheetにないため、`spark_plan` 等からの変換ルールが必要。
+- `featured` がSheetにないため、トップ注目表示の制御列が未接続。
+- カウンター計算ルール未確定のまま反映すると、達成率・残り人数が崩れる。
+- Map許可系フラグが未接続のまま反映すると、掲載許可やピンポイント表示の扱いが破綻する。
+
+### 修復方針
+
+1. Projectsに公開用変換列として `type` / `featured` / `targetDate` / Map系フラグを追加するか確認
+2. SupportersとProjectsの紐づけ方法を確定
+3. `spark` / `boost` 判別ルールを確定
+4. Public Countersの表示名と用途を確定
+5. Map反映に必要な列を確定
+6. 許可リスト方式でテスト用JSON生成
+7. 1件のみJSON生成テスト
+8. サイト反映テスト
+9. 本番反映
+
+### 今回は実施しないこと
+
+- HTML修正
+- CSS修正
+- JS修正
+- JSON修正
+- Google Sheet編集
+- Googleフォーム編集
+- URL差し替え
+- Apps Script作成
+- commit
+- push
+
 ## 最終確認
 
 このドキュメントは、新しいGoogleフォームを作るためのものではない。
