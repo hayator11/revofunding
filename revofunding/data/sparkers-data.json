@@ -56,5 +56,34 @@
     "displayOrder": 2,
     "createdAt": "2026-06-19",
     "updatedAt": "2026-06-19"
+  },
+  {
+    "id": "sparker-revo-20260606-onokun-caravan-revo-art",
+    "relatedProjectId": "revo-20260606-おのくんキャラバンレボアート",
+    "type": "sparker",
+    "status": "preparing",
+    "title": "おのくんキャラバンレボアート",
+    "description": "地域とアートをつなぐ挑戦を、最初に応援するスパーカーを募集しています。",
+    "revoMeisterRole": "地域とアートをつなぐ人",
+    "sparkerRole": "最初に応援する仲間",
+    "sparkerTypes": [
+      "共感スパーカー",
+      "紹介スパーカー"
+    ],
+    "neededSparkerCount": 0,
+    "currentSparkerCount": 0,
+    "groupCount": 0,
+    "progressLabel": "達成率 0%",
+    "flowText": "挑戦内容を確認し、共感できる人が最初の応援や紹介を届ける流れを想定しています。",
+    "cautionText": "受付状況は状態ラベルで確認できます。外部フォームや決済導線は設置していません。",
+    "labels": [
+      "順次受付予定",
+      "アートで応援"
+    ],
+    "ctaLabel": "順次受付予定",
+    "isReady": false,
+    "displayOrder": 3,
+    "createdAt": "2026-06-26",
+    "updatedAt": "2026-06-26"
   }
 ]

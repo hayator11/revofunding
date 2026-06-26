@@ -233,5 +233,40 @@
     "isCompleted": true,
     "createdAt": "2026-06-17",
     "updatedAt": "2026-06-17"
+  },
+  {
+    "id": "revo-20260606-おのくんキャラバンレボアート",
+    "type": "spark",
+    "status": "published",
+    "featured": false,
+    "title": "おのくんキャラバンレボアート",
+    "description": "クリエイターの挑戦として申請されました。",
+    "longDescription": "廃棄予定のペンキや地域の課題を、アートと応援の力で見たくなる形へ変えるプロジェクトです。",
+    "category": "クリエイター",
+    "image": "/revo-funding-guide.png",
+    "mainImageUrl": "/revo-funding-guide.png",
+    "images": [
+      "/revo-funding-guide.png"
+    ],
+    "organizerName": "おのくんキャラバン",
+    "operatorProfile": "おのくん、レボリストLab、防災×帽祭と連動し、地域とアートをつなぐ活動です。",
+    "sparkAchievedPeople": "0人",
+    "sparkTargetPeople": "20人",
+    "sparkAchievementRate": 0,
+    "sparkTargetDate": "",
+    "sparkTargetGroups": "",
+    "sparkAchievedGroups": "",
+    "sparkTargetAmount": "200,000円",
+    "boostTargetPeople": "",
+    "boostRemainingPeople": "",
+    "boostAchievementRate": "",
+    "boostAchievedCount": "",
+    "boostTargetCount": "",
+    "boostTargetDate": "",
+    "isMapPublished": false,
+    "mapOptOut": false,
+    "googleMapEnabled": false,
+    "googleMapPermission": false,
+    "googleMapUrl": ""
   }
 ]
