@@ -3,8 +3,14 @@
 
   const fallbackProjectTitle = "関連する挑戦は確認中です";
 
+  function withCacheBuster(url) {
+    const version = new URLSearchParams(window.location.search).get("t") || "v2";
+    const separator = url.includes("?") ? "&" : "?";
+    return `${url}${separator}t=${encodeURIComponent(version)}`;
+  }
+
   async function fetchJson(url) {
-    const response = await fetch(url);
+    const response = await fetch(withCacheBuster(url));
 
     if (!response.ok) {
       throw new Error(`${url} を読み込めませんでした。`);

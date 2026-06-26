@@ -777,6 +777,12 @@
     return params.get("id") || "";
   }
 
+  function withCacheBuster(url) {
+    const version = new URLSearchParams(window.location.search).get("t") || "v2";
+    const separator = url.includes("?") ? "&" : "?";
+    return `${url}${separator}t=${encodeURIComponent(version)}`;
+  }
+
   function findProjectById(projects, projectId) {
     if (!Array.isArray(projects) || !projectId) {
       return null;
@@ -785,7 +791,7 @@
   }
 
   async function loadRevoProjects(jsonPath) {
-    const response = await fetch(jsonPath);
+    const response = await fetch(withCacheBuster(jsonPath));
     if (!response.ok) {
       throw new Error(`projects-data.json を読み込めませんでした: HTTP ${response.status}`);
     }
