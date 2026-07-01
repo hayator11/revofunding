@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>レボファンディング レボアート一覧</title>
+  <link rel="stylesheet" href="tokens/tokens.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="components/cards.css?v=revo-art-list-001">
+  <style>
+    .revo-art-list-page {
+      display: grid;
+      gap: var(--revo-space-6);
+    }
+
+    .revo-art-list-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 560px) minmax(320px, 1fr);
+      gap: var(--revo-space-5);
+      align-items: center;
+      min-height: 285px;
+      margin-bottom: 0;
+      padding: var(--revo-space-5) clamp(2rem, 4vw, 3.5rem);
+      overflow: hidden;
+      background:
+        linear-gradient(90deg, #fff 0%, rgba(255, 255, 255, 0.98) 36%, rgba(255, 255, 255, 0.8) 54%, rgba(255, 255, 255, 0.2) 82%),
+        linear-gradient(180deg, rgba(250, 245, 255, 0.94) 0%, rgba(250, 245, 255, 0.42) 100%),
+        url("assets/images/revo-art-apply-hero.png") right center / auto 100% no-repeat;
+      border: 1px solid rgba(139, 92, 246, 0.22);
+      border-radius: 0 0 var(--revo-radius-card) var(--revo-radius-card);
+      box-shadow: 0 24px 48px rgba(76, 29, 149, 0.08);
+    }
+
+    .revo-art-list-hero__copy {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: var(--revo-space-3);
+      max-width: 560px;
+    }
+
+    .revo-art-list-hero__eyebrow,
+    .revo-art-list-hero__lead,
+    .revo-art-list-hero__text {
+      margin: 0;
+    }
+
+    .revo-art-list-hero__eyebrow {
+      color: var(--revo-color-art);
+      font-size: var(--revo-font-size-14);
+      font-weight: var(--revo-font-weight-bold);
+    }
+
+    .revo-art-list-hero h1 {
+      margin: 0;
+      color: #27133e;
+      font-size: clamp(2rem, 3.2vw, 3.05rem);
+      line-height: 1.12;
+    }
+
+    .revo-art-list-hero h1 span {
+      display: block;
+    }
+
+    .revo-art-list-hero__lead {
+      color: var(--revo-color-text-main);
+      font-size: var(--revo-font-size-lead);
+      font-weight: var(--revo-font-weight-bold);
+    }
+
+    .revo-art-list-hero__text {
+      color: var(--revo-color-text-sub);
+      font-size: var(--revo-font-size-14);
+    }
+
+    .revo-art-list-hero__actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--revo-space-3);
+      margin-top: var(--revo-space-2);
+    }
+
+    .revo-art-list-filter {
+      display: grid;
+      gap: var(--revo-space-3);
+      padding: var(--revo-space-4);
+      background: rgba(255, 255, 255, 0.86);
+      border: 1px solid rgba(139, 92, 246, 0.18);
+      border-radius: var(--revo-radius-card);
+    }
+
+    .revo-art-list-filter__head {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: var(--revo-space-2);
+      align-items: baseline;
+    }
+
+    .revo-art-list-filter__title,
+    .revo-art-list-filter__note {
+      margin: 0;
+    }
+
+    .revo-art-list-filter__title {
+      font-size: var(--revo-font-size-16);
+      line-height: var(--revo-line-height-heading);
+    }
+
+    .revo-art-list-filter__note {
+      color: var(--revo-color-text-sub);
+      font-size: var(--revo-font-size-14);
+    }
+
+    .revo-art-list-filter__list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--revo-space-2);
+    }
+
+    .revo-art-list-filter__button {
+      min-height: var(--revo-space-6);
+      padding: var(--revo-space-2) var(--revo-space-4);
+      color: var(--revo-color-art);
+      background: var(--revo-color-bg-purple-soft);
+      border: 1px solid rgba(139, 92, 246, 0.24);
+      border-radius: var(--revo-radius-pill);
+      font: inherit;
+      font-size: var(--revo-font-size-14);
+      font-weight: var(--revo-font-weight-bold);
+      line-height: var(--revo-line-height-caption);
+      cursor: pointer;
+    }
+
+    .revo-art-list-filter__button[aria-pressed="true"] {
+      color: #fff;
+      background: linear-gradient(135deg, #a855f7 0%, var(--revo-color-art) 100%);
+      border-color: rgba(139, 92, 246, 0.38);
+      box-shadow: 0 10px 22px rgba(139, 92, 246, 0.18);
+    }
+
+    @media (max-width: 760px) {
+      .revo-art-list-hero {
+        grid-template-columns: 1fr;
+        align-items: start;
+        min-height: 390px;
+        padding: var(--revo-space-5);
+        background:
+          linear-gradient(180deg, #fff 0%, rgba(255, 255, 255, 0.98) 52%, rgba(255, 255, 255, 0.38) 100%),
+          url("assets/images/revo-art-apply-hero.png") center bottom / auto 36% no-repeat;
+        border-radius: var(--revo-radius-card);
+      }
+
+      .revo-art-list-hero h1 {
+        font-size: clamp(1.875rem, 9vw, 2.5rem);
+      }
+
+      .revo-art-list-filter__head {
+        display: grid;
+      }
+    }
+  </style>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
+  <script src="components/render-revo-art.js?v=art-list-004" defer></script>
+  <script src="components/render-support-map.js" defer></script>
+</head>
+<body class="rf-art-page-body">
+  <header class="rf-art-site-header">
+    <div class="rf-art-site-header__inner">
+      <a class="rf-art-site-header__brand" href="index.html" aria-label="レボファンディング トップ">
+        <span class="rf-art-site-header__mark">R</span>
+        <span>レボファンディング</span>
+      </a>
+      <label class="rf-art-site-search">
+        <input type="search" placeholder="キーワードでプロジェクトを検索" aria-label="キーワードでプロジェクトを検索">
+        <span class="rf-art-site-search__icon" aria-hidden="true">⌕</span>
+      </label>
+      <nav class="rf-art-site-nav" aria-label="主要ナビゲーション">
+        <a href="index.html">トップ</a>
+        <a href="list.html">参加入口</a>
+        <a href="spark.html">挑戦をはじめる</a>
+        <a href="revo-art.html">レボアート</a>
+        <details class="rf-art-site-nav-group">
+          <summary>全体メニュー</summary>
+          <div class="rf-art-site-nav-group__panel">
+            <a href="revolist.html">全体構造</a>
+            <a href="revolist-projects.html">プロジェクト紹介</a>
+            <a href="sparkers.html">スパーク一覧</a>
+            <a href="badge-sparkers.html">バッチスパーカー</a>
+            <a href="boosters.html">ブースト一覧</a>
+            <a href="revo-art-list.html">レボアート一覧</a>
+            <a href="certified-artists.html">認定アーティスト</a>
+            <a href="site-map.html">サイトマップ</a>
+          </div>
+        </details>
+      </nav>
+      <div class="rf-art-site-actions" aria-label="アカウントメニュー">
+        <a href="login.html">ログイン</a>
+        <a class="rf-art-site-actions__primary" href="register.html">新規登録</a>
+      </div>
+    </div>
+    <nav class="rf-art-category-nav" aria-label="カテゴリナビゲーション">
+      <div class="rf-art-category-nav__inner">
+        <a href="index.html">トップ</a>
+        <span>地域の挑戦</span>
+        <span>まちづくり</span>
+        <span>子ども・教育</span>
+        <span>環境・自然</span>
+        <span>福祉・医療</span>
+        <span>文化・アート</span>
+        <span>スポーツ</span>
+        <span>食・農業</span>
+        <span>テクノロジー</span>
+        <span>防災・災害</span>
+      </div>
+    </nav>
+  </header>
+
+  <main class="rf-art-page revo-art-list-page" data-revo-art-page="project-list">
+    <header class="revo-art-list-hero">
+      <div class="revo-art-list-hero__copy">
+        <p class="revo-art-list-hero__eyebrow">レボアート一覧</p>
+        <h1><span>アートで、</span><span>応援の輪を広げる。</span></h1>
+        <p class="revo-art-list-hero__lead">プロジェクトとして始まったレボアートを掲載します。</p>
+        <p class="revo-art-list-hero__text">応募後、運営確認・抽選・決定を経て、公開許可を得たレボアートスポットだけを一覧で確認できます。</p>
+        <div class="revo-art-list-hero__actions" aria-label="レボアート一覧の主要導線">
+          <a class="rf-art-action rf-art-action--link" href="#rf-art-list">作品を探す</a>
+          <a class="rf-art-card__detail-link" href="revo-art.html">レボアートを知る</a>
+        </div>
+      </div>
+    </header>
+
+    <div id="rf-art-message" class="rf-art-message">登録済みレボアート情報を読み込み中です。</div>
+    <section class="revo-art-list-filter" aria-labelledby="revo-art-list-filter-title">
+      <div class="revo-art-list-filter__head">
+        <h2 id="revo-art-list-filter-title" class="revo-art-list-filter__title">カテゴリで探す</h2>
+        <p class="revo-art-list-filter__note">ウォールアート、カーアート、ハットアートで表示を切り替えられます。</p>
+      </div>
+      <div id="revo-art-list-filter-list" class="revo-art-list-filter__list" aria-label="レボアートカテゴリ">
+        <button class="revo-art-list-filter__button" type="button" data-revo-art-list-filter="all" aria-pressed="true">すべて</button>
+        <button class="revo-art-list-filter__button" type="button" data-revo-art-list-filter="wall" aria-pressed="false">ウォールアート</button>
+        <button class="revo-art-list-filter__button" type="button" data-revo-art-list-filter="car" aria-pressed="false">カーアート</button>
+        <button class="revo-art-list-filter__button" type="button" data-revo-art-list-filter="hat" aria-pressed="false">ハットアート</button>
+      </div>
+    </section>
+
+    <section id="rf-art-projects" aria-labelledby="rf-art-projects-title">
+      <div class="rf-art-section__head">
+        <span class="rf-art-badge">一覧</span>
+        <h2 id="rf-art-projects-title">公開許可済みレボアート</h2>
+      </div>
+      <div id="rf-art-list" class="rf-art-grid rf-art-grid--list">
+        <article class="rf-card--art">
+          <div class="rf-art-visual rf-art-visual--wall rf-art-visual--card" aria-hidden="true">
+            <div class="rf-art-visual__motifs"><span class="rf-art-visual__motif">面</span><span class="rf-art-visual__motif">線</span><span class="rf-art-visual__motif">壁</span></div>
+            <span class="rf-art-visual__line"></span>
+          </div>
+          <div class="rf-art-card__header">
+            <h3 class="rf-art-card__title">空の駅の桜の木ウォールアート</h3>
+            <p class="rf-art-card__theme">空の駅 サンプル展示</p>
+          </div>
+          <p class="rf-art-card__short-message">空の駅に、春を待つ桜の木と応援の記憶を描く。</p>
+          <p class="rf-art-card__area">宮城県東松島市</p>
+          <div class="rf-art-card__labels"><span class="rf-art-chip">ウォールアート</span><span class="rf-art-chip">桜の木</span><span class="rf-art-chip">空の駅</span></div>
+          <p class="rf-art-card__winning-label">宮城県東松島市・公開許可済み想定</p>
+          <div class="rf-art-card__actions"><a class="rf-art-card__detail-link" href="revo-art-detail.html?id=sample-sora-station-sakura-wall">詳細を見る</a></div>
+        </article>
+        <article class="rf-card--art">
+          <div class="rf-art-visual rf-art-visual--car rf-art-visual--card" aria-hidden="true">
+            <div class="rf-art-visual__motifs"><span class="rf-art-visual__motif">巡</span><span class="rf-art-visual__motif">流</span><span class="rf-art-visual__motif">道</span></div>
+            <span class="rf-art-visual__line"></span>
+          </div>
+          <div class="rf-art-card__header">
+            <h3 class="rf-art-card__title">走る応援カーアートプロジェクト</h3>
+            <p class="rf-art-card__theme">カーアート</p>
+          </div>
+          <p class="rf-art-card__short-message">移動する車両から、応援の物語を街へ届ける。</p>
+          <p class="rf-art-card__area">宮城県石巻市</p>
+          <div class="rf-art-card__labels"><span class="rf-art-chip">カーアート</span><span class="rf-art-chip">巡回</span><span class="rf-art-chip">サンプル</span></div>
+          <p class="rf-art-card__winning-label">公開許可済み地域として掲載予定</p>
+          <div class="rf-art-card__actions"><a class="rf-art-card__detail-link" href="revo-art-detail.html?id=car">詳細を見る</a></div>
+        </article>
+        <article class="rf-card--art">
+          <div class="rf-art-visual rf-art-visual--hat rf-art-visual--card" aria-hidden="true">
+            <div class="rf-art-visual__motifs"><span class="rf-art-visual__motif">帽</span><span class="rf-art-visual__motif">飾</span><span class="rf-art-visual__motif">場</span></div>
+            <span class="rf-art-visual__line"></span>
+          </div>
+          <div class="rf-art-card__header">
+            <h3 class="rf-art-card__title">ハットアート表現プロジェクト</h3>
+            <p class="rf-art-card__theme">ハットアート</p>
+          </div>
+          <p class="rf-art-card__short-message">帽子に個性と応援のメッセージをのせる。</p>
+          <p class="rf-art-card__area">宮城県東松島市</p>
+          <div class="rf-art-card__labels"><span class="rf-art-chip">ハットアート</span><span class="rf-art-chip">表現</span><span class="rf-art-chip">サンプル</span></div>
+          <p class="rf-art-card__winning-label">公開許可済み地域として掲載予定</p>
+          <div class="rf-art-card__actions"><a class="rf-art-card__detail-link" href="revo-art-detail.html?id=hat">詳細を見る</a></div>
+        </article>
+        <article class="rf-card--art">
+          <div class="rf-art-visual rf-art-visual--wall rf-art-visual--card" aria-hidden="true">
+            <div class="rf-art-visual__motifs"><span class="rf-art-visual__motif">表</span><span class="rf-art-visual__motif">現</span><span class="rf-art-visual__motif">応</span></div>
+            <span class="rf-art-visual__line"></span>
+          </div>
+          <div class="rf-art-card__header">
+            <h3 class="rf-art-card__title">公共空間レボアートプロジェクト</h3>
+            <p class="rf-art-card__theme">ウォールアート</p>
+          </div>
+          <p class="rf-art-card__short-message">公開できる空間に、地域の応援を可視化する。</p>
+          <p class="rf-art-card__area">宮城県登米市</p>
+          <div class="rf-art-card__labels"><span class="rf-art-chip">ウォールアート</span><span class="rf-art-chip">公共空間</span><span class="rf-art-chip">サンプル</span></div>
+          <p class="rf-art-card__winning-label">公開許可済み地域として掲載予定</p>
+          <div class="rf-art-card__actions"><a class="rf-art-card__detail-link" href="revo-art-detail.html?id=wall">詳細を見る</a></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="revo-support-map" aria-labelledby="revo-support-map-title">
+      <div class="revo-support-map__head">
+        <span class="revo-support-map__badge">公開許可済み地域</span>
+        <h2 id="revo-support-map-title" class="revo-support-map__title">全国応援Map</h2>
+        <p class="revo-support-map__lead">登録済みレボアートスポットを含む公開許可済みの地域情報を、日本地図で確認できます。</p>
+        <p class="revo-support-map__note">詳細住所や連絡先は表示せず、市町村レベルの公開情報だけを扱います。</p>
+      </div>
+
+      <div id="revo-support-map-message" class="revo-support-map__message" aria-live="polite">全国応援Map情報を読み込み中です。</div>
+      <div id="revo-support-map" class="revo-support-map__body" aria-label="全国応援Map集計"></div>
+    </section>
+
+    <section class="rf-art-section" aria-labelledby="rf-art-list-note-title">
+      <div class="rf-art-section__head">
+        <span class="rf-art-badge">掲載基準</span>
+        <h2 id="rf-art-list-note-title">応募紹介とは分けて掲載します</h2>
+      </div>
+      <p class="rf-art-text">ウォールアート、カーアート、ハットアートの応募カテゴリ紹介は紹介ページにまとめ、ここでは実際にプロジェクトとして始まった登録済みレボアートだけを扱います。</p>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,1201 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>挑戦の背景を読む | レボファンディング</title>
+  <link rel="stylesheet" href="tokens/tokens.css">
+  <link rel="stylesheet" href="components/cards.css?v=nav-fit-009">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--revo-color-text-main);
+      background:
+        radial-gradient(circle at 10% 0%, rgba(255, 122, 69, 0.12), transparent 32%),
+        radial-gradient(circle at 92% 12%, rgba(37, 99, 235, 0.11), transparent 34%),
+        linear-gradient(180deg, #fff 0, #fff8f6 360px, #f8fafc 100%);
+      font-family: var(--revo-font-family-base), var(--revo-font-family-jp);
+      line-height: var(--revo-line-height-body);
+    }
+
+    .revo-detail-page {
+      --detail-accent: #f97316;
+      --detail-accent-strong: #ea580c;
+      --detail-accent-soft: rgba(249, 115, 22, 0.12);
+      --detail-accent-faint: rgba(255, 237, 213, 0.82);
+      width: min(100% - var(--revo-space-6), 1180px);
+      margin: 0 auto;
+      padding: 28px 0 var(--revo-space-12);
+    }
+
+    .revo-detail-page--boost {
+      --detail-accent: #2563eb;
+      --detail-accent-strong: #1d4ed8;
+      --detail-accent-soft: rgba(37, 99, 235, 0.12);
+      --detail-accent-faint: rgba(219, 234, 254, 0.82);
+    }
+
+    .revo-detail-page--completed {
+      --detail-accent: #16a34a;
+      --detail-accent-strong: #15803d;
+      --detail-accent-soft: rgba(22, 163, 74, 0.12);
+      --detail-accent-faint: rgba(220, 252, 231, 0.82);
+    }
+
+    .revo-detail-page__back {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 0 var(--revo-space-3);
+      margin-bottom: var(--revo-space-4);
+      color: var(--detail-accent-strong);
+      background: rgba(255, 255, 255, 0.74);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      border-radius: var(--revo-radius-pill);
+      font-size: var(--revo-font-size-14);
+      font-weight: var(--revo-font-weight-bold);
+      text-decoration: none;
+      box-shadow: 0 10px 28px rgba(15, 23, 42, 0.06);
+    }
+
+    .revo-detail-page__notice,
+    .revo-detail-page__panel,
+    .revo-detail-page__section {
+      border: 1px solid var(--revo-color-border);
+      border-radius: 18px;
+      background: var(--revo-color-bg-card);
+      box-shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
+    }
+
+    .revo-detail-page__notice {
+      margin-bottom: var(--revo-space-5);
+      padding: var(--revo-space-3) var(--revo-space-4);
+      color: var(--revo-color-text-sub);
+      background: rgba(255, 255, 255, 0.76);
+      font-size: var(--revo-font-size-14);
+    }
+
+    .revo-detail-page__hero {
+      display: grid;
+      grid-template-columns: minmax(0, 756px) minmax(320px, 380px);
+      gap: 24px;
+      margin-bottom: var(--revo-space-6);
+      align-items: stretch;
+    }
+
+    .revo-detail-page__hero-main {
+      display: grid;
+      gap: 16px;
+      min-width: 0;
+      padding: 18px;
+      background: rgba(255, 255, 255, 0.82);
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      border-radius: 22px;
+      box-shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
+    }
+
+    .revo-detail-page__hero-intro {
+      min-width: 0;
+      padding: 2px 2px 0;
+    }
+
+    .revo-detail-page__eyebrow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--revo-space-2);
+      margin-bottom: var(--revo-space-3);
+    }
+
+    .revo-detail-page__badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: var(--revo-space-6);
+      padding: var(--revo-space-1) var(--revo-space-3);
+      color: var(--revo-color-text-inverse);
+      background: linear-gradient(135deg, var(--detail-accent), var(--detail-accent-strong));
+      border-radius: var(--revo-radius-pill);
+      font-size: var(--revo-font-size-caption);
+      font-weight: var(--revo-font-weight-bold);
+      line-height: var(--revo-line-height-caption);
+    }
+
+    .revo-detail-page__badge--soft {
+      color: var(--revo-color-text-main);
+      background: var(--detail-accent-soft);
+      border: 1px solid rgba(148, 163, 184, 0.22);
+    }
+
+    .revo-detail-page__title {
+      margin: 0;
+      max-width: 13em;
+      font-size: clamp(1.9rem, 3.6vw, 3.35rem);
+      line-height: var(--revo-line-height-heading);
+      letter-spacing: 0;
+    }
+
+    .revo-detail-page__lead {
+      max-width: 46em;
+      margin: var(--revo-space-3) 0 0;
+      color: var(--revo-color-text-sub);
+      font-size: clamp(1rem, 1.35vw, 1.12rem);
+    }
+
+    .revo-detail-page__media {
+      position: relative;
+      display: grid;
+      width: 100%;
+      aspect-ratio: var(--revo-card-image-ratio);
+      place-items: center;
+      overflow: hidden;
+      color: var(--detail-accent-strong);
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.35), transparent 34%),
+        radial-gradient(circle at 78% 26%, rgba(255, 255, 255, 0.9), transparent 18%),
+        linear-gradient(135deg, var(--detail-accent-faint), rgba(255, 255, 255, 0.92));
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      border-radius: 22px;
+      font-size: var(--revo-font-size-14);
+      font-weight: var(--revo-font-weight-bold);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.54);
+    }
+
+    .revo-detail-page__media::before,
+    .revo-detail-page__media::after {
+      position: absolute;
+      content: "";
+      border-radius: 999px;
+      pointer-events: none;
+    }
+
+    .revo-detail-page__media::before {
+      width: 52%;
+      height: 52%;
+      right: -14%;
+      bottom: -18%;
+      background: var(--detail-accent-soft);
+    }
+
+    .revo-detail-page__media::after {
+      width: 62%;
+      height: 6px;
+      left: 18%;
+      bottom: 26%;
+      background: linear-gradient(90deg, transparent, var(--detail-accent), transparent);
+      opacity: 0.45;
+      transform: rotate(-9deg);
+    }
+
+    .revo-detail-page__media span {
+      position: relative;
+      z-index: 1;
+    }
+
+    .revo-detail-page__media-image {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .revo-detail-page__media-visual {
+      display: grid;
+      width: min(74%, 420px);
+      min-height: 46%;
+      place-items: center;
+      padding: var(--revo-space-4);
+      color: var(--detail-accent-strong);
+      background: rgba(255, 255, 255, 0.54);
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      border-radius: 20px;
+      text-align: center;
+      backdrop-filter: blur(4px);
+    }
+
+    .revo-detail-page__media-label {
+      font-size: clamp(1rem, 1.8vw, 1.35rem);
+      font-weight: var(--revo-font-weight-black);
+    }
+
+    .revo-detail-page__thumbnails {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--revo-space-2);
+      min-width: 0;
+      overflow-x: auto;
+      padding: 2px 2px 4px;
+      scrollbar-width: thin;
+    }
+
+    .revo-detail-page__thumbnail {
+      display: grid;
+      flex: 0 0 86px;
+      width: 86px;
+      height: 46px;
+      place-items: center;
+      padding: var(--revo-space-1);
+      color: var(--detail-accent-strong);
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid rgba(148, 163, 184, 0.28);
+      border-radius: 12px;
+      font: inherit;
+      font-size: var(--revo-font-size-caption);
+      font-weight: var(--revo-font-weight-bold);
+      line-height: var(--revo-line-height-caption);
+      cursor: pointer;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .revo-detail-page__thumbnail--active {
+      border-color: var(--detail-accent);
+      box-shadow: 0 0 0 2px var(--detail-accent-soft);
+    }
+
+    .revo-detail-page__thumbnail-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      border-radius: 9px;
+    }
+
+    .revo-detail-page__panel {
+      position: sticky;
+      top: 20px;
+      display: grid;
+      gap: 14px;
+      padding: 20px;
+      margin-bottom: 0;
+    }
+
+    .revo-detail-page__panel-title {
+      margin: 0;
+      font-size: var(--revo-font-size-18);
+      line-height: var(--revo-line-height-heading);
+    }
+
+    .revo-detail-page__metrics {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--revo-space-2);
+    }
+
+    .revo-detail-page__metric {
+      min-width: 0;
+      padding: var(--revo-space-2) var(--revo-space-3);
+      background: linear-gradient(180deg, #fff, rgba(248, 250, 252, 0.9));
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      border-radius: 14px;
+    }
+
+    .revo-detail-page__metric-label {
+      display: block;
+      margin-bottom: var(--revo-space-1);
+      color: var(--revo-color-text-muted);
+      font-size: var(--revo-font-size-caption);
+      font-weight: var(--revo-font-weight-bold);
+    }
+
+    .revo-detail-page__metric-value {
+      display: block;
+      color: var(--revo-color-text-main);
+      font-size: var(--revo-font-size-18);
+      font-weight: var(--revo-font-weight-black);
+      line-height: var(--revo-line-height-tight);
+    }
+
+    .revo-detail-page__metric--primary .revo-detail-page__metric-value {
+      color: var(--detail-accent-strong);
+    }
+
+    .revo-detail-page__meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--revo-space-2) var(--revo-space-4);
+      color: var(--revo-color-text-sub);
+      font-size: var(--revo-font-size-14);
+      line-height: var(--revo-line-height-body);
+    }
+
+    .revo-detail-page__progress {
+      display: grid;
+      gap: var(--revo-space-2);
+    }
+
+    .revo-detail-page__progress-head {
+      display: flex;
+      justify-content: space-between;
+      gap: var(--revo-space-3);
+      color: var(--revo-color-text-sub);
+      font-size: var(--revo-font-size-14);
+      font-weight: var(--revo-font-weight-bold);
+      line-height: var(--revo-line-height-body);
+    }
+
+    .revo-detail-page__progress-track {
+      height: 8px;
+      overflow: hidden;
+      background: #e5e7eb;
+      border-radius: var(--revo-radius-pill);
+    }
+
+    .revo-detail-page__progress-bar {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--detail-accent), var(--detail-accent-strong));
+      border-radius: inherit;
+    }
+
+    .revo-detail-page__panel-note {
+      margin: 0;
+      color: var(--revo-color-text-sub);
+      font-size: var(--revo-font-size-14);
+      line-height: var(--revo-line-height-body);
+    }
+
+    .revo-detail-page__info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--revo-space-3);
+    }
+
+    .revo-detail-page__info-card {
+      min-width: 0;
+      padding: var(--revo-space-4);
+      background: linear-gradient(180deg, #fff, rgba(248, 250, 252, 0.88));
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      border-radius: 16px;
+    }
+
+    .revo-detail-page__info-card--wide {
+      grid-column: 1 / -1;
+    }
+
+    .revo-detail-page__info-title {
+      margin: 0 0 var(--revo-space-2);
+      color: var(--revo-color-text-main);
+      font-size: var(--revo-font-size-16);
+      line-height: var(--revo-line-height-heading);
+    }
+
+    .revo-detail-page__info-body {
+      margin: 0;
+      color: var(--revo-color-text-sub);
+      font-size: var(--revo-font-size-14);
+      line-height: var(--revo-line-height-relaxed);
+    }
+
+    .revo-detail-page__info-body p {
+      margin: 0;
+    }
+
+    .revo-detail-page__info-action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 34px;
+      max-width: 100%;
+      margin-top: var(--revo-space-3);
+      padding: var(--revo-space-2) var(--revo-space-3);
+      color: #fff;
+      background: linear-gradient(135deg, var(--detail-accent), var(--detail-accent-strong));
+      border-radius: var(--revo-radius-pill);
+      font-size: var(--revo-font-size-14);
+      font-weight: var(--revo-font-weight-bold);
+      line-height: var(--revo-line-height-caption);
+      text-align: center;
+      text-decoration: none;
+      box-shadow: 0 10px 22px var(--detail-accent-soft);
+    }
+
+    .revo-detail-page__info-metrics {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--revo-space-2);
+      margin: 0;
+    }
+
+    .revo-detail-page__info-metric {
+      min-width: 0;
+      padding: var(--revo-space-3);
+      background: rgba(255, 255, 255, 0.74);
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      border-radius: 12px;
+    }
+
+    .revo-detail-page__info-metric-label {
+      margin: 0 0 4px;
+      color: var(--revo-color-text-muted);
+      font-size: var(--revo-font-size-caption);
+      font-weight: var(--revo-font-weight-bold);
+      line-height: var(--revo-line-height-caption);
+    }
+
+    .revo-detail-page__info-metric-value {
+      margin: 0;
+      color: var(--detail-accent-strong);
+      font-size: var(--revo-font-size-16);
+      font-weight: var(--revo-font-weight-black);
+      line-height: var(--revo-line-height-tight);
+      overflow-wrap: anywhere;
+    }
+
+    .revo-detail-page__info-meta {
+      margin: var(--revo-space-2) 0 0;
+      color: var(--detail-accent-strong);
+      font-size: var(--revo-font-size-caption);
+      font-weight: var(--revo-font-weight-bold);
+      line-height: var(--revo-line-height-caption);
+    }
+
+    .revo-detail-page__section {
+      margin-top: var(--revo-space-4);
+      padding: var(--revo-space-6);
+    }
+
+    .revo-detail-page__section h2 {
+      margin: 0 0 var(--revo-space-4);
+      font-size: var(--revo-font-size-title);
+      line-height: var(--revo-line-height-heading);
+    }
+
+    .revo-detail-page__section p {
+      max-width: 72ch;
+      margin: 0;
+      color: var(--revo-color-text-sub);
+      font-size: var(--revo-font-size-16);
+      line-height: var(--revo-line-height-relaxed);
+    }
+
+    .revo-detail-page__people {
+      margin-top: var(--revo-space-4);
+      padding: var(--revo-space-6);
+    }
+
+    .revo-detail-page__people h2 {
+      margin: 0 0 var(--revo-space-2);
+      font-size: var(--revo-font-size-title);
+      line-height: var(--revo-line-height-heading);
+    }
+
+    .revo-detail-page__people-lead {
+      max-width: 72ch;
+      margin: 0 0 var(--revo-space-5);
+      color: var(--revo-color-text-sub);
+      font-size: var(--revo-font-size-16);
+      line-height: var(--revo-line-height-body);
+    }
+
+    .revo-detail-page__person-card {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      gap: var(--revo-space-4);
+      align-items: start;
+      min-width: 0;
+      padding: var(--revo-space-4);
+      background: var(--revo-color-bg-soft);
+      border: 1px solid var(--revo-color-border);
+      border-radius: var(--revo-radius-card);
+    }
+
+    .revo-detail-page__person-icon {
+      display: grid;
+      width: 48px;
+      height: 48px;
+      place-items: center;
+      color: var(--revo-color-brand-blue);
+      background: var(--revo-color-bg-card);
+      border: 1px solid var(--revo-color-border);
+      border-radius: var(--revo-radius-pill);
+      font-size: var(--revo-font-size-14);
+      font-weight: var(--revo-font-weight-black);
+    }
+
+    .revo-detail-page__person-name {
+      margin: 0;
+      font-size: var(--revo-font-size-18);
+      line-height: var(--revo-line-height-heading);
+    }
+
+    .revo-detail-page__person-role {
+      margin: var(--revo-space-1) 0 var(--revo-space-2);
+      color: var(--revo-color-text-muted);
+      font-size: var(--revo-font-size-caption);
+      font-weight: var(--revo-font-weight-bold);
+      line-height: var(--revo-line-height-caption);
+    }
+
+    .revo-detail-page__person-comment {
+      margin: 0;
+      color: var(--revo-color-text-sub);
+      font-size: var(--revo-font-size-14);
+      line-height: var(--revo-line-height-body);
+    }
+
+    .revo-detail-page__person-labels {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: var(--revo-space-2);
+      max-width: 148px;
+    }
+
+    .revo-detail-page__person-label {
+      display: inline-flex;
+      align-items: center;
+      min-height: var(--revo-space-6);
+      padding: var(--revo-space-1) var(--revo-space-3);
+      color: var(--revo-color-brand-blue);
+      background: var(--revo-color-bg-card);
+      border: 1px solid var(--revo-color-border);
+      border-radius: var(--revo-radius-pill);
+      font-size: var(--revo-font-size-caption);
+      font-weight: var(--revo-font-weight-bold);
+      line-height: var(--revo-line-height-caption);
+      white-space: nowrap;
+    }
+
+    .revo-detail-page__share {
+      margin-top: var(--revo-space-3);
+      padding: var(--revo-space-5) var(--revo-space-6);
+    }
+
+    .revo-detail-page__share--panel {
+      margin-top: 0;
+      padding: var(--revo-space-3);
+      background: rgba(248, 250, 252, 0.78);
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      border-radius: 16px;
+    }
+
+    .revo-detail-page__share--panel h2 {
+      margin-bottom: var(--revo-space-1);
+      font-size: var(--revo-font-size-14);
+    }
+
+    .revo-detail-page__share--panel .revo-detail-page__share-lead {
+      margin-bottom: var(--revo-space-2);
+      font-size: var(--revo-font-size-caption);
+      line-height: var(--revo-line-height-caption);
+    }
+
+    .revo-detail-page__share--panel .revo-detail-page__share-button,
+    .revo-detail-page__share--panel .revo-detail-page__share-link {
+      min-height: 30px;
+      padding: var(--revo-space-1) var(--revo-space-2);
+      font-size: var(--revo-font-size-caption);
+    }
+
+    .revo-detail-page__share h2 {
+      margin: 0 0 var(--revo-space-2);
+      font-size: var(--revo-font-size-18);
+      line-height: var(--revo-line-height-heading);
+    }
+
+    .revo-detail-page__share-lead {
+      margin: 0 0 var(--revo-space-4);
+      color: var(--revo-color-text-sub);
+      font-size: var(--revo-font-size-14);
+      line-height: var(--revo-line-height-body);
+    }
+
+    .revo-detail-page__share-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--revo-space-2);
+    }
+
+    .revo-detail-page__share-button,
+    .revo-detail-page__share-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 36px;
+      padding: var(--revo-space-2) var(--revo-space-3);
+      color: var(--revo-color-text-main);
+      background: var(--revo-color-bg-soft);
+      border: 1px solid var(--revo-color-border);
+      border-radius: var(--revo-radius-pill);
+      font: inherit;
+      font-size: var(--revo-font-size-14);
+      font-weight: var(--revo-font-weight-bold);
+      line-height: var(--revo-line-height-caption);
+      cursor: pointer;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .revo-detail-page__share-link {
+      color: var(--detail-accent-strong);
+      background: #fff;
+    }
+
+    .revo-detail-page__share-message {
+      min-height: 1.5em;
+      margin: var(--revo-space-3) 0 0;
+      color: var(--revo-color-text-sub);
+      font-size: var(--revo-font-size-14);
+      line-height: var(--revo-line-height-body);
+    }
+
+    .rf-detail-story-image {
+      width: min(100%, 720px);
+      margin: var(--revo-space-4) 0;
+    }
+
+    .rf-detail-story-placeholder {
+      display: grid;
+      gap: var(--revo-space-2);
+      place-items: center;
+      aspect-ratio: var(--revo-card-image-ratio);
+      padding: var(--revo-space-3);
+      color: var(--revo-color-text-muted);
+      background: var(--revo-color-bg-soft);
+      border: 1px solid var(--revo-color-border);
+      border-radius: var(--revo-radius-card);
+      font-size: var(--revo-font-size-14);
+      font-weight: var(--revo-font-weight-bold);
+      text-align: center;
+    }
+
+    .rf-detail-story-caption {
+      margin: var(--revo-space-2) 0 0;
+      color: var(--revo-color-text-muted);
+      font-size: var(--revo-font-size-caption);
+      line-height: var(--revo-line-height-caption);
+      text-align: center;
+    }
+
+    .rf-detail-story-placeholder__label,
+    .revo-detail-page__body-media span {
+      display: block;
+    }
+
+    .revo-detail-page__body-media-note {
+      font-size: var(--revo-font-size-caption);
+      font-weight: var(--revo-font-weight-normal);
+    }
+
+    .revo-detail-page__cta {
+      display: grid;
+      gap: var(--revo-space-2);
+      margin-top: 0;
+      padding: var(--revo-space-4);
+      color: var(--revo-color-text-sub);
+      background: linear-gradient(180deg, var(--detail-accent-faint), rgba(255, 255, 255, 0.88));
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      border-radius: 16px;
+      font-size: var(--revo-font-size-14);
+      text-align: start;
+    }
+
+    .revo-detail-page__cta-text {
+      margin: 0;
+      line-height: var(--revo-line-height-body);
+    }
+
+    .revo-detail-page__cta-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--revo-space-2);
+    }
+
+    .revo-detail-page__cta-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 36px;
+      max-width: 100%;
+      padding: var(--revo-space-2) var(--revo-space-3);
+      color: var(--revo-color-text-main);
+      background: var(--revo-color-bg-card);
+      border: 1px solid var(--revo-color-border);
+      border-radius: var(--revo-radius-pill);
+      font-size: var(--revo-font-size-14);
+      font-weight: var(--revo-font-weight-bold);
+      line-height: var(--revo-line-height-caption);
+      text-align: center;
+      text-decoration: none;
+    }
+
+    .revo-detail-page__cta-link--primary {
+      color: #fff;
+      background: linear-gradient(135deg, var(--detail-accent), var(--detail-accent-strong));
+      border-color: transparent;
+      box-shadow: 0 12px 26px var(--detail-accent-soft);
+    }
+
+    @media (max-width: 860px) {
+      .revo-detail-page__hero {
+        grid-template-columns: 1fr;
+      }
+
+      .revo-detail-page__hero-main {
+        gap: 14px;
+        padding: var(--revo-space-3);
+      }
+
+      .revo-detail-page__panel {
+        position: static;
+        grid-column: auto;
+        grid-row: auto;
+      }
+
+      .revo-detail-page__media {
+        width: calc(100% + (var(--revo-space-3) * 2));
+        margin-inline: calc(var(--revo-space-3) * -1);
+        aspect-ratio: var(--revo-card-image-ratio);
+        border-radius: 18px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .revo-detail-page {
+        width: min(100% - var(--revo-space-4), var(--revo-width-content));
+        padding-block-start: var(--revo-space-6);
+      }
+
+      .revo-detail-page__metrics {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .revo-detail-page__info-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .revo-detail-page__info-card--wide {
+        grid-column: auto;
+      }
+
+      .revo-detail-page__info-metrics {
+        grid-template-columns: 1fr;
+      }
+
+      .revo-detail-page__panel {
+        gap: var(--revo-space-3);
+        padding: var(--revo-space-3);
+      }
+
+      .revo-detail-page__section {
+        margin-top: var(--revo-space-3);
+        padding: var(--revo-space-4);
+      }
+
+      .revo-detail-page__people {
+        margin-top: var(--revo-space-3);
+        padding: var(--revo-space-4);
+      }
+
+      .revo-detail-page__person-card {
+        grid-template-columns: auto minmax(0, 1fr);
+      }
+
+      .revo-detail-page__person-labels {
+        grid-column: 1 / -1;
+        justify-content: flex-start;
+        max-width: none;
+      }
+
+      .revo-detail-page__share {
+        padding: var(--revo-space-4);
+      }
+
+      .revo-detail-page__section h2 {
+        margin-bottom: var(--revo-space-3);
+      }
+
+      .revo-detail-page__section p {
+        line-height: var(--revo-line-height-body);
+      }
+    }
+
+    @media (max-width: 360px) {
+      .revo-detail-page__metrics {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+  <script src="components/render-detail.js?v=public-detail-copy-001" defer></script>
+  <script defer>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const messageContainer = document.getElementById("revo-detail-message");
+      const shareCopyButton = document.getElementById("revo-detail-share-copy");
+      const shareMessage = document.getElementById("revo-detail-share-message");
+
+      function copyUrlWithCopyEvent(url) {
+        let copied = false;
+        function handleCopy(event) {
+          if (!event.clipboardData) {
+            return;
+          }
+          event.clipboardData.setData("text/plain", url);
+          event.preventDefault();
+          copied = true;
+        }
+
+        document.addEventListener("copy", handleCopy, { once: true });
+        try {
+          return document.execCommand("copy") && copied;
+        } finally {
+          document.removeEventListener("copy", handleCopy);
+        }
+      }
+
+      function copyUrlWithTextarea(url) {
+        const textarea = document.createElement("textarea");
+        textarea.value = url;
+        textarea.setAttribute("readonly", "");
+        textarea.style.position = "fixed";
+        textarea.style.top = "0";
+        textarea.style.left = "0";
+        textarea.style.width = "1px";
+        textarea.style.height = "1px";
+        textarea.style.opacity = "0";
+        textarea.style.pointerEvents = "none";
+
+        document.body.appendChild(textarea);
+        textarea.focus();
+        textarea.select();
+        textarea.setSelectionRange(0, textarea.value.length);
+
+        try {
+          return document.execCommand("copy");
+        } finally {
+          document.body.removeChild(textarea);
+        }
+      }
+
+      function showManualCopyFallback(url) {
+        const existingInput = document.getElementById("revo-detail-share-copy-fallback");
+        if (existingInput) {
+          existingInput.value = url;
+          existingInput.focus();
+          existingInput.select();
+          return;
+        }
+
+        const input = document.createElement("input");
+        input.id = "revo-detail-share-copy-fallback";
+        input.type = "text";
+        input.value = url;
+        input.readOnly = true;
+        input.setAttribute("aria-label", "共有URL");
+        input.style.width = "100%";
+        input.style.marginTop = "8px";
+
+        shareMessage.insertAdjacentElement("afterend", input);
+        input.focus();
+        input.select();
+      }
+
+      function canonicalShareUrl() {
+        const url = new URL(window.location.href);
+        url.searchParams.delete("t");
+        return url.toString();
+      }
+
+      function updateShareLinks(project) {
+        const shareUrl = canonicalShareUrl();
+        const shareText = `${project?.title || "レボファンディングの挑戦"} | レボファンディング`;
+        const links = {
+          "revo-detail-share-x": `https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`,
+          "revo-detail-share-facebook": `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`,
+          "revo-detail-share-line": `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(shareUrl)}`
+        };
+
+        Object.entries(links).forEach(([id, href]) => {
+          const link = document.getElementById(id);
+          if (!link) {
+            return;
+          }
+
+          link.href = href;
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+        });
+      }
+
+      if (shareCopyButton && shareMessage) {
+        shareCopyButton.addEventListener("click", async () => {
+          const shareUrl = canonicalShareUrl();
+          let copied = false;
+
+          try {
+            if (navigator.clipboard && window.isSecureContext) {
+              await navigator.clipboard.writeText(shareUrl);
+              copied = true;
+            }
+          } catch (error) {
+            copied = false;
+          }
+
+          if (!copied) {
+            copied = copyUrlWithCopyEvent(shareUrl) || copyUrlWithTextarea(shareUrl);
+          }
+
+          if (copied) {
+            shareMessage.textContent = "URLをコピーしました";
+          } else {
+            showManualCopyFallback(shareUrl);
+            shareMessage.textContent = "URLを選択しました。コピーして共有できます。";
+          }
+        });
+      }
+
+      if (!window.RevoDetail) {
+        if (messageContainer) {
+          messageContainer.textContent = "詳細表示の準備ができませんでした。";
+        }
+        return;
+      }
+
+      const projectId = window.RevoDetail.getProjectIdFromUrl();
+      if (!projectId) {
+        if (messageContainer) {
+          messageContainer.textContent = "表示する挑戦が指定されていません。";
+        }
+        return;
+      }
+
+      try {
+        if (messageContainer) {
+          messageContainer.textContent = "projects-data.json を読み込み中です。";
+        }
+
+        const projects = await window.RevoDetail.loadRevoProjects("data/projects-data.json?v=story-blocks");
+        const project = window.RevoDetail.findProjectById(projects, projectId);
+
+        if (!project) {
+          if (messageContainer) {
+            messageContainer.textContent = "指定された挑戦が見つかりませんでした。";
+          }
+          return;
+        }
+
+        window.RevoDetail.renderRevoDetail({
+          project,
+          messageContainer
+        });
+        updateShareLinks(project);
+      } catch (error) {
+        if (messageContainer) {
+          messageContainer.textContent = "projects-data.json を読み込めませんでした。ローカルで表示できない場合は、簡易サーバー経由で確認してください。";
+        }
+        console.error(error);
+      }
+    });
+  </script>
+</head>
+<body>
+  <!-- このページは詳細ページの最小HTMLです。 -->
+  <!-- render-detail.js を利用し、URLパラメータ id によって projects-data.json から該当プロジェクト1件を表示します。 -->
+  <!-- 一覧カードからの詳細ページ遷移は実装済みです。 -->
+  <!-- 決済導線・本番CTAリンクはまだ未実装です。 -->
+  <main id="revo-detail-page" class="revo-detail-page">
+    <a class="revo-detail-page__back" href="./list.html">一覧へ戻る</a>
+
+    <div id="revo-detail-message" class="revo-detail-page__notice">
+      この詳細ページでは、挑戦の背景、応援状況、参加の入口を確認できます。
+    </div>
+
+    <section class="revo-detail-page__hero" aria-labelledby="revo-detail-title">
+      <div class="revo-detail-page__hero-main">
+        <div class="revo-detail-page__hero-intro">
+          <div class="revo-detail-page__eyebrow">
+            <span id="revo-detail-category" class="revo-detail-page__badge">まちづくり</span>
+            <span id="revo-detail-status" class="revo-detail-page__badge revo-detail-page__badge--soft">最初の仲間を募集中</span>
+          </div>
+          <h1 id="revo-detail-title" class="revo-detail-page__title">この挑戦に込めた想い</h1>
+          <p class="revo-detail-page__lead">
+            金額だけでなく、人や組の広がりから、挑戦の背景と次に動き出す仲間の流れを見つめます。
+          </p>
+        </div>
+
+        <div id="revo-detail-media" class="revo-detail-page__media" aria-label="プロジェクト画像">
+          <span>挑戦イメージ</span>
+        </div>
+
+        <div id="revo-detail-thumbnails" class="revo-detail-page__thumbnails" aria-label="プロジェクト画像一覧">
+          <button class="revo-detail-page__thumbnail revo-detail-page__thumbnail--active" type="button" aria-pressed="true">メイン</button>
+          <button class="revo-detail-page__thumbnail" type="button" aria-pressed="false">活動</button>
+          <button class="revo-detail-page__thumbnail" type="button" aria-pressed="false">応援</button>
+        </div>
+      </div>
+
+      <section class="revo-detail-page__panel" aria-label="応援状況">
+        <h2 class="revo-detail-page__panel-title">応援状況</h2>
+
+        <div id="revo-detail-metrics" class="revo-detail-page__metrics">
+          <div class="revo-detail-page__metric revo-detail-page__metric--primary">
+            <span class="revo-detail-page__metric-label">達成人数</span>
+            <span class="revo-detail-page__metric-value">12人</span>
+          </div>
+          <div class="revo-detail-page__metric">
+            <span class="revo-detail-page__metric-label">目標人数</span>
+            <span class="revo-detail-page__metric-value">20人</span>
+          </div>
+        </div>
+
+        <div class="revo-detail-page__progress" aria-label="達成率">
+          <div class="revo-detail-page__progress-head">
+            <span>達成率</span>
+            <span id="revo-detail-progress-label">60%</span>
+          </div>
+          <div class="revo-detail-page__progress-track" aria-hidden="true">
+            <div id="revo-detail-progress-bar" class="revo-detail-page__progress-bar" style="width: 60%;"></div>
+          </div>
+        </div>
+
+        <div class="revo-detail-page__meta" aria-label="補助情報">
+          <span id="revo-detail-amount">現在の応援状況</span>
+          <span id="revo-detail-days">達成目標期日 受付後に反映</span>
+        </div>
+        <p id="revo-detail-panel-note" class="revo-detail-page__panel-note">
+          達成人数と組数の広がりを確認しながら、最初の仲間を集めます。
+        </p>
+
+        <div id="revo-detail-cta" class="revo-detail-page__cta">
+          <p class="revo-detail-page__cta-text">
+            応援や参加の方法は、参加の入口から確認できます。
+          </p>
+          <div class="revo-detail-page__cta-actions">
+            <a class="revo-detail-page__cta-link revo-detail-page__cta-link--primary" href="list.html">参加の入口を見る</a>
+          </div>
+        </div>
+
+        <section class="revo-detail-page__share revo-detail-page__share--panel" aria-labelledby="revo-detail-share-title">
+          <h2 id="revo-detail-share-title">この挑戦を共有する</h2>
+          <p class="revo-detail-page__share-lead">
+            応援したい人に、この挑戦のページを届けるための共有導線です。
+          </p>
+          <div class="revo-detail-page__share-actions" aria-label="共有導線">
+            <button id="revo-detail-share-copy" class="revo-detail-page__share-button" type="button">URLコピー</button>
+            <a id="revo-detail-share-x" class="revo-detail-page__share-link" href="./detail.html" target="_blank" rel="noopener noreferrer">Xでシェア</a>
+            <a id="revo-detail-share-facebook" class="revo-detail-page__share-link" href="./detail.html" target="_blank" rel="noopener noreferrer">Facebook</a>
+            <a id="revo-detail-share-line" class="revo-detail-page__share-link" href="./detail.html" target="_blank" rel="noopener noreferrer">LINE</a>
+          </div>
+          <p id="revo-detail-share-message" class="revo-detail-page__share-message" aria-live="polite"></p>
+        </section>
+      </section>
+    </section>
+
+    <section class="revo-detail-page__section" aria-labelledby="revo-detail-info-title">
+      <h2 id="revo-detail-info-title">プロジェクト情報</h2>
+      <div class="revo-detail-page__info-grid">
+        <article id="revo-detail-project-overview" class="revo-detail-page__info-card revo-detail-page__info-card--wide">
+          <h3 class="revo-detail-page__info-title">基本情報</h3>
+          <div class="revo-detail-page__info-body">詳細は順次公開します</div>
+          <p class="revo-detail-page__info-meta" hidden></p>
+        </article>
+        <article id="revo-detail-type-metrics" class="revo-detail-page__info-card revo-detail-page__info-card--wide">
+          <h3 class="revo-detail-page__info-title">スパーク情報</h3>
+          <div class="revo-detail-page__info-body">詳細は順次公開します</div>
+          <p class="revo-detail-page__info-meta" hidden></p>
+        </article>
+        <article id="revo-detail-purpose" class="revo-detail-page__info-card revo-detail-page__info-card--wide">
+          <h3 class="revo-detail-page__info-title">この挑戦で実現したいこと</h3>
+          <p class="revo-detail-page__info-body">詳細は順次公開します</p>
+          <p class="revo-detail-page__info-meta" hidden></p>
+        </article>
+        <article id="revo-detail-background" class="revo-detail-page__info-card">
+          <h3 class="revo-detail-page__info-title">挑戦の背景</h3>
+          <p class="revo-detail-page__info-body">詳細は順次公開します</p>
+          <p class="revo-detail-page__info-meta" hidden></p>
+        </article>
+        <article id="revo-detail-support-request" class="revo-detail-page__info-card">
+          <h3 class="revo-detail-page__info-title">応援してほしいこと</h3>
+          <p class="revo-detail-page__info-body">詳細は順次公開します</p>
+          <p class="revo-detail-page__info-meta" hidden></p>
+        </article>
+        <article id="revo-detail-impact" class="revo-detail-page__info-card">
+          <h3 class="revo-detail-page__info-title">応援で生まれる変化</h3>
+          <p class="revo-detail-page__info-body">詳細は順次公開します</p>
+          <p class="revo-detail-page__info-meta" hidden></p>
+        </article>
+        <article id="revo-detail-target-audience" class="revo-detail-page__info-card">
+          <h3 class="revo-detail-page__info-title">届けたい相手</h3>
+          <p class="revo-detail-page__info-body">詳細は順次公開します</p>
+          <p class="revo-detail-page__info-meta" hidden></p>
+        </article>
+        <article id="revo-detail-area" class="revo-detail-page__info-card">
+          <h3 class="revo-detail-page__info-title">活動地域</h3>
+          <p class="revo-detail-page__info-body">詳細は順次公開します</p>
+          <p class="revo-detail-page__info-meta" hidden></p>
+        </article>
+        <article id="revo-detail-schedule" class="revo-detail-page__info-card">
+          <h3 class="revo-detail-page__info-title">これからの流れ</h3>
+          <p class="revo-detail-page__info-body">詳細は順次公開します</p>
+          <p class="revo-detail-page__info-meta" hidden></p>
+        </article>
+        <article id="revo-detail-join" class="revo-detail-page__info-card">
+          <h3 class="revo-detail-page__info-title">参加・応援方法</h3>
+          <p class="revo-detail-page__info-body">参加の入口から確認できます</p>
+          <p class="revo-detail-page__info-meta" hidden></p>
+        </article>
+        <article id="revo-detail-public-status" class="revo-detail-page__info-card" hidden>
+          <h3 class="revo-detail-page__info-title">募集状況</h3>
+          <p class="revo-detail-page__info-body">募集中</p>
+          <p class="revo-detail-page__info-meta" hidden></p>
+        </article>
+        <article id="revo-detail-operator" class="revo-detail-page__info-card revo-detail-page__info-card--wide">
+          <h3 class="revo-detail-page__info-title">起案者・レボマイスター情報</h3>
+          <p class="revo-detail-page__info-body">詳細は順次公開します</p>
+          <p class="revo-detail-page__info-meta" hidden></p>
+        </article>
+      </div>
+    </section>
+
+    <section class="revo-detail-page__people revo-detail-page__section" aria-labelledby="revo-detail-people-title">
+      <h2 id="revo-detail-people-title">この挑戦を起こすレボマイスター</h2>
+      <p class="revo-detail-page__people-lead">
+        挑戦の起点となる人と、このページで伝える関係性を本文に入る前に短く確認できるスペースです。
+      </p>
+
+      <article class="revo-detail-page__person-card">
+        <div class="revo-detail-page__person-icon" aria-hidden="true">レ</div>
+        <div>
+          <h3 class="revo-detail-page__person-name">レボマイスター</h3>
+          <p class="revo-detail-page__person-role">この挑戦を起こす人</p>
+          <p class="revo-detail-page__person-comment">
+            地域や活動の中にある願いを見つけ、応援者や仲間と一緒に形にしていく人です。挑戦の背景と、広がっている関わりをこのページで伝えていきます。
+          </p>
+        </div>
+        <div class="revo-detail-page__person-labels" aria-label="この挑戦での関わり方">
+          <span class="revo-detail-page__person-label">挑戦の起点</span>
+          <span class="revo-detail-page__person-label">仲間をつなぐ人</span>
+        </div>
+      </article>
+    </section>
+
+    <div id="revo-detail-story-blocks" class="revo-detail-page__story-blocks">
+      <section class="revo-detail-page__section">
+        <h2>挑戦の概要</h2>
+        <p>
+          この挑戦は、地域や活動の中にある小さな願いを、応援者や仲間と一緒に形にしていくためのページです。金額だけを見るのではなく、どれだけの人が関わり、どれだけの組数が動き始めているかを大切にしています。挑戦の輪郭と応援の広がりを同時に確認できます。
+        </p>
+      </section>
+
+      <figure class="rf-detail-story-image" aria-label="本文内画像プレースホルダー">
+        <div class="rf-detail-story-placeholder">
+          <span class="rf-detail-story-placeholder__label">本文内画像プレースホルダー</span>
+        </div>
+        <figcaption class="rf-detail-story-caption">活動風景や制作過程の画像が入る想定です</figcaption>
+      </figure>
+
+      <section class="revo-detail-page__section">
+        <h2>挑戦の背景・想い</h2>
+        <p>
+          最初は、ひとりの違和感や小さな思いつきから始まります。けれど、その想いに共感する人が増えることで、挑戦は少しずつ場を持ち、役割を持ち、次の行動へ進みます。このページでは、何を実現したいのかだけでなく、なぜ今その挑戦を始めるのか、どんな仲間と育てたいのかを丁寧に伝えていきます。
+        </p>
+      </section>
+    </div>
+
+  </main>
+</body>
+</html>

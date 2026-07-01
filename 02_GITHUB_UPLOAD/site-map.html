@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>レボファンディング サイトマップ</title>
+  <link rel="stylesheet" href="tokens/tokens.css">
+  <link rel="stylesheet" href="components/cards.css?v=site-map-001">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--revo-color-text-main);
+      background: var(--revo-color-bg-base);
+      font-family: var(--revo-font-family-base), var(--revo-font-family-jp);
+      line-height: var(--revo-line-height-body);
+    }
+
+    .revo-sitemap-page {
+      width: min(100% - var(--revo-space-6), var(--revo-width-wide));
+      margin: 0 auto;
+      padding: var(--revo-space-7) 0 var(--revo-space-12);
+    }
+
+    .revo-sitemap-hero {
+      display: grid;
+      gap: var(--revo-space-3);
+      margin-bottom: var(--revo-space-6);
+      padding: var(--revo-space-6);
+      background:
+        radial-gradient(circle at 88% 18%, rgba(251, 56, 95, 0.14), transparent 30%),
+        linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(255, 247, 237, 0.88));
+      border: 1px solid rgba(249, 115, 22, 0.18);
+      border-radius: var(--revo-radius-card);
+      box-shadow: var(--revo-shadow-card);
+    }
+
+    .revo-sitemap-hero__eyebrow,
+    .revo-sitemap-hero h1,
+    .revo-sitemap-hero p {
+      margin: 0;
+    }
+
+    .revo-sitemap-hero__eyebrow {
+      color: var(--revo-color-spark);
+      font-size: var(--revo-font-size-14);
+      font-weight: var(--revo-font-weight-bold);
+    }
+
+    .revo-sitemap-hero h1 {
+      font-size: var(--revo-font-size-heading);
+      line-height: var(--revo-line-height-heading);
+    }
+
+    .revo-sitemap-hero p {
+      max-width: 780px;
+      color: var(--revo-color-text-sub);
+      font-size: var(--revo-font-size-lead);
+    }
+
+    .revo-sitemap-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--revo-space-4);
+    }
+
+    .revo-sitemap-section {
+      display: grid;
+      gap: var(--revo-space-3);
+      align-content: start;
+      padding: var(--revo-space-5);
+      background: var(--revo-color-bg-card);
+      border: 1px solid var(--revo-color-border);
+      border-radius: var(--revo-radius-card);
+      box-shadow: var(--revo-shadow-card);
+    }
+
+    .revo-sitemap-section__label,
+    .revo-sitemap-section h2,
+    .revo-sitemap-section p {
+      margin: 0;
+    }
+
+    .revo-sitemap-section__label {
+      color: var(--revo-color-text-muted);
+      font-size: var(--revo-font-size-caption);
+      font-weight: var(--revo-font-weight-bold);
+    }
+
+    .revo-sitemap-section h2 {
+      font-size: var(--revo-font-size-22);
+      line-height: var(--revo-line-height-heading);
+    }
+
+    .revo-sitemap-section p {
+      color: var(--revo-color-text-sub);
+      font-size: var(--revo-font-size-14);
+    }
+
+    .revo-sitemap-links {
+      display: grid;
+      gap: var(--revo-space-2);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .revo-sitemap-links a {
+      display: grid;
+      gap: 2px;
+      min-width: 0;
+      padding: var(--revo-space-3);
+      color: var(--revo-color-text-main);
+      background: var(--revo-color-bg-soft);
+      border: 1px solid var(--revo-color-border);
+      border-radius: var(--revo-radius-sm);
+      text-decoration: none;
+    }
+
+    .revo-sitemap-links strong,
+    .revo-sitemap-links span {
+      overflow-wrap: anywhere;
+    }
+
+    .revo-sitemap-links strong {
+      font-size: var(--revo-font-size-14);
+      line-height: var(--revo-line-height-heading);
+    }
+
+    .revo-sitemap-links span {
+      color: var(--revo-color-text-sub);
+      font-size: var(--revo-font-size-caption);
+      line-height: var(--revo-line-height-caption);
+    }
+
+    .revo-sitemap-links a:hover {
+      border-color: rgba(249, 115, 22, 0.32);
+      box-shadow: 0 12px 24px rgba(249, 115, 22, 0.08);
+    }
+
+    @media (max-width: 1100px) {
+      .revo-sitemap-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 760px) {
+      .revo-sitemap-page {
+        width: min(100% - var(--revo-space-4), var(--revo-width-wide));
+        padding-block-start: var(--revo-space-6);
+      }
+
+      .revo-sitemap-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .revo-sitemap-hero {
+        padding: var(--revo-space-5);
+      }
+    }
+  </style>
+</head>
+<body class="rf-art-page-body">
+  <header class="rf-art-site-header">
+    <div class="rf-art-site-header__inner">
+      <a class="rf-art-site-header__brand" href="index.html" aria-label="レボファンディング トップ">
+        <span class="rf-art-site-header__mark">R</span>
+        <span>レボファンディング</span>
+      </a>
+      <label class="rf-art-site-search">
+        <input type="search" placeholder="キーワードでプロジェクトを検索" aria-label="キーワードでプロジェクトを検索">
+        <span class="rf-art-site-search__icon" aria-hidden="true">⌕</span>
+      </label>
+      <nav class="rf-art-site-nav" aria-label="主要ナビゲーション">
+        <a href="index.html">トップ</a>
+        <a href="list.html">参加入口</a>
+        <a href="spark.html">挑戦をはじめる</a>
+        <a href="revo-art.html">レボアート</a>
+        <details class="rf-art-site-nav-group">
+          <summary>全体メニュー</summary>
+          <div class="rf-art-site-nav-group__panel">
+            <a href="revolist.html">全体構造</a>
+            <a href="revolist-projects.html">プロジェクト紹介</a>
+            <a href="sparkers.html">スパーク一覧</a>
+            <a href="badge-sparkers.html">バッチスパーカー</a>
+            <a href="boosters.html">ブースト一覧</a>
+            <a href="revo-art-list.html">レボアート一覧</a>
+            <a href="certified-artists.html">認定アーティスト</a>
+            <a href="site-map.html">サイトマップ</a>
+          </div>
+        </details>
+      </nav>
+      <div class="rf-art-site-actions" aria-label="アカウントメニュー">
+        <a href="login.html">ログイン</a>
+        <a class="rf-art-site-actions__primary" href="register.html">新規登録</a>
+      </div>
+    </div>
+    <nav class="rf-art-category-nav" aria-label="カテゴリナビゲーション">
+      <div class="rf-art-category-nav__inner">
+        <a href="index.html">トップ</a>
+        <span>地域の挑戦</span>
+        <span>まちづくり</span>
+        <span>子ども・教育</span>
+        <span>環境・自然</span>
+        <span>福祉・医療</span>
+        <a href="revo-art.html">文化・アート</a>
+        <span>スポーツ</span>
+        <span>食・農業</span>
+        <span>テクノロジー</span>
+        <span>防災・災害</span>
+      </div>
+    </nav>
+  </header>
+
+  <main class="revo-sitemap-page">
+    <header class="revo-sitemap-hero">
+      <p class="revo-sitemap-hero__eyebrow">サイトマップ</p>
+      <h1>各ページへの入口をまとめました。</h1>
+      <p>バッチスパーカー一覧へは、上部メニューの「バッチスパーカー」、スパーク一覧内の導線、このサイトマップからアクセスできます。</p>
+    </header>
+
+    <div class="revo-sitemap-grid">
+      <section class="revo-sitemap-section">
+        <p class="revo-sitemap-section__label">トップ / 入口</p>
+        <h2>全体を見る</h2>
+        <p>プロジェクト、参加入口、全体構造の入口です。</p>
+        <ul class="revo-sitemap-links">
+          <li><a href="index.html"><strong>トップ</strong><span>ルートURLの新トップページ</span></a></li>
+          <li><a href="list.html"><strong>参加の入口</strong><span>スパーク、ブースト、レボアートへ進む入口</span></a></li>
+          <li><a href="revolist.html"><strong>全体構図</strong><span>レボリスト全体の思想と構造</span></a></li>
+          <li><a href="revolist-projects.html"><strong>レボリストLab プロジェクト紹介</strong><span>運営の全体構成と各種プロジェクトの役割</span></a></li>
+        </ul>
+      </section>
+
+      <section class="revo-sitemap-section">
+        <p class="revo-sitemap-section__label">スパーク</p>
+        <h2>最初の応援</h2>
+        <p>挑戦のはじまりと、複数回関わるスパーカーの一覧です。</p>
+        <ul class="revo-sitemap-links">
+          <li><a href="spark.html"><strong>挑戦をはじめる</strong><span>スパークの紹介・開始ページ</span></a></li>
+          <li><a href="sparkers.html"><strong>スパーク一覧</strong><span>スパークできる募集の一覧</span></a></li>
+          <li><a href="badge-sparkers.html"><strong>バッチスパーカー一覧</strong><span>複数回スパーク活動を行っている人の一覧</span></a></li>
+          <li><a href="badge-sparker-detail.html?id=badge-sparker-ready-001"><strong>バッチスパーカー詳細</strong><span>回数と参加プロジェクト履歴を確認</span></a></li>
+        </ul>
+      </section>
+
+      <section class="revo-sitemap-section">
+        <p class="revo-sitemap-section__label">ブースト</p>
+        <h2>応援を重ねる</h2>
+        <p>動き始めた挑戦をさらに広げるページ群です。</p>
+        <ul class="revo-sitemap-links">
+          <li><a href="boost.html"><strong>ブースト紹介</strong><span>ブーストの考え方と参加導線</span></a></li>
+          <li><a href="boosters.html"><strong>ブースト一覧</strong><span>ブーストできる募集の一覧</span></a></li>
+        </ul>
+      </section>
+
+      <section class="revo-sitemap-section">
+        <p class="revo-sitemap-section__label">レボアート</p>
+        <h2>アートで広げる</h2>
+        <p>応募、登録済み一覧、詳細ページをまとめています。</p>
+        <ul class="revo-sitemap-links">
+          <li><a href="revo-art.html"><strong>レボアート紹介 / 応募</strong><span>ウォール、カー、ハットアートの応募入口</span></a></li>
+          <li><a href="revo-art-list.html"><strong>レボアート一覧</strong><span>プロジェクトとして始まったレボアート一覧</span></a></li>
+          <li><a href="revo-art-detail.html?id=sample-sora-station-sakura-wall"><strong>レボアート詳細</strong><span>空の駅の桜の木ウォールアートのサンプル</span></a></li>
+        </ul>
+      </section>
+
+      <section class="revo-sitemap-section">
+        <p class="revo-sitemap-section__label">認定アーティスト</p>
+        <h2>表現者とつながる</h2>
+        <p>社会貢献活動に参加する認定アーティストの申請と一覧です。</p>
+        <ul class="revo-sitemap-links">
+          <li><a href="certified-artist-apply.html"><strong>認定アーティスト申請</strong><span>活動理念や実績を送る申請ページ</span></a></li>
+          <li><a href="certified-artists.html"><strong>認定アーティスト一覧</strong><span>公開許可済みの認定アーティスト一覧</span></a></li>
+          <li><a href="certified-artist-detail.html?id=certified-artist-ready-001"><strong>認定アーティスト詳細</strong><span>プロフィールと活動実績の詳細</span></a></li>
+        </ul>
+      </section>
+
+      <section class="revo-sitemap-section">
+        <p class="revo-sitemap-section__label">その他</p>
+        <h2>確認 / アカウント</h2>
+        <p>詳細ページやアカウントまわりの導線です。</p>
+        <ul class="revo-sitemap-links">
+          <li><a href="detail.html?id=project-spark-001"><strong>プロジェクト詳細</strong><span>個別プロジェクトの詳細表示</span></a></li>
+          <li><a href="login.html"><strong>ログイン</strong><span>ログインページ</span></a></li>
+          <li><a href="register.html"><strong>新規登録</strong><span>新規登録ページ</span></a></li>
+        </ul>
+      </section>
+    </div>
+  </main>
+</body>
+</html>
