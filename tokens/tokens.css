@@ -1,0 +1,137 @@
+:root {
+  /* Brand colors */
+  --revo-color-brand-blue: #1E63EB;
+  --revo-color-brand-blue-light: #2D8CE0;
+  --revo-color-brand-pink: #FF4D8D;
+  --revo-color-brand-white: #FFFFFF;
+
+  /* Functional colors */
+  --revo-color-founder: #FF4D4F;
+  --revo-color-spark: #FF9F43;
+  --revo-color-boost: #0A6CF0;
+  --revo-color-art: #8B5CF6;
+  --revo-color-success: #22C55E;
+  --revo-color-rush: #D8420F;
+  --revo-color-warning: #FFD43B;
+
+  /* Metallic colors */
+  --revo-color-gold-base: #D8A928;
+  --revo-color-gold-light: #FFF3B0;
+  --revo-color-gold-dark: #9C6B12;
+  --revo-gradient-gold: linear-gradient(135deg, #9C6B12 0%, #FFF3B0 34%, #D8A928 56%, #FFF7CC 76%, #A87410 100%);
+  --revo-color-platinum-base: #DDE7F1;
+  --revo-color-platinum-light: #FFFFFF;
+  --revo-color-platinum-dark: #8FA4B8;
+  --revo-gradient-platinum: linear-gradient(135deg, #8FA4B8 0%, #FFFFFF 32%, #DDE7F1 56%, #F7FBFF 78%, #A7B7C8 100%);
+  --revo-gradient-metal-highlight: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.74) 48%, transparent 100%);
+
+  /* Background colors */
+  --revo-color-bg-base: #F5F8FE;
+  --revo-color-bg-card: #FFFFFF;
+  --revo-color-bg-soft: #EEF4FF;
+  --revo-color-bg-muted: #F8FAFC;
+  --revo-color-bg-warm: #FFF7ED;
+  --revo-color-bg-pink-soft: #FFF0F6;
+  --revo-color-bg-blue-soft: #EAF3FF;
+  --revo-color-bg-green-soft: #ECFDF3;
+  --revo-color-bg-purple-soft: #F4F0FF;
+
+  /* Text colors */
+  --revo-color-text-main: #101828;
+  --revo-color-text-sub: #475467;
+  --revo-color-text-muted: #667085;
+  --revo-color-text-inverse: #FFFFFF;
+  --revo-color-text-link: var(--revo-color-brand-blue);
+
+  /* Border colors */
+  --revo-color-border: #E2E8F0;
+  --revo-color-border-strong: #CBD5E1;
+  --revo-color-border-blue: rgba(30, 99, 235, 0.28);
+  --revo-color-border-pink: rgba(255, 77, 141, 0.28);
+
+  /* Fonts */
+  --revo-font-family-base: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --revo-font-family-jp: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "YuGothic", Meiryo, sans-serif;
+  --revo-font-weight-regular: 400;
+  --revo-font-weight-medium: 500;
+  --revo-font-weight-bold: 700;
+  --revo-font-weight-black: 900;
+
+  /* Font sizes */
+  --revo-font-size-10: 0.625rem;
+  --revo-font-size-12: 0.75rem;
+  --revo-font-size-14: 0.875rem;
+  --revo-font-size-16: 1rem;
+  --revo-font-size-18: 1.125rem;
+  --revo-font-size-20: 1.25rem;
+  --revo-font-size-24: 1.5rem;
+  --revo-font-size-32: 2rem;
+  --revo-font-size-40: 2.5rem;
+  --revo-font-size-48: 3rem;
+  --revo-font-size-56: 3.5rem;
+
+  /* Semantic font sizes */
+  --revo-font-size-caption: var(--revo-font-size-12);
+  --revo-font-size-body: var(--revo-font-size-16);
+  --revo-font-size-lead: var(--revo-font-size-18);
+  --revo-font-size-heading: var(--revo-font-size-32);
+  --revo-font-size-display: var(--revo-font-size-48);
+
+  /* Line heights */
+  --revo-line-height-tight: 1.15;
+  --revo-line-height-heading: 1.25;
+  --revo-line-height-body: 1.7;
+  --revo-line-height-caption: 1.45;
+
+  /* Spacing */
+  --revo-space-0: 0;
+  --revo-space-1: 0.25rem;
+  --revo-space-2: 0.5rem;
+  --revo-space-3: 0.75rem;
+  --revo-space-4: 1rem;
+  --revo-space-5: 1.25rem;
+  --revo-space-6: 1.5rem;
+  --revo-space-8: 2rem;
+  --revo-space-10: 2.5rem;
+  --revo-space-12: 3rem;
+  --revo-space-16: 4rem;
+  --revo-space-20: 5rem;
+
+  /* Radii */
+  --revo-radius-none: 0;
+  --revo-radius-xs: 4px;
+  --revo-radius-sm: 8px;
+  --revo-radius-md: 12px;
+  --revo-radius-lg: 16px;
+  --revo-radius-xl: 20px;
+  --revo-radius-card: 12px;
+  --revo-radius-panel: 18px;
+  --revo-radius-pill: 999px;
+
+  /* Shadows */
+  --revo-shadow-none: none;
+  --revo-shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.06);
+  --revo-shadow-card: 0 10px 28px rgba(16, 24, 40, 0.08);
+  --revo-shadow-panel: 0 18px 48px rgba(16, 24, 40, 0.10);
+  --revo-shadow-focus: 0 0 0 3px rgba(30, 99, 235, 0.18);
+
+  /* Layout widths */
+  --revo-width-content: 1120px;
+  --revo-width-wide: 1280px;
+  --revo-width-narrow: 720px;
+  --revo-width-card-min: 280px;
+  --revo-width-card-max: 380px;
+
+  /* Shared component sizing */
+  --revo-card-image-ratio: 1200 / 630;
+  --revo-card-accent-width: 5px;
+  --revo-support-unit-amount: 10000;
+  --revo-support-group-size: 20;
+  --revo-support-group-amount: 200000;
+
+  /* Animation */
+  --revo-duration-fast: 120ms;
+  --revo-duration-base: 180ms;
+  --revo-duration-slow: 280ms;
+  --revo-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+}
