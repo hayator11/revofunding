@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>レボファンディング バッチスパーカー詳細</title>
+  <link rel="stylesheet" href="tokens/tokens.css">
+  <link rel="stylesheet" href="components/cards.css?v=badge-sparker-detail-001">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--revo-color-text-main);
+      background: var(--revo-color-bg-base);
+      font-family: var(--revo-font-family-base), var(--revo-font-family-jp);
+      line-height: var(--revo-line-height-body);
+    }
+
+    .revo-people-page {
+      width: min(100% - var(--revo-space-6), var(--revo-width-wide));
+      margin: 0 auto;
+      padding: var(--revo-space-7) 0 var(--revo-space-12);
+    }
+
+    .revo-people-page__nav,
+    .revo-person-detail__actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--revo-space-2);
+      margin-bottom: var(--revo-space-5);
+    }
+
+    .revo-people-page__link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: var(--revo-space-6);
+      padding: var(--revo-space-2) var(--revo-space-4);
+      color: var(--revo-color-spark);
+      background: rgba(249, 115, 22, 0.1);
+      border: 1px solid rgba(249, 115, 22, 0.26);
+      border-radius: var(--revo-radius-pill);
+      font-size: var(--revo-font-size-14);
+      font-weight: var(--revo-font-weight-bold);
+      line-height: var(--revo-line-height-caption);
+      text-decoration: none;
+    }
+
+    .revo-people-page__eyebrow {
+      margin: 0;
+      color: var(--revo-color-spark);
+      font-size: var(--revo-font-size-14);
+      font-weight: var(--revo-font-weight-bold);
+    }
+
+    .revo-people-page__message,
+    .revo-people-page__note {
+      margin: 0 0 var(--revo-space-4);
+      padding: var(--revo-space-3) var(--revo-space-4);
+      color: var(--revo-color-text-sub);
+      background: var(--revo-color-bg-card);
+      border: 1px solid var(--revo-color-border);
+      border-radius: var(--revo-radius-card);
+      font-size: var(--revo-font-size-14);
+    }
+
+    .revo-person-detail {
+      display: grid;
+      gap: var(--revo-space-5);
+    }
+
+    .revo-person-detail__hero {
+      display: grid;
+      grid-template-columns: minmax(260px, 0.85fr) minmax(0, 1.15fr);
+      gap: var(--revo-space-5);
+      align-items: stretch;
+      padding: var(--revo-space-6);
+      background:
+        radial-gradient(circle at 92% 12%, rgba(255, 190, 86, 0.18), transparent 34%),
+        linear-gradient(135deg, rgba(255, 245, 234, 0.98), rgba(255, 255, 255, 0.92));
+      border: 1px solid rgba(249, 115, 22, 0.22);
+      border-radius: var(--revo-radius-card);
+      box-shadow: var(--revo-shadow-card);
+    }
+
+    .revo-person-detail__visual {
+      display: grid;
+      min-height: 260px;
+      place-items: center;
+      background:
+        radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.95) 0 18%, transparent 19%),
+        linear-gradient(135deg, rgba(249, 115, 22, 0.22), rgba(255, 255, 255, 0.82));
+      border: 1px solid rgba(249, 115, 22, 0.24);
+      border-radius: var(--revo-radius-card);
+    }
+
+    .revo-person-detail__visual-label {
+      color: var(--revo-color-spark);
+      font-size: var(--revo-font-size-16);
+      font-weight: var(--revo-font-weight-black);
+    }
+
+    .revo-person-detail__copy {
+      display: grid;
+      gap: var(--revo-space-3);
+      align-content: center;
+    }
+
+    .revo-person-detail__title,
+    .revo-person-detail__role,
+    .revo-person-detail__lead {
+      margin: 0;
+    }
+
+    .revo-person-detail__title {
+      font-size: var(--revo-font-size-heading);
+      line-height: var(--revo-line-height-heading);
+      overflow-wrap: anywhere;
+    }
+
+    .revo-person-detail__role {
+      color: var(--revo-color-spark);
+      font-size: var(--revo-font-size-18);
+      font-weight: var(--revo-font-weight-bold);
+    }
+
+    .revo-person-detail__lead,
+    .revo-person-detail__section-text {
+      color: var(--revo-color-text-sub);
+      font-size: var(--revo-font-size-16);
+    }
+
+    .revo-person-detail__meta-grid,
+    .revo-person-detail__sections {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--revo-space-4);
+    }
+
+    .revo-person-detail__meta,
+    .revo-person-detail__section {
+      display: grid;
+      gap: var(--revo-space-2);
+      padding: var(--revo-space-4);
+      background: var(--revo-color-bg-card);
+      border: 1px solid var(--revo-color-border);
+      border-radius: var(--revo-radius-card);
+      box-shadow: var(--revo-shadow-card);
+    }
+
+    .revo-person-detail__meta-label {
+      color: var(--revo-color-text-muted);
+      font-size: var(--revo-font-size-caption);
+      font-weight: var(--revo-font-weight-bold);
+    }
+
+    .revo-person-detail__meta-value {
+      color: var(--revo-color-spark);
+      font-size: var(--revo-font-size-18);
+      line-height: var(--revo-line-height-heading);
+      overflow-wrap: anywhere;
+    }
+
+    .revo-person-detail__section-title,
+    .revo-person-detail__section-text {
+      margin: 0;
+    }
+
+    .revo-person-detail__section-title {
+      font-size: var(--revo-font-size-22);
+      line-height: var(--revo-line-height-heading);
+    }
+
+    .revo-person-detail__actions {
+      margin-top: var(--revo-space-1);
+      margin-bottom: 0;
+    }
+
+    @media (max-width: 900px) {
+      .revo-person-detail__hero,
+      .revo-person-detail__meta-grid,
+      .revo-person-detail__sections {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .revo-people-page {
+        width: min(100% - var(--revo-space-4), var(--revo-width-wide));
+        padding-block-start: var(--revo-space-6);
+      }
+
+      .revo-person-detail__hero {
+        padding: var(--revo-space-5);
+      }
+    }
+  </style>
+  <script src="components/render-people-cards.js?v=person-card-004" defer></script>
+</head>
+<body class="rf-art-page-body" data-people-page="badge-sparker-detail">
+  <header class="rf-art-site-header">
+    <div class="rf-art-site-header__inner">
+      <a class="rf-art-site-header__brand" href="index.html" aria-label="レボファンディング トップ">
+        <span class="rf-art-site-header__mark">R</span>
+        <span>レボファンディング</span>
+      </a>
+      <label class="rf-art-site-search">
+        <input type="search" placeholder="キーワードでプロジェクトを検索" aria-label="キーワードでプロジェクトを検索">
+        <span class="rf-art-site-search__icon" aria-hidden="true">⌕</span>
+      </label>
+      <nav class="rf-art-site-nav" aria-label="主要ナビゲーション">
+        <a href="index.html">トップ</a>
+        <a href="list.html">参加入口</a>
+        <a href="spark.html">挑戦をはじめる</a>
+        <a href="revo-art.html">レボアート</a>
+        <details class="rf-art-site-nav-group">
+          <summary>全体メニュー</summary>
+          <div class="rf-art-site-nav-group__panel">
+            <a href="revolist.html">全体構造</a>
+            <a href="revolist-projects.html">プロジェクト紹介</a>
+            <a href="sparkers.html">スパーク一覧</a>
+            <a href="badge-sparkers.html">バッチスパーカー</a>
+            <a href="boosters.html">ブースト一覧</a>
+            <a href="revo-art-list.html">レボアート一覧</a>
+            <a href="certified-artists.html">認定アーティスト</a>
+            <a href="site-map.html">サイトマップ</a>
+          </div>
+        </details>
+      </nav>
+      <div class="rf-art-site-actions" aria-label="アカウントメニュー">
+        <a href="login.html">ログイン</a>
+        <a class="rf-art-site-actions__primary" href="register.html">新規登録</a>
+      </div>
+    </div>
+    <nav class="rf-art-category-nav" aria-label="カテゴリナビゲーション">
+      <div class="rf-art-category-nav__inner">
+        <a href="index.html">トップ</a>
+        <span>地域の挑戦</span>
+        <span>まちづくり</span>
+        <span>子ども・教育</span>
+        <span>環境・自然</span>
+        <span>福祉・医療</span>
+        <span>文化・アート</span>
+        <span>スポーツ</span>
+        <span>食・農業</span>
+        <span>テクノロジー</span>
+        <span>防災・災害</span>
+      </div>
+    </nav>
+  </header>
+
+  <main class="revo-people-page">
+    <nav class="revo-people-page__nav" aria-label="バッチスパーカー詳細の戻る導線">
+      <a class="revo-people-page__link" href="badge-sparkers.html">バッチスパーカー一覧へ戻る</a>
+      <a class="revo-people-page__link" href="sparkers.html">スパーク一覧を見る</a>
+    </nav>
+
+    <div id="revo-badge-sparker-detail-message" class="revo-people-page__message">バッチスパーカー詳細を読み込み中です。</div>
+
+    <article id="revo-badge-sparker-detail" class="revo-person-detail">
+      <section class="revo-person-detail__hero">
+        <div class="revo-person-detail__visual"><span class="revo-person-detail__visual-label">バッチスパーカー</span></div>
+        <div class="revo-person-detail__copy">
+          <p class="revo-people-page__eyebrow">バッチスパーカー</p>
+          <h1 class="revo-person-detail__title">継続スパーカー 公開準備中</h1>
+          <p class="revo-person-detail__role">複数回スパーク活動を行っている人</p>
+          <p class="revo-person-detail__lead">カードに収まりきらないスパーク活動の回数とプロジェクト履歴を、ここで確認できます。</p>
+        </div>
+      </section>
+    </article>
+
+    <p class="revo-people-page__note">実名・活動履歴・関わったプロジェクトは、公開許可と運営確認が取れたものだけ掲載します。</p>
+  </main>
+</body>
+</html>

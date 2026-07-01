@@ -85,5 +85,34 @@
     "displayOrder": 3,
     "createdAt": "2026-06-26",
     "updatedAt": "2026-06-26"
+  },
+  {
+    "id": "sparker-sora-station-001",
+    "relatedProjectId": "project-spark-001",
+    "type": "sparker",
+    "status": "preparing",
+    "title": "空の駅の応援をひらく仲間募集",
+    "description": "空の駅で始まる応援の入口を、最初に紹介し広げてくれる仲間を募集します。",
+    "revoMeisterRole": "空の駅の応援をひらく人",
+    "sparkerRole": "地域の最初の声を届ける仲間",
+    "sparkerTypes": [
+      "紹介スパーカー",
+      "地域スパーカー"
+    ],
+    "neededSparkerCount": 8,
+    "currentSparkerCount": 0,
+    "groupCount": 0,
+    "progressLabel": "達成率 0%",
+    "flowText": "活動の背景を読み、地域の人や関心のある人へ最初の声を届ける流れを想定しています。",
+    "cautionText": "受付状況は状態ラベルで確認できます。外部フォームや決済導線は設置していません。",
+    "labels": [
+      "順次受付予定",
+      "地域で応援"
+    ],
+    "ctaLabel": "順次受付予定",
+    "isReady": false,
+    "displayOrder": 4,
+    "createdAt": "2026-06-29",
+    "updatedAt": "2026-06-29"
   }
 ]

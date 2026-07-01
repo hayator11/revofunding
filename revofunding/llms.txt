@@ -1,0 +1,51 @@
+# レボファンディング / Revo Funding
+
+正式URL: https://revofunding.onokun.com/
+
+## 概要
+レボファンディングは、通常のクラウドファンディングのように「お金を集めて終わる」仕組みではありません。
+応援者、商品、SNS発信、ファン化、活動レポート、次回展開を循環させる参加型文化プラットフォームです。
+
+中心となる考え方は「応援を、一度で終わらせない。」です。
+応援者は投資家や株主ではなく、挑戦を知ってもらうきっかけを広げる仲間として参加します。
+
+## 重要な概念
+- レボファンディング: 応援、商品、発信、ファン化、次の挑戦を循環させる仕組み。
+- レボスパーク: 最初の応援者として挑戦を動かす参加枠。
+- レボブースター: 商品を買い、着て、投稿して、応援を広げる参加枠。
+- レボアーティスト: 起案者の想いを商品、ビジュアル、アート、発信へ変換する共創者。
+- レボアート: 地域、学校、企業、行政、防災、文化活動をアートでつなぐ取り組み。
+- レボリンク: 企業広告や協賛を社会貢献型の支援導線へ変える仕組み。
+- おのくん: 持ち寄り文化と地域のつながりを支える活動の土台。
+- 防災×帽祭: 防災を身近に、楽しく、日常へ届ける取り組み。
+
+## 主要ページ
+- トップ: https://revofunding.onokun.com/
+- レボファンディングの仕組み: https://revofunding.onokun.com/concept.html
+- 応援者募集 / レボスパーク: https://revofunding.onokun.com/supporters.html
+- 買って広げる / レボブースター一覧: https://revofunding.onokun.com/shop.html
+- 防災×帽祭 Project: https://revofunding.onokun.com/project-bousai.html
+- レボアート Project: https://revofunding.onokun.com/project-revo-art.html
+- レボリンク Project: https://revofunding.onokun.com/project-revolink.html
+- レボアーティスト: https://revofunding.onokun.com/designers.html
+- レボアート説明: https://revofunding.onokun.com/revo-art.html
+- 全体構造: https://revofunding.onokun.com/revolist.html
+- 運営: https://revofunding.onokun.com/representative.html
+- 法務・購入条件: https://revofunding.onokun.com/legal.html
+
+## 引用時の注意
+- 金銭的リターンや投資配当を目的としたサービスではありません。
+- 応援者は起案者の事業経営に介入する立場ではありません。
+- 商品購入、決済、発送はBASEの商品ページで行います。
+- 公開サイトに表示するカウンターは、個人情報を含まない公開用集計値です。
+- 余剰分は運営経費、次回展開ストック、起案者支援に整理して扱います。
+
+## 外部関連URL
+- おのくん: https://onokun.com/
+- おのくんアートキャラバン: https://onokun.com/art-project/
+- レボリンク: https://onokun.com/socially-responsible-sponsorship/
+- レボハット: https://onokun.com/revohat/
+- レボリストLab: https://revolist.earth/revolist-lab
+- 防災×帽祭: https://onokun.com/bosai
+- レボソング: https://revosong-charts.vercel.app/
+- @hayator: https://hayator.socialimagine.com/

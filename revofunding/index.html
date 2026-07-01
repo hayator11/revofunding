@@ -1,0 +1,1777 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>レボファンディング 挑戦一覧</title>
+  <link rel="stylesheet" href="tokens/tokens.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="components/cards.css">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: #111827;
+      background: linear-gradient(180deg, #fff 0, #fff8f6 360px, #f8fafc 100%);
+      font-family: var(--revo-font-family-base), var(--revo-font-family-jp);
+      line-height: var(--revo-line-height-body);
+    }
+
+    .revo-top-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+      backdrop-filter: blur(18px);
+    }
+
+    .revo-top-header__inner {
+      display: grid;
+      grid-template-columns: auto minmax(180px, 320px) 1fr auto;
+      gap: 18px;
+      align-items: center;
+      width: min(100% - 40px, 1440px);
+      min-height: 72px;
+      margin: 0 auto;
+    }
+
+    .revo-top-logo {
+      display: inline-flex;
+      gap: 10px;
+      align-items: center;
+      color: #111827;
+      font-size: 20px;
+      font-weight: 900;
+      line-height: 1;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .revo-top-logo__mark {
+      display: grid;
+      width: 30px;
+      height: 30px;
+      place-items: center;
+      color: #fff;
+      background: linear-gradient(135deg, #fb385f 0%, #ff8b3d 100%);
+      border-radius: 10px 10px 14px 6px;
+      box-shadow: 0 10px 24px rgba(251, 56, 95, 0.25);
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .revo-top-search {
+      display: flex;
+      align-items: center;
+      min-width: 0;
+      min-height: 42px;
+      padding: 0 14px;
+      border: 1px solid #d7dde8;
+      border-radius: 10px;
+      background: #fff;
+    }
+
+    .revo-top-search input {
+      width: 100%;
+      min-width: 0;
+      color: #111827;
+      background: transparent;
+      border: 0;
+      font: inherit;
+      outline: 0;
+    }
+
+    .revo-top-search input::placeholder {
+      color: #9aa4b2;
+    }
+
+    .revo-top-search__icon {
+      flex: 0 0 auto;
+      color: #64748b;
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .revo-top-nav,
+    .revo-top-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      min-width: 0;
+    }
+
+    .revo-top-nav {
+      justify-content: center;
+    }
+
+    .revo-top-nav a,
+    .revo-top-actions a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      padding: 0 13px;
+      border-radius: 999px;
+      color: #111827;
+      font-size: 13px;
+      font-weight: 800;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .revo-top-nav a:hover {
+      background: #fff1f2;
+      color: #e11d48;
+    }
+
+    .revo-top-nav-group {
+      position: relative;
+      flex: 0 0 auto;
+    }
+
+    .revo-top-nav-group summary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      padding: 0 13px;
+      color: #111827;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 800;
+      list-style: none;
+      white-space: nowrap;
+    }
+
+    .revo-top-nav-group summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .revo-top-nav-group summary::after {
+      content: "⌄";
+      margin-left: 6px;
+      color: #94a3b8;
+      font-size: 12px;
+    }
+
+    .revo-top-nav-group[open] summary,
+    .revo-top-nav-group summary:hover {
+      color: #e11d48;
+      background: #fff1f2;
+    }
+
+    .revo-top-nav-group__panel {
+      position: fixed;
+      top: 72px;
+      right: clamp(16px, 4vw, 56px);
+      z-index: 60;
+      display: grid;
+      width: 270px;
+      gap: 4px;
+      padding: 10px;
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      box-shadow: 0 18px 38px rgba(15, 23, 42, 0.14);
+    }
+
+    .revo-top-nav-group__panel a {
+      justify-content: flex-start;
+      min-height: 36px;
+      padding: 0 12px;
+      border-radius: 10px;
+    }
+
+    .revo-top-actions a {
+      border: 1px solid #e2e8f0;
+      color: #64748b;
+      background: #fff;
+    }
+
+    .revo-top-actions .revo-top-actions__primary {
+      color: #fff;
+      border-color: transparent;
+      background: linear-gradient(135deg, #f43f5e 0%, #ff6b4a 100%);
+      box-shadow: 0 12px 24px rgba(244, 63, 94, 0.24);
+    }
+
+    .revo-category-nav {
+      border-bottom: 1px solid rgba(226, 232, 240, 0.78);
+      background: rgba(255, 255, 255, 0.88);
+    }
+
+    .revo-category-nav__inner {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      width: min(100% - 40px, 1440px);
+      margin: 0 auto;
+      padding: 10px 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .revo-category-nav__inner::-webkit-scrollbar {
+      display: none;
+    }
+
+    .revo-category-nav a,
+    .revo-category-nav span {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 0 14px;
+      border: 1px solid #edf0f5;
+      border-radius: 999px;
+      color: #475569;
+      background: #fff;
+      font-size: 12px;
+      font-weight: 800;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .revo-category-nav a {
+      color: #e11d48;
+      border-color: #fecdd3;
+      background: #fff1f2;
+    }
+
+    .revo-list-page {
+      width: min(100% - 40px, 1440px);
+      margin: 0 auto;
+      padding: 26px 0 72px;
+    }
+
+    .revo-top-hero {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 0.95fr) minmax(360px, 1.05fr);
+      gap: 36px;
+      align-items: center;
+      min-height: 440px;
+      margin: 0 calc(50% - 50vw);
+      padding: 58px max(40px, calc((100vw - 1440px) / 2 + 20px)) 54px;
+      overflow: hidden;
+      background: radial-gradient(circle at 72% 35%, rgba(255, 201, 116, 0.38), transparent 22%),
+        linear-gradient(110deg, #fff 0%, #fff 44%, rgba(255, 241, 242, 0.92) 68%, rgba(255, 232, 218, 0.88) 100%);
+    }
+
+    .revo-top-hero::before {
+      content: "";
+      position: absolute;
+      right: -7vw;
+      bottom: -112px;
+      width: 72vw;
+      height: 220px;
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(251, 113, 133, 0.25), rgba(244, 63, 94, 0.58));
+      border-radius: 999px 0 0 999px;
+      transform: rotate(-4deg);
+      pointer-events: none;
+    }
+
+    .revo-top-hero__content,
+    .revo-top-hero__visual {
+      position: relative;
+      z-index: 1;
+    }
+
+    .revo-top-hero__eyebrow {
+      display: inline-flex;
+      width: fit-content;
+      margin: 0 0 16px;
+      padding: 7px 12px;
+      color: #be123c;
+      background: #fff1f2;
+      border: 1px solid #fecdd3;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .revo-top-hero h1 {
+      max-width: 720px;
+      margin: 0;
+      font-size: clamp(42px, 6vw, 76px);
+      font-weight: 900;
+      letter-spacing: 0;
+      line-height: 1.12;
+    }
+
+    .revo-top-hero__lead {
+      max-width: 680px;
+      margin: 20px 0 0;
+      color: #111827;
+      font-size: clamp(17px, 2vw, 21px);
+      font-weight: 900;
+      line-height: 1.8;
+    }
+
+    .revo-top-hero__sub {
+      max-width: 720px;
+      margin: 8px 0 0;
+      color: #475569;
+      font-size: 15px;
+      line-height: 1.9;
+    }
+
+    .revo-top-hero__actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 30px;
+    }
+
+    .revo-top-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 190px;
+      min-height: 58px;
+      padding: 0 24px;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      color: #111827;
+      background: #fff;
+      box-shadow: 0 16px 32px rgba(15, 23, 42, 0.08);
+      font-size: 15px;
+      font-weight: 900;
+      text-decoration: none;
+    }
+
+    .revo-top-button--primary {
+      color: #fff;
+      border-color: transparent;
+      background: linear-gradient(135deg, #f43f5e 0%, #ff6b4a 100%);
+      box-shadow: 0 18px 34px rgba(244, 63, 94, 0.28);
+    }
+
+    .revo-top-hero__visual {
+      min-height: 340px;
+      overflow: hidden;
+      border-radius: 38px 0 0 38px;
+      isolation: isolate;
+    }
+
+    .revo-top-hero__image {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center right;
+      filter: saturate(1.04);
+    }
+
+    .revo-top-sun {
+      position: absolute;
+      right: 31%;
+      bottom: 78px;
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #fff7c2 0%, #ffb84d 58%, rgba(255, 184, 77, 0) 70%);
+      box-shadow: 0 0 72px rgba(255, 184, 77, 0.55);
+    }
+
+    .revo-top-person {
+      position: absolute;
+      right: 8%;
+      bottom: 8px;
+      width: min(330px, 58vw);
+      aspect-ratio: 3 / 4;
+      border-radius: 48% 48% 18px 18px;
+      background: radial-gradient(circle at 50% 18%, #7c2d12 0 12%, transparent 13%),
+        radial-gradient(circle at 46% 28%, #fed7aa 0 15%, transparent 16%),
+        linear-gradient(145deg, transparent 0 34%, #f8fafc 35% 68%, #e2e8f0 69% 100%);
+      filter: drop-shadow(0 28px 40px rgba(148, 63, 42, 0.18));
+      opacity: 0.92;
+    }
+
+    .revo-top-ribbon {
+      position: absolute;
+      right: -8%;
+      bottom: 14px;
+      width: 620px;
+      height: 132px;
+      border-radius: 999px 0 0 999px;
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(251, 113, 133, 0.25), rgba(244, 63, 94, 0.58));
+      transform: rotate(-12deg);
+    }
+
+    .revo-top-petal {
+      position: absolute;
+      width: 10px;
+      height: 18px;
+      background: #fb7185;
+      border-radius: 80% 20% 80% 20%;
+      transform: rotate(28deg);
+    }
+
+    .revo-top-petal--one {
+      top: 64px;
+      right: 36%;
+    }
+
+    .revo-top-petal--two {
+      top: 102px;
+      right: 28%;
+      background: #fdba74;
+      transform: rotate(70deg);
+    }
+
+    .revo-top-petal--three {
+      top: 46px;
+      right: 20%;
+      background: #fecdd3;
+      transform: rotate(-18deg);
+    }
+
+    .revo-top-section {
+      margin-top: 38px;
+    }
+
+    .revo-top-section__head {
+      display: flex;
+      gap: 16px;
+      align-items: end;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .revo-top-section__title {
+      margin: 0;
+      font-size: clamp(22px, 3vw, 30px);
+      line-height: 1.35;
+    }
+
+    .revo-top-section__text {
+      max-width: 720px;
+      margin: 4px 0 0;
+      color: #64748b;
+      font-size: 14px;
+    }
+
+    .revo-top-section__link {
+      display: inline-flex;
+      flex: 0 0 auto;
+      align-items: center;
+      min-height: 38px;
+      padding: 0 14px;
+      color: #e11d48;
+      border: 1px solid #fecdd3;
+      border-radius: 999px;
+      background: #fff;
+      font-size: 13px;
+      font-weight: 900;
+      text-decoration: none;
+    }
+
+    .revo-list-page__message {
+      margin-bottom: 14px;
+      color: #64748b;
+      font-size: 13px;
+    }
+
+    .revo-list-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 297px));
+      gap: 18px;
+      align-items: stretch;
+      justify-content: center;
+    }
+
+    .revo-top-featured .revo-card {
+      border: 0;
+      border-radius: 14px;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.11);
+      min-height: 525px;
+    }
+
+    .revo-top-featured .revo-card::before {
+      display: none;
+    }
+
+    .revo-top-featured .revo-card__media {
+      aspect-ratio: 1200 / 630;
+      max-height: none;
+      background: radial-gradient(circle at 28% 30%, rgba(255, 255, 255, 0.58), transparent 28%),
+        linear-gradient(135deg, color-mix(in srgb, var(--revo-card-accent) 18%, white), color-mix(in srgb, var(--revo-card-accent-2, #ff8a3d) 22%, white));
+    }
+
+    .revo-top-featured .revo-card__media-placeholder {
+      color: #fff;
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.26), rgba(15, 23, 42, 0.05)),
+        linear-gradient(135deg, var(--revo-card-accent), var(--revo-card-accent-2, #ffb84d));
+      border-bottom: 0;
+      font-size: 13px;
+    }
+
+    .revo-top-featured .revo-card__body {
+      gap: 8px;
+      padding: 14px;
+    }
+
+    .revo-top-featured .revo-card__badge {
+      color: #fff;
+      box-shadow: 0 10px 20px rgba(15, 23, 42, 0.14);
+    }
+
+    .revo-top-featured .revo-card__title {
+      font-size: 17px;
+    }
+
+    .revo-top-featured .revo-card__description {
+      font-size: 12px;
+      line-height: 1.65;
+    }
+
+    .revo-top-featured .revo-card__progress-track {
+      height: 8px;
+      background: color-mix(in srgb, var(--revo-card-accent) 14%, white);
+    }
+
+    .revo-top-featured .revo-card__stats {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 4px;
+      margin-top: auto;
+      padding: 2px 0 0;
+      border: 0;
+    }
+
+    .revo-top-featured .revo-card__stats-primary,
+    .revo-top-featured .revo-card__stats-secondary {
+      display: contents;
+    }
+
+    .revo-top-featured .revo-card__stat {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      gap: 4px;
+      align-items: center;
+      min-height: 30px;
+      padding: 4px 6px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+    }
+
+    .revo-top-featured .revo-card__stat-label,
+    .revo-top-featured .revo-card__stat-value {
+      display: block;
+      overflow-wrap: anywhere;
+      white-space: normal;
+    }
+
+    .revo-top-featured .revo-card__stat-label {
+      margin: 0;
+      color: #64748b;
+      font-size: 9px;
+      font-weight: 900;
+      line-height: 1.25;
+    }
+
+    .revo-top-featured .revo-card__stat-value,
+    .revo-top-featured .revo-card__stat--primary .revo-card__stat-value,
+    .revo-top-featured .revo-card__stat--compact .revo-card__stat-value,
+    .revo-top-featured .revo-card__stat--amount .revo-card__stat-value {
+      margin: 0;
+      color: #111827;
+      font-size: 10px;
+      font-weight: 900;
+      line-height: 1.25;
+      white-space: normal;
+    }
+
+    .revo-top-featured .revo-card__stat--compact + .revo-card__stat--compact::before {
+      display: none;
+    }
+
+    .revo-top-featured .revo-card__metric-progress {
+      position: relative;
+      grid-column: 1 / -1;
+      height: 5px;
+      overflow: hidden;
+      background: #e2e8f0;
+      border-radius: 999px;
+    }
+
+    .revo-top-featured .revo-card__metric-progress::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: var(--metric-progress, 0%);
+      background: linear-gradient(90deg, var(--revo-card-accent), var(--revo-card-accent-2, #ff8a3d));
+      border-radius: inherit;
+    }
+
+    .revo-top-featured .revo-card {
+      --revo-card-accent-2: #38bdf8;
+    }
+
+    .revo-top-featured .revo-card--spark {
+      --revo-card-accent: #fb923c;
+      --revo-card-accent-2: #facc15;
+    }
+
+    .revo-top-featured .revo-card--boost {
+      --revo-card-accent: #2563eb;
+      --revo-card-accent-2: #38bdf8;
+    }
+
+    .revo-top-featured .revo-card--art {
+      --revo-card-accent: #8b5cf6;
+      --revo-card-accent-2: #fb7185;
+    }
+
+    .revo-top-featured .revo-card__action {
+      min-height: 40px;
+      border: 0;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--revo-card-accent) 0%, var(--revo-card-accent-2, #ff8a3d) 100%);
+    }
+
+    .revo-program-section {
+      margin-top: 36px;
+    }
+
+    .revo-program-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 297px));
+      gap: 18px;
+      align-items: stretch;
+      justify-content: center;
+    }
+
+    .revo-program-card {
+      --program-accent: #fb923c;
+      --program-accent-2: #facc15;
+      display: flex;
+      flex-direction: column;
+      height: 525px;
+      min-width: 0;
+      overflow: hidden;
+      border: 1px solid rgba(226, 232, 240, 0.92);
+      border-radius: 16px;
+      background: #fff;
+      box-shadow: 0 18px 42px rgba(15, 23, 42, 0.09);
+    }
+
+    .revo-program-card--boost {
+      --program-accent: #2563eb;
+      --program-accent-2: #38bdf8;
+    }
+
+    .revo-program-card--art {
+      --program-accent: #8b5cf6;
+      --program-accent-2: #fb7185;
+    }
+
+    .revo-program-card__visual {
+      position: relative;
+      aspect-ratio: 1200 / 630;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 18% 22%, rgba(255, 255, 255, 0.75), transparent 18%),
+        radial-gradient(circle at 76% 34%, rgba(255, 255, 255, 0.55), transparent 20%),
+        linear-gradient(135deg, var(--program-accent), var(--program-accent-2));
+    }
+
+    .revo-program-card__visual::before {
+      content: "";
+      position: absolute;
+      inset: 18% -20% auto 22%;
+      height: 68%;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.26);
+      transform: rotate(-13deg);
+    }
+
+    .revo-program-card__visual::after {
+      content: "";
+      position: absolute;
+      right: 22px;
+      bottom: 18px;
+      width: 78px;
+      height: 78px;
+      border-radius: 28px 28px 18px 42px;
+      background: rgba(255, 255, 255, 0.66);
+      box-shadow: 0 18px 36px rgba(15, 23, 42, 0.14);
+      transform: rotate(8deg);
+    }
+
+    .revo-program-card__badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      z-index: 1;
+      display: inline-flex;
+      max-width: calc(100% - 24px);
+      padding: 6px 10px;
+      color: #fff;
+      background: rgba(15, 23, 42, 0.58);
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 900;
+      line-height: 1.3;
+    }
+
+    .revo-program-card__body {
+      display: flex;
+      flex: 1 1 auto;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 0;
+      padding: 14px;
+    }
+
+    .revo-program-card__title {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 900;
+      line-height: 1.35;
+      min-height: calc(18px * 1.35 * 2);
+      display: -webkit-box;
+      overflow: hidden;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      overflow-wrap: anywhere;
+    }
+
+    .revo-program-card__text {
+      margin: 0;
+      color: #64748b;
+      font-size: 13px;
+      line-height: 1.6;
+      min-height: calc(13px * 1.6 * 2);
+      display: -webkit-box;
+      overflow: hidden;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      overflow-wrap: anywhere;
+    }
+
+    .revo-program-card__meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: auto;
+      padding-top: 4px;
+    }
+
+    .revo-program-card__meta span {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 0 10px;
+      color: #475569;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .revo-program-card__stats {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 4px;
+      margin-top: auto;
+      padding-top: 2px;
+    }
+
+    .revo-program-card__stat {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      gap: 4px;
+      align-items: center;
+      min-width: 0;
+      min-height: 30px;
+      padding: 4px 6px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+    }
+
+    .revo-program-card__stat--wide {
+      grid-column: auto;
+    }
+
+    .revo-program-card__stat-label,
+    .revo-program-card__stat-value {
+      display: block;
+      overflow-wrap: anywhere;
+    }
+
+    .revo-program-card__stat-label {
+      color: #64748b;
+      font-size: 9px;
+      font-weight: 900;
+      line-height: 1.25;
+    }
+
+    .revo-program-card__stat-value {
+      margin-top: 0;
+      color: #111827;
+      font-size: 10px;
+      font-weight: 900;
+      line-height: 1.25;
+    }
+
+    .revo-program-card__progress {
+      position: relative;
+      grid-column: 1 / -1;
+      height: 5px;
+      overflow: hidden;
+      background: #e2e8f0;
+      border-radius: 999px;
+    }
+
+    .revo-program-card__progress::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 0;
+      background: linear-gradient(90deg, var(--program-accent), var(--program-accent-2));
+      border-radius: inherit;
+    }
+
+    .revo-program-card__action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 38px;
+      margin-top: 4px;
+      color: #fff;
+      background: linear-gradient(135deg, var(--program-accent), var(--program-accent-2));
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 900;
+      text-decoration: none;
+    }
+
+    .revo-list-entry-section {
+      display: grid;
+      gap: 16px;
+      margin-top: 32px;
+    }
+
+    .revo-list-entry-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .revo-list-entry {
+      --revo-list-entry-accent: #8b5cf6;
+      --revo-list-entry-bg: #f5f3ff;
+      --revo-list-entry-border: rgba(139, 92, 246, 0.22);
+      display: grid;
+      gap: 12px;
+      min-width: 0;
+      min-height: 230px;
+      padding: 24px;
+      overflow: hidden;
+      color: #111827;
+      background: radial-gradient(circle at 82% 10%, rgba(255, 255, 255, 0.68), transparent 26%), var(--revo-list-entry-bg);
+      border: 1px solid var(--revo-list-entry-border);
+      border-radius: 16px;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+    }
+
+    .revo-list-entry--spark {
+      --revo-list-entry-accent: #f43f5e;
+      --revo-list-entry-bg: #fff1f2;
+      --revo-list-entry-border: rgba(244, 63, 94, 0.2);
+    }
+
+    .revo-list-entry--boost {
+      --revo-list-entry-accent: #f97316;
+      --revo-list-entry-bg: #fff7ed;
+      --revo-list-entry-border: rgba(249, 115, 22, 0.22);
+    }
+
+    .revo-list-entry__icon {
+      display: grid;
+      width: 58px;
+      height: 58px;
+      place-items: center;
+      color: var(--revo-list-entry-accent);
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 16px 28px rgba(15, 23, 42, 0.08);
+      font-size: 28px;
+      font-weight: 900;
+    }
+
+    .revo-list-entry__badge {
+      display: inline-flex;
+      width: fit-content;
+      max-width: 100%;
+      padding: 5px 10px;
+      color: var(--revo-list-entry-accent);
+      background: #fff;
+      border: 1px solid var(--revo-list-entry-border);
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 900;
+      line-height: 1.3;
+    }
+
+    .revo-list-entry__title,
+    .revo-list-entry__text {
+      margin: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .revo-list-entry__title {
+      font-size: 24px;
+      line-height: 1.25;
+    }
+
+    .revo-list-entry__text {
+      color: #475569;
+      font-size: 14px;
+      line-height: 1.75;
+    }
+
+    .revo-list-entry__action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: fit-content;
+      max-width: 100%;
+      margin-top: auto;
+      min-height: 42px;
+      padding: 0 18px;
+      color: #111827;
+      background: #fff;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 900;
+      line-height: 1.3;
+      text-decoration: none;
+    }
+
+    .revo-top-panels {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 18px;
+      margin-top: 32px;
+      align-items: stretch;
+    }
+
+    .revo-top-map-panel,
+    .revo-top-trust {
+      min-width: 0;
+      padding: 24px;
+      border: 1px solid rgba(226, 232, 240, 0.92);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: 0 20px 50px rgba(15, 23, 42, 0.08);
+    }
+
+    .revo-top-map-panel .revo-support-map {
+      margin: 0;
+      padding: 0;
+      border: 0;
+      box-shadow: none;
+      background: transparent;
+    }
+
+    .revo-top-trust {
+      display: grid;
+      gap: 18px;
+      align-content: start;
+    }
+
+    .revo-top-trust__list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .revo-top-trust__item {
+      display: grid;
+      gap: 6px;
+      min-width: 0;
+      padding: 16px;
+      border: 1px solid #fee2e2;
+      border-radius: 14px;
+      background: linear-gradient(180deg, #fff 0%, #fff7f7 100%);
+    }
+
+    .revo-top-trust__item strong {
+      font-size: 14px;
+    }
+
+    .revo-top-trust__item span {
+      color: #64748b;
+      font-size: 12px;
+      line-height: 1.65;
+    }
+
+    @media (max-width: 1180px) {
+      .revo-top-header__inner {
+        grid-template-columns: auto 1fr auto;
+      }
+
+      .revo-top-search {
+        display: none;
+      }
+
+      .revo-top-nav {
+        justify-content: flex-start;
+        overflow-x: auto;
+        scrollbar-width: none;
+      }
+
+      .revo-list-grid,
+      .revo-program-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 900px) {
+      .revo-top-header__inner {
+        width: min(100% - 28px, 1440px);
+        grid-template-columns: 1fr auto;
+        min-height: auto;
+        padding: 12px 0;
+      }
+
+      .revo-top-nav {
+        grid-column: 1 / -1;
+        order: 3;
+      }
+
+      .revo-top-actions {
+        display: none;
+      }
+
+      .revo-top-hero {
+        grid-template-columns: 1fr;
+        gap: 18px;
+        min-height: auto;
+        padding: 42px max(24px, calc((100vw - 1440px) / 2 + 20px)) 36px;
+      }
+
+      .revo-top-hero__visual {
+        min-height: 220px;
+        border-radius: 26px;
+      }
+
+      .revo-top-person {
+        right: 3%;
+        width: min(220px, 56vw);
+      }
+
+      .revo-top-panels,
+      .revo-list-entry-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .revo-list-page,
+      .revo-top-header__inner,
+      .revo-category-nav__inner {
+        width: min(100% - 28px, 1440px);
+      }
+
+      .revo-top-logo {
+        font-size: 17px;
+      }
+
+      .revo-top-hero h1 {
+        font-size: 42px;
+      }
+
+      .revo-top-hero__actions,
+      .revo-top-section__head {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .revo-top-button,
+      .revo-top-section__link,
+      .revo-list-entry__action {
+        width: 100%;
+      }
+
+      .revo-list-grid,
+      .revo-program-grid,
+      .revo-top-trust__list {
+        grid-template-columns: 1fr;
+      }
+
+      .revo-program-card__body {
+        gap: 5px;
+        padding: 12px;
+      }
+
+      .revo-top-featured .revo-card__body {
+        gap: 5px;
+        padding: 12px;
+      }
+
+      .revo-program-card__title,
+      .revo-program-card__text,
+      .revo-top-featured .revo-card__title,
+      .revo-top-featured .revo-card__description {
+        min-height: auto;
+      }
+
+      .revo-program-card__stats,
+      .revo-top-featured .revo-card__stats {
+        gap: 3px;
+      }
+
+      .revo-program-card__stat,
+      .revo-top-featured .revo-card__stat {
+        min-height: 26px;
+        padding: 3px 5px;
+      }
+
+      .revo-program-card__stat-label,
+      .revo-top-featured .revo-card__stat-label {
+        font-size: 8px;
+      }
+
+      .revo-program-card__stat-value,
+      .revo-top-featured .revo-card__stat-value,
+      .revo-top-featured .revo-card__stat--primary .revo-card__stat-value,
+      .revo-top-featured .revo-card__stat--compact .revo-card__stat-value,
+      .revo-top-featured .revo-card__stat--amount .revo-card__stat-value {
+        font-size: 9px;
+      }
+
+      .revo-program-card__action,
+      .revo-top-featured .revo-card__action {
+        min-height: 36px;
+      }
+
+      .revo-top-map-panel,
+      .revo-top-trust,
+      .revo-list-entry {
+        padding: 18px;
+      }
+    }
+  </style>
+  <script src="components/render-cards.js?v=card-fit-003" defer></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
+  <script>window.REVO_SUPPORT_MAP_DATA_URL = "data/revo-support-map-data.json";</script>
+  <script src="components/render-support-map.js" defer></script>
+	  <script defer>
+	    document.addEventListener("DOMContentLoaded", async () => {
+	      const container = document.getElementById("revo-list-page");
+	      const messageContainer = document.getElementById("revo-list-page-message");
+
+	      const clampProgress = (value) => {
+	        const number = Number(value);
+	        if (!Number.isFinite(number)) {
+	          return 0;
+	        }
+	        return Math.max(0, Math.min(100, number));
+	      };
+
+	      const countPair = (currentDisplay, targetDisplay, fallbackDisplay) => {
+	        if (currentDisplay && targetDisplay) {
+	          return `${currentDisplay} / ${targetDisplay}`;
+	        }
+	        return fallbackDisplay || "-";
+	      };
+
+	      const createMetric = (label, value) => {
+	        const metric = document.createElement("div");
+	        metric.className = "revo-card__stat revo-card__stat--compact";
+
+	        const labelNode = document.createElement("span");
+	        labelNode.className = "revo-card__stat-label";
+	        labelNode.textContent = label;
+
+	        const valueNode = document.createElement("span");
+	        valueNode.className = "revo-card__stat-value";
+	        valueNode.textContent = value || "-";
+
+	        metric.append(labelNode, valueNode);
+	        return metric;
+	      };
+
+	      const createMetricProgress = (project) => {
+	        const progress = document.createElement("span");
+	        progress.className = "revo-card__metric-progress";
+	        progress.setAttribute("aria-hidden", "true");
+	        progress.style.setProperty("--metric-progress", `${clampProgress(project.progressRate)}%`);
+	        return progress;
+	      };
+
+	      const remainingSupporterDisplay = (project) => {
+	        const current = Number(project.currentSupporterCount);
+	        const target = Number(project.targetSupporterCount);
+	        if (Number.isFinite(current) && Number.isFinite(target)) {
+	          return `${Math.max(0, target - current)}人`;
+	        }
+	        return "集計準備中";
+	      };
+
+	      const metricsForProject = (project) => {
+	        const type = project.type;
+	        const sparkRate = project.sparkAchievementRate ?? project.progressRate ?? 0;
+	        const boostRate = project.boostAchievementRate ?? project.progressRate ?? 0;
+
+	        if (type === "spark") {
+	          return [
+	            createMetric("達成人数", project.sparkAchievedPeople || project.currentSupporterCountDisplay || project.supporterCountDisplay || "集計準備中"),
+	            createMetric("目標人数", project.sparkTargetPeople || project.targetSupporterCountDisplay || "受付後に反映"),
+	            createMetric("達成率", `${sparkRate}%`),
+	            createMetricProgress(project),
+	            createMetric("残り日数", project.remainingDaysDisplay || project.sparkTargetDate || "受付後に反映"),
+	            createMetric("目標組数", project.sparkTargetGroups || project.targetGroupCountDisplay || "受付後に反映"),
+	            createMetric("達成組数", project.sparkAchievedGroups || project.currentGroupCountDisplay || "集計準備中"),
+	            createMetric("目標金額", project.sparkTargetAmount || project.targetAmountDisplay || "受付後に反映")
+	          ];
+	        }
+
+	        if (type === "boost") {
+	          return [
+	            createMetric("残り人数", project.boostRemainingPeople || remainingSupporterDisplay(project)),
+	            createMetric("目標人数", project.boostTargetPeople || project.targetSupporterCountDisplay || "受付後に反映"),
+	            createMetric("達成率", `${boostRate}%`),
+	            createMetricProgress(project),
+	            createMetric("達成回数", project.boostAchievedCount || project.currentGroupCountDisplay || "集計準備中"),
+	            createMetric("目標回数", project.boostTargetCount || project.targetGroupCountDisplay || "受付後に反映"),
+	            createMetric("残り日数", project.remainingDaysDisplay || project.boostTargetDate || "受付後に反映"),
+	            createMetric("達成金額", project.currentAmountDisplay || "集計準備中")
+	          ];
+	        }
+
+	        return [
+	          createMetric("達成率", progressRate),
+	          createMetricProgress(project),
+	          createMetric("地域", project.prefecture || project.area || "公開地域"),
+	          createMetric("応援者", countPair(project.currentSupporterCountDisplay, project.targetSupporterCountDisplay, project.supporterCountDisplay)),
+	          createMetric("目標金額", project.targetAmountDisplay || "受付後に反映"),
+	          createMetric("詳細", "詳細を見る")
+	        ];
+	      };
+
+	      const applyFeaturedCardMetrics = (cards, projects) => {
+	        cards.forEach((card, index) => {
+	          const project = projects[index];
+	          const stats = card.querySelector(".revo-card__stats");
+	          if (!project || !stats) {
+	            return;
+	          }
+	          stats.replaceChildren(...metricsForProject(project));
+	        });
+	      };
+
+	      if (!window.RevoCards || !container) {
+	        if (messageContainer) {
+	          messageContainer.textContent = "カード描画の準備ができませんでした。";
+        }
+        return;
+      }
+
+      try {
+        if (messageContainer) {
+          messageContainer.textContent = "projects-data.json を読み込み中です。";
+        }
+
+	        const cacheToken = new URLSearchParams(window.location.search).get("t") || "featured-spark-boost";
+	        const projects = await window.RevoCards.loadRevoProjects(`data/projects-data.json?t=${encodeURIComponent(cacheToken)}`);
+	        const featuredProjects = projects
+	          .filter((project) => (
+	            project.featured === true &&
+	            project.status !== "hidden" &&
+	            (project.type === "spark" || project.type === "boost")
+	          ))
+	          .slice(0, 4);
+
+	        if (messageContainer && featuredProjects.length < 4) {
+	          messageContainer.textContent = `featured: true のスパーク / ブーストが${featuredProjects.length}件です。`;
+	        }
+
+	        const cards = window.RevoCards.renderRevoCards({
+	          container,
+	          projects: featuredProjects,
+	          messageContainer: featuredProjects.length >= 4 ? messageContainer : null
+	        });
+	        applyFeaturedCardMetrics(cards, featuredProjects);
+	      } catch (error) {
+        if (messageContainer) {
+          messageContainer.textContent = "projects-data.json を読み込めませんでした。静的カードを表示しています。";
+        }
+        console.error(error);
+      }
+    });
+  </script>
+</head>
+<body>
+  <header class="revo-top-header">
+    <div class="revo-top-header__inner">
+      <a class="revo-top-logo" href="/" aria-label="レボファンディング トップ">
+        <span class="revo-top-logo__mark">R</span>
+        <span>レボファンディング</span>
+      </a>
+      <label class="revo-top-search">
+        <input type="search" placeholder="キーワードでプロジェクトを検索" aria-label="キーワードでプロジェクトを検索">
+        <span class="revo-top-search__icon" aria-hidden="true">⌕</span>
+      </label>
+      <nav class="revo-top-nav" aria-label="主要ナビゲーション">
+        <a href="#featured-projects">プロジェクトを探す</a>
+        <a href="#entry">応援で参加する</a>
+        <a href="spark.html">挑戦をはじめる</a>
+        <a href="revo-art.html">レボアート</a>
+        <details class="revo-top-nav-group">
+          <summary>全体メニュー</summary>
+          <div class="revo-top-nav-group__panel">
+            <a href="revolist.html">全体構造</a>
+            <a href="revolist-projects.html">プロジェクト紹介</a>
+            <a href="sparkers.html">スパーク一覧</a>
+            <a href="badge-sparkers.html">バッチスパーカー</a>
+            <a href="boosters.html">ブースト一覧</a>
+            <a href="revo-art-list.html">レボアート一覧</a>
+            <a href="certified-artists.html">認定アーティスト</a>
+            <a href="site-map.html">サイトマップ</a>
+          </div>
+        </details>
+      </nav>
+      <div class="revo-top-actions" aria-label="アカウントメニュー">
+        <a href="login.html">ログイン</a>
+        <a class="revo-top-actions__primary" href="register.html">新規登録</a>
+      </div>
+    </div>
+    <nav class="revo-category-nav" aria-label="カテゴリナビゲーション">
+      <div class="revo-category-nav__inner">
+        <a href="/">トップ</a>
+        <span>地域の挑戦</span>
+        <span>まちづくり</span>
+        <span>子ども・教育</span>
+        <span>環境・自然</span>
+        <span>福祉・医療</span>
+        <a href="revo-art.html">文化・アート</a>
+        <span>スポーツ</span>
+        <span>食・農業</span>
+        <span>テクノロジー</span>
+        <span>防災・災害</span>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="revo-top-hero" aria-labelledby="revo-top-hero-title">
+      <div class="revo-top-hero__content">
+        <p class="revo-top-hero__eyebrow">応援で未来を動かすクラウドファンディング</p>
+        <h1 id="revo-top-hero-title">挑戦を、ひとりにしない。</h1>
+        <p class="revo-top-hero__lead">あなたの応援が、未来を動かす力に。</p>
+        <p class="revo-top-hero__sub">人・地域・文化・テクノロジーの挑戦を、みんなで支えるクラウドファンディング。</p>
+        <div class="revo-top-hero__actions">
+          <a class="revo-top-button revo-top-button--primary" href="#featured-projects">プロジェクトを探す</a>
+          <a class="revo-top-button" href="spark.html">挑戦をはじめる</a>
+        </div>
+      </div>
+      <div class="revo-top-hero__visual" aria-hidden="true">
+        <img class="revo-top-hero__image" src="assets/images/hero-top-illustration-01.png" alt="">
+        <span class="revo-top-ribbon"></span>
+        <span class="revo-top-petal revo-top-petal--one"></span>
+        <span class="revo-top-petal revo-top-petal--two"></span>
+        <span class="revo-top-petal revo-top-petal--three"></span>
+      </div>
+    </section>
+
+    <div class="revo-list-page">
+      <section id="featured-projects" class="revo-top-section revo-top-featured" aria-labelledby="featured-projects-title">
+        <div class="revo-top-section__head">
+          <div>
+            <h2 id="featured-projects-title" class="revo-top-section__title">注目のプロジェクト</h2>
+            <p class="revo-top-section__text">金額だけではなく、応援者と仲間の広がりから挑戦を見つけられます。</p>
+          </div>
+          <a class="revo-top-section__link" href="#revo-support-map-title">全国の広がりを見る</a>
+        </div>
+        <div id="revo-list-page-message" class="revo-list-page__message">projects-data.json から注目プロジェクトを表示しています。</div>
+        <div id="revo-list-page" class="revo-list-grid" aria-label="挑戦一覧">
+          <article class="revo-card revo-card--spark">
+            <div class="revo-card__media"><div class="revo-card__media-placeholder">画像プレースホルダー</div></div>
+            <div class="revo-card__body">
+              <span class="revo-card__badge">地域の一歩</span>
+              <h2 class="revo-card__title">小さな願いを仲間と育てる挑戦</h2>
+              <p class="revo-card__description">地域にある小さな願いを、応援者と参加する組の広がりで育てる挑戦です。</p>
+              <div class="revo-card__progress"><div class="revo-card__progress-track"><div class="revo-card__progress-bar" style="width: 64%;"></div></div></div>
+              <div class="revo-card__stats">
+                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">達成人数</span><span class="revo-card__stat-value">32人</span></div>
+                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">目標人数</span><span class="revo-card__stat-value">50人</span></div>
+                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">達成率</span><span class="revo-card__stat-value">64%</span></div>
+                <span class="revo-card__metric-progress" aria-hidden="true" style="--metric-progress: 64%;"></span>
+                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">残り日数</span><span class="revo-card__stat-value">受付後に反映</span></div>
+                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">目標組数</span><span class="revo-card__stat-value">3組</span></div>
+                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">達成組数</span><span class="revo-card__stat-value">1組</span></div>
+                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">目標金額</span><span class="revo-card__stat-value">200,000円</span></div>
+              </div>
+              <div class="revo-card__actions"><a class="revo-card__action" href="detail.html?id=project-normal-001">最初の仲間になる</a></div>
+            </div>
+          </article>
+          <article class="revo-card revo-card--spark">
+            <div class="revo-card__media"><div class="revo-card__media-placeholder">画像プレースホルダー</div></div>
+            <div class="revo-card__body">
+              <span class="revo-card__badge">最初の応援</span>
+              <h2 class="revo-card__title">最初の仲間と動き出す挑戦</h2>
+              <p class="revo-card__description">最初の応援者が集まり、制作や準備へ進む空気を育てる挑戦です。</p>
+              <div class="revo-card__progress"><div class="revo-card__progress-track"><div class="revo-card__progress-bar" style="width: 60%;"></div></div></div>
+	              <div class="revo-card__stats">
+	                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">達成人数</span><span class="revo-card__stat-value">12人</span></div>
+	                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">目標人数</span><span class="revo-card__stat-value">20人</span></div>
+	                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">達成率</span><span class="revo-card__stat-value">60%</span></div>
+	                <span class="revo-card__metric-progress" aria-hidden="true" style="--metric-progress: 60%;"></span>
+	                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">残り日数</span><span class="revo-card__stat-value">受付後に反映</span></div>
+	                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">目標組数</span><span class="revo-card__stat-value">1組</span></div>
+	                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">達成組数</span><span class="revo-card__stat-value">0組</span></div>
+	                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">目標金額</span><span class="revo-card__stat-value">2,000,000円</span></div>
+	              </div>
+              <div class="revo-card__actions"><a class="revo-card__action" href="detail.html?id=project-spark-001">この挑戦の、最初の仲間になる</a></div>
+            </div>
+          </article>
+          <article class="revo-card revo-card--boost">
+            <div class="revo-card__media"><div class="revo-card__media-placeholder">画像プレースホルダー</div></div>
+            <div class="revo-card__body">
+              <span class="revo-card__badge">旗を広げる</span>
+              <h2 class="revo-card__title">仲間の旗を次へ広げる挑戦</h2>
+              <p class="revo-card__description">動き始めた応援の旗を、次の地域や参加する組へ広げていく挑戦です。</p>
+              <div class="revo-card__progress"><div class="revo-card__progress-track"><div class="revo-card__progress-bar" style="width: 42%;"></div></div></div>
+	              <div class="revo-card__stats">
+	                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">残り人数</span><span class="revo-card__stat-value">42人</span></div>
+	                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">目標人数</span><span class="revo-card__stat-value">100人</span></div>
+	                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">達成率</span><span class="revo-card__stat-value">42%</span></div>
+	                <span class="revo-card__metric-progress" aria-hidden="true" style="--metric-progress: 42%;"></span>
+	                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">達成回数</span><span class="revo-card__stat-value">3組</span></div>
+	                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">目標回数</span><span class="revo-card__stat-value">5組</span></div>
+	                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">残り日数</span><span class="revo-card__stat-value">受付後に反映</span></div>
+	              </div>
+              <div class="revo-card__actions"><a class="revo-card__action" href="detail.html?id=project-boost-001">旗を立てる</a></div>
+            </div>
+          </article>
+          <article class="revo-card revo-card--boost">
+            <div class="revo-card__media"><div class="revo-card__media-placeholder">画像プレースホルダー</div></div>
+            <div class="revo-card__body">
+              <span class="revo-card__badge">応援の記録</span>
+              <h2 class="revo-card__title">応援の広がりを次へつなぐ挑戦</h2>
+              <p class="revo-card__description">集まった応援者と参加する組の広がりを記録し、次の一歩へつなぐ挑戦です。</p>
+              <div class="revo-card__progress"><div class="revo-card__progress-track"><div class="revo-card__progress-bar" style="width: 100%;"></div></div></div>
+              <div class="revo-card__stats">
+                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">残り人数</span><span class="revo-card__stat-value">0人</span></div>
+                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">目標人数</span><span class="revo-card__stat-value">20人</span></div>
+                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">達成率</span><span class="revo-card__stat-value">100%</span></div>
+                <span class="revo-card__metric-progress" aria-hidden="true" style="--metric-progress: 100%;"></span>
+                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">達成回数</span><span class="revo-card__stat-value">5回</span></div>
+                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">目標回数</span><span class="revo-card__stat-value">5回</span></div>
+                <div class="revo-card__stat revo-card__stat--compact"><span class="revo-card__stat-label">残り日数</span><span class="revo-card__stat-value">達成済み</span></div>
+              </div>
+              <div class="revo-card__actions"><a class="revo-card__action" href="detail.html?id=project-done-001">応援の記録を見る</a></div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="spark-lineup" class="revo-program-section" aria-labelledby="spark-lineup-title">
+        <div class="revo-top-section__head">
+          <div>
+            <h2 id="spark-lineup-title" class="revo-top-section__title">スパーク</h2>
+            <p class="revo-top-section__text">応援が集まると、挑戦は前に進む。声を届け、仲間を集めるための入口です。</p>
+          </div>
+          <a class="revo-top-section__link" href="sparkers.html">スパーク一覧へ</a>
+        </div>
+        <div class="revo-program-grid">
+          <article class="revo-program-card">
+            <div class="revo-program-card__visual"><span class="revo-program-card__badge">共感を届ける</span></div>
+            <div class="revo-program-card__body">
+              <h3 class="revo-program-card__title">最初の応援を届ける</h3>
+              <p class="revo-program-card__text">まだ小さな挑戦に、最初の反応と応援の声を届けます。</p>
+              <div class="revo-program-card__stats" aria-label="スパーク達成項目">
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">達成人数</span><span class="revo-program-card__stat-value">集計準備中</span></div>
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">目標人数</span><span class="revo-program-card__stat-value">受付後に反映</span></div>
+                <div class="revo-program-card__stat revo-program-card__stat--wide"><span class="revo-program-card__stat-label">達成率</span><span class="revo-program-card__stat-value">集計準備中</span></div>
+                <span class="revo-program-card__progress" aria-hidden="true"></span>
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">残り日数</span><span class="revo-program-card__stat-value">受付後に反映</span></div>
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">目標組数</span><span class="revo-program-card__stat-value">受付後に反映</span></div>
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">達成組数</span><span class="revo-program-card__stat-value">集計準備中</span></div>
+                <div class="revo-program-card__stat revo-program-card__stat--wide"><span class="revo-program-card__stat-label">目標金額</span><span class="revo-program-card__stat-value">受付後に反映</span></div>
+              </div>
+              <a class="revo-program-card__action" href="sparkers.html">スパーク一覧を見る</a>
+            </div>
+          </article>
+          <article class="revo-program-card">
+            <div class="revo-program-card__visual"><span class="revo-program-card__badge">仲間を集める</span></div>
+            <div class="revo-program-card__body">
+              <h3 class="revo-program-card__title">はじまりの輪をつくる</h3>
+              <p class="revo-program-card__text">挑戦者が一人で抱え込まないよう、最初の仲間を増やします。</p>
+              <div class="revo-program-card__stats" aria-label="スパーク達成項目">
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">達成人数</span><span class="revo-program-card__stat-value">集計準備中</span></div>
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">目標人数</span><span class="revo-program-card__stat-value">受付後に反映</span></div>
+                <div class="revo-program-card__stat revo-program-card__stat--wide"><span class="revo-program-card__stat-label">達成率</span><span class="revo-program-card__stat-value">集計準備中</span></div>
+                <span class="revo-program-card__progress" aria-hidden="true"></span>
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">残り日数</span><span class="revo-program-card__stat-value">受付後に反映</span></div>
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">目標組数</span><span class="revo-program-card__stat-value">受付後に反映</span></div>
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">達成組数</span><span class="revo-program-card__stat-value">集計準備中</span></div>
+                <div class="revo-program-card__stat revo-program-card__stat--wide"><span class="revo-program-card__stat-label">目標金額</span><span class="revo-program-card__stat-value">受付後に反映</span></div>
+              </div>
+              <a class="revo-program-card__action" href="sparkers.html">スパーク一覧を見る</a>
+            </div>
+          </article>
+          <article class="revo-program-card">
+            <div class="revo-program-card__visual"><span class="revo-program-card__badge">伝える</span></div>
+            <div class="revo-program-card__body">
+              <h3 class="revo-program-card__title">挑戦の物語を広げる</h3>
+              <p class="revo-program-card__text">想いや背景を伝わる言葉にして、応援の入口を整えます。</p>
+              <div class="revo-program-card__stats" aria-label="スパーク達成項目">
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">達成人数</span><span class="revo-program-card__stat-value">集計準備中</span></div>
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">目標人数</span><span class="revo-program-card__stat-value">受付後に反映</span></div>
+                <div class="revo-program-card__stat revo-program-card__stat--wide"><span class="revo-program-card__stat-label">達成率</span><span class="revo-program-card__stat-value">集計準備中</span></div>
+                <span class="revo-program-card__progress" aria-hidden="true"></span>
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">残り日数</span><span class="revo-program-card__stat-value">受付後に反映</span></div>
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">目標組数</span><span class="revo-program-card__stat-value">受付後に反映</span></div>
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">達成組数</span><span class="revo-program-card__stat-value">集計準備中</span></div>
+                <div class="revo-program-card__stat revo-program-card__stat--wide"><span class="revo-program-card__stat-label">目標金額</span><span class="revo-program-card__stat-value">受付後に反映</span></div>
+              </div>
+              <a class="revo-program-card__action" href="sparkers.html">スパーク一覧を見る</a>
+            </div>
+          </article>
+          <article class="revo-program-card">
+            <div class="revo-program-card__visual"><span class="revo-program-card__badge">見守る</span></div>
+            <div class="revo-program-card__body">
+              <h3 class="revo-program-card__title">小さな動きを支える</h3>
+              <p class="revo-program-card__text">最初の相談や準備に寄り添い、次の一歩へつなげます。</p>
+              <div class="revo-program-card__stats" aria-label="スパーク達成項目">
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">達成人数</span><span class="revo-program-card__stat-value">集計準備中</span></div>
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">目標人数</span><span class="revo-program-card__stat-value">受付後に反映</span></div>
+                <div class="revo-program-card__stat revo-program-card__stat--wide"><span class="revo-program-card__stat-label">達成率</span><span class="revo-program-card__stat-value">集計準備中</span></div>
+                <span class="revo-program-card__progress" aria-hidden="true"></span>
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">残り日数</span><span class="revo-program-card__stat-value">受付後に反映</span></div>
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">目標組数</span><span class="revo-program-card__stat-value">受付後に反映</span></div>
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">達成組数</span><span class="revo-program-card__stat-value">集計準備中</span></div>
+                <div class="revo-program-card__stat revo-program-card__stat--wide"><span class="revo-program-card__stat-label">目標金額</span><span class="revo-program-card__stat-value">受付後に反映</span></div>
+              </div>
+              <a class="revo-program-card__action" href="sparkers.html">スパーク一覧を見る</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="boost-lineup" class="revo-program-section" aria-labelledby="boost-lineup-title">
+        <div class="revo-top-section__head">
+          <div>
+            <h2 id="boost-lineup-title" class="revo-top-section__title">ブースト</h2>
+            <p class="revo-top-section__text">動き始めた挑戦を、次の人・場・地域へ広げるための関わり方です。</p>
+          </div>
+          <a class="revo-top-section__link" href="boosters.html">ブースト一覧へ</a>
+        </div>
+        <div class="revo-program-grid">
+          <article class="revo-program-card revo-program-card--boost">
+            <div class="revo-program-card__visual"><span class="revo-program-card__badge">紹介する</span></div>
+            <div class="revo-program-card__body">
+              <h3 class="revo-program-card__title">応援を次の人へ届ける</h3>
+              <p class="revo-program-card__text">挑戦の意味を紹介し、関心を持つ人との接点を増やします。</p>
+              <div class="revo-program-card__stats" aria-label="ブースト達成項目">
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">残り人数</span><span class="revo-program-card__stat-value">集計準備中</span></div>
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">目標人数</span><span class="revo-program-card__stat-value">受付後に反映</span></div>
+                <div class="revo-program-card__stat revo-program-card__stat--wide"><span class="revo-program-card__stat-label">達成率</span><span class="revo-program-card__stat-value">集計準備中</span></div>
+                <span class="revo-program-card__progress" aria-hidden="true"></span>
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">達成回数</span><span class="revo-program-card__stat-value">集計準備中</span></div>
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">目標回数</span><span class="revo-program-card__stat-value">受付後に反映</span></div>
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">達成金額</span><span class="revo-program-card__stat-value">集計準備中</span></div>
+              </div>
+              <a class="revo-program-card__action" href="boosters.html">ブースト一覧を見る</a>
+            </div>
+          </article>
+          <article class="revo-program-card revo-program-card--boost">
+            <div class="revo-program-card__visual"><span class="revo-program-card__badge">場をつなぐ</span></div>
+            <div class="revo-program-card__body">
+              <h3 class="revo-program-card__title">地域やチームへ広げる</h3>
+              <p class="revo-program-card__text">地域の場や仲間のネットワークへ、挑戦の輪を広げます。</p>
+              <div class="revo-program-card__stats" aria-label="ブースト達成項目">
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">残り人数</span><span class="revo-program-card__stat-value">集計準備中</span></div>
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">目標人数</span><span class="revo-program-card__stat-value">受付後に反映</span></div>
+                <div class="revo-program-card__stat revo-program-card__stat--wide"><span class="revo-program-card__stat-label">達成率</span><span class="revo-program-card__stat-value">集計準備中</span></div>
+                <span class="revo-program-card__progress" aria-hidden="true"></span>
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">達成回数</span><span class="revo-program-card__stat-value">集計準備中</span></div>
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">目標回数</span><span class="revo-program-card__stat-value">受付後に反映</span></div>
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">達成金額</span><span class="revo-program-card__stat-value">集計準備中</span></div>
+              </div>
+              <a class="revo-program-card__action" href="boosters.html">ブースト一覧を見る</a>
+            </div>
+          </article>
+          <article class="revo-program-card revo-program-card--boost">
+            <div class="revo-program-card__visual"><span class="revo-program-card__badge">参加する</span></div>
+            <div class="revo-program-card__body">
+              <h3 class="revo-program-card__title">できる形で関わる</h3>
+              <p class="revo-program-card__text">発信、紹介、場づくりなど、自分に合う形で応援を続けます。</p>
+              <div class="revo-program-card__stats" aria-label="ブースト達成項目">
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">残り人数</span><span class="revo-program-card__stat-value">集計準備中</span></div>
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">目標人数</span><span class="revo-program-card__stat-value">受付後に反映</span></div>
+                <div class="revo-program-card__stat revo-program-card__stat--wide"><span class="revo-program-card__stat-label">達成率</span><span class="revo-program-card__stat-value">集計準備中</span></div>
+                <span class="revo-program-card__progress" aria-hidden="true"></span>
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">達成回数</span><span class="revo-program-card__stat-value">集計準備中</span></div>
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">目標回数</span><span class="revo-program-card__stat-value">受付後に反映</span></div>
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">達成金額</span><span class="revo-program-card__stat-value">集計準備中</span></div>
+              </div>
+              <a class="revo-program-card__action" href="boosters.html">ブースト一覧を見る</a>
+            </div>
+          </article>
+          <article class="revo-program-card revo-program-card--boost">
+            <div class="revo-program-card__visual"><span class="revo-program-card__badge">続ける</span></div>
+            <div class="revo-program-card__body">
+              <h3 class="revo-program-card__title">応援の流れを育てる</h3>
+              <p class="revo-program-card__text">一度きりで終わらない関わりをつくり、挑戦の継続を支えます。</p>
+              <div class="revo-program-card__stats" aria-label="ブースト達成項目">
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">残り人数</span><span class="revo-program-card__stat-value">集計準備中</span></div>
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">目標人数</span><span class="revo-program-card__stat-value">受付後に反映</span></div>
+                <div class="revo-program-card__stat revo-program-card__stat--wide"><span class="revo-program-card__stat-label">達成率</span><span class="revo-program-card__stat-value">集計準備中</span></div>
+                <span class="revo-program-card__progress" aria-hidden="true"></span>
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">達成回数</span><span class="revo-program-card__stat-value">集計準備中</span></div>
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">目標回数</span><span class="revo-program-card__stat-value">受付後に反映</span></div>
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">達成金額</span><span class="revo-program-card__stat-value">集計準備中</span></div>
+              </div>
+              <a class="revo-program-card__action" href="boosters.html">ブースト一覧を見る</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="revo-art-lineup" class="revo-program-section" aria-labelledby="revo-art-lineup-title">
+        <div class="revo-top-section__head">
+          <div>
+            <h2 id="revo-art-lineup-title" class="revo-top-section__title">レボアート</h2>
+            <p class="revo-top-section__text">応援の物語を、ウォールアート・カーアート・ハットアートとして全国へ広げます。</p>
+          </div>
+          <a class="revo-top-section__link" href="revo-art-list.html">レボアート一覧へ</a>
+        </div>
+        <div class="revo-program-grid">
+          <article class="revo-program-card revo-program-card--art">
+            <div class="revo-program-card__visual"><span class="revo-program-card__badge">ウォールアート</span></div>
+            <div class="revo-program-card__body">
+              <h3 class="revo-program-card__title">まちの壁に物語を描く</h3>
+              <p class="revo-program-card__text">壁や空間に、応援の記憶と地域のメッセージを残します。</p>
+              <div class="revo-program-card__stats" aria-label="レボアート掲載状態">
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">カテゴリ</span><span class="revo-program-card__stat-value">ウォールアート</span></div>
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">受付状態</span><span class="revo-program-card__stat-value">申請受付中</span></div>
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">決定一覧</span><span class="revo-program-card__stat-value">決定後に掲載</span></div>
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">申請中一覧</span><span class="revo-program-card__stat-value">申請受付後に反映</span></div>
+              </div>
+              <a class="revo-program-card__action" href="revo-art-detail.html?id=wall">詳細を見る</a>
+            </div>
+          </article>
+          <article class="revo-program-card revo-program-card--art">
+            <div class="revo-program-card__visual"><span class="revo-program-card__badge">カーアート</span></div>
+            <div class="revo-program-card__body">
+              <h3 class="revo-program-card__title">走る応援を街へ届ける</h3>
+              <p class="revo-program-card__text">車両を通じて、応援のメッセージを移動しながら広げます。</p>
+              <div class="revo-program-card__stats" aria-label="レボアート掲載状態">
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">カテゴリ</span><span class="revo-program-card__stat-value">カーアート</span></div>
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">受付状態</span><span class="revo-program-card__stat-value">申請受付中</span></div>
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">決定一覧</span><span class="revo-program-card__stat-value">決定後に掲載</span></div>
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">申請中一覧</span><span class="revo-program-card__stat-value">申請受付後に反映</span></div>
+              </div>
+              <a class="revo-program-card__action" href="revo-art-detail.html?id=car">詳細を見る</a>
+            </div>
+          </article>
+          <article class="revo-program-card revo-program-card--art">
+            <div class="revo-program-card__visual"><span class="revo-program-card__badge">ハットアート</span></div>
+            <div class="revo-program-card__body">
+              <h3 class="revo-program-card__title">かぶる表現で想いを届ける</h3>
+              <p class="revo-program-card__text">帽子に個性と応援のメッセージをのせ、身近な表現にします。</p>
+              <div class="revo-program-card__stats" aria-label="レボアート掲載状態">
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">カテゴリ</span><span class="revo-program-card__stat-value">ハットアート</span></div>
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">受付状態</span><span class="revo-program-card__stat-value">申請受付中</span></div>
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">決定一覧</span><span class="revo-program-card__stat-value">決定後に掲載</span></div>
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">申請中一覧</span><span class="revo-program-card__stat-value">申請受付後に反映</span></div>
+              </div>
+              <a class="revo-program-card__action" href="revo-art-detail.html?id=hat">詳細を見る</a>
+            </div>
+          </article>
+          <article class="revo-program-card revo-program-card--art">
+            <div class="revo-program-card__visual"><span class="revo-program-card__badge">当選スポット</span></div>
+            <div class="revo-program-card__body">
+              <h3 class="revo-program-card__title">公開許可済みスポットを掲載</h3>
+              <p class="revo-program-card__text">申請受付後、運営確認・抽選・決定を経て順次掲載します。</p>
+              <div class="revo-program-card__stats" aria-label="レボアート掲載状態">
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">決定一覧</span><span class="revo-program-card__stat-value">公開許可済みのみ掲載</span></div>
+                <div class="revo-program-card__stat"><span class="revo-program-card__stat-label">申請中一覧</span><span class="revo-program-card__stat-value">運営確認中として整理</span></div>
+                <div class="revo-program-card__stat revo-program-card__stat--wide"><span class="revo-program-card__stat-label">掲載条件</span><span class="revo-program-card__stat-value">運営確認・抽選・決定後に反映</span></div>
+              </div>
+              <a class="revo-program-card__action" href="revo-art.html">一覧を見る</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="entry" class="revo-list-entry-section" aria-labelledby="revo-list-entry-section-title">
+        <div class="revo-top-section__head">
+          <div>
+            <h2 id="revo-list-entry-section-title" class="revo-top-section__title">参加の入口</h2>
+            <p class="revo-top-section__text">最初の火をつける、応援を広げる、アートで関わる。あなたに合う入口から参加できます。</p>
+          </div>
+        </div>
+
+        <div class="revo-list-entry-grid">
+          <article class="revo-list-entry revo-list-entry--spark">
+            <span class="revo-list-entry__icon" aria-hidden="true">S</span>
+            <span class="revo-list-entry__badge">最初の仲間</span>
+            <h3 class="revo-list-entry__title">スパーク</h3>
+            <p class="revo-list-entry__text">最初の火をつける段階。挑戦のはじまりに、最初の仲間を集めます。</p>
+            <a class="revo-list-entry__action" href="spark.html">スパークを見る</a>
+          </article>
+
+          <article class="revo-list-entry revo-list-entry--boost">
+            <span class="revo-list-entry__icon" aria-hidden="true">B</span>
+            <span class="revo-list-entry__badge">応援を広げる</span>
+            <h3 class="revo-list-entry__title">ブースト</h3>
+            <p class="revo-list-entry__text">応援を次の人・場・地域へ広げていく段階。広げる仲間と一緒に進めます。</p>
+            <a class="revo-list-entry__action" href="boost.html">ブーストを見る</a>
+          </article>
+
+          <article class="revo-list-entry">
+            <span class="revo-list-entry__icon" aria-hidden="true">A</span>
+            <span class="revo-list-entry__badge">アートで関わる</span>
+            <h3 class="revo-list-entry__title">レボアート</h3>
+            <p class="revo-list-entry__text">ウォールアート・カーアート・ハットアートを通じて、応援の物語を全国へ広げていく企画です。</p>
+            <a class="revo-list-entry__action" href="revo-art.html">レボアートを見る</a>
+          </article>
+        </div>
+      </section>
+
+      <section class="revo-top-map-panel" aria-labelledby="revo-support-map-title">
+        <div class="revo-support-map">
+          <div class="revo-support-map__head">
+            <span class="revo-support-map__badge">公開許可済み地域</span>
+            <h2 id="revo-support-map-title" class="revo-support-map__title">全国応援Map</h2>
+            <p class="revo-support-map__lead">起案者、スパーカー、ブースター、認定アーティスト、レボアートスポットの広がりを、公開許可済みの地域情報で表示します。</p>
+            <p class="revo-support-map__note">詳細住所や連絡先は表示せず、市町村レベルの公開情報だけを扱います。</p>
+          </div>
+
+          <div id="revo-support-map-message" class="revo-support-map__message" aria-live="polite">全国応援Map情報を読み込み中です。</div>
+          <div id="revo-support-map" class="revo-support-map__body" aria-label="全国応援Map集計"></div>
+        </div>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

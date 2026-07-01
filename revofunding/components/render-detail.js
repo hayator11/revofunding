@@ -102,8 +102,8 @@
 
   function statusLabel(project) {
     const typeLabels = {
-      spark: "スパーカー",
-      boost: "ブースター"
+      spark: "スパーク",
+      boost: "ブースト"
     };
     const typeLabel = typeLabels[project.type] || "挑戦";
 
@@ -280,7 +280,7 @@
   }
 
   function typeText(project) {
-    return project.type === "boost" ? "ブースター" : "スパーカー";
+    return project.type === "boost" ? "ブースト" : "スパーク";
   }
 
   function setInfoListCard(id, titleText, items, metaText = "") {
@@ -352,7 +352,7 @@
     const items = detailMetricItems(project);
 
     if (title) {
-      title.textContent = isBoost ? "ブースター募集情報" : "スパーカー募集情報";
+      title.textContent = isBoost ? "ブースト情報" : "スパーク情報";
     }
 
     if (body) {
