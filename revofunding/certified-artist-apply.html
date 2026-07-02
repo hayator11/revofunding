@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>レボファンディング 認定アーティスト申請</title>
+  <link rel="stylesheet" href="tokens/tokens.css">
+  <link rel="stylesheet" href="components/cards.css?v=certified-artist-apply-001">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--revo-color-text-main);
+      background:
+        radial-gradient(circle at 0 7rem, rgba(139, 92, 246, 0.14), transparent 12rem),
+        linear-gradient(180deg, #fff 0%, #faf7ff 44%, #fff 100%);
+      font-family: var(--revo-font-family-base), var(--revo-font-family-jp);
+      line-height: var(--revo-line-height-body);
+    }
+
+    .artist-apply-page {
+      width: min(100% - var(--revo-space-6), var(--revo-width-wide));
+      margin: 0 auto;
+      padding: var(--revo-space-8) 0 var(--revo-space-12);
+    }
+
+    .artist-apply-nav,
+    .artist-apply-hero__actions,
+    .artist-apply-final__actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--revo-space-2);
+      margin-bottom: var(--revo-space-5);
+    }
+
+    .artist-apply-link,
+    .artist-apply-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: var(--revo-space-6);
+      padding: var(--revo-space-2) var(--revo-space-4);
+      color: var(--revo-color-art);
+      background: var(--revo-color-bg-purple-soft);
+      border: 1px solid rgba(139, 92, 246, 0.28);
+      border-radius: var(--revo-radius-pill);
+      font-size: var(--revo-font-size-14);
+      font-weight: var(--revo-font-weight-bold);
+      line-height: var(--revo-line-height-caption);
+      text-decoration: none;
+    }
+
+    .artist-apply-button--primary {
+      color: #fff;
+      background: linear-gradient(135deg, #a855f7 0%, var(--revo-color-art) 100%);
+      border-color: rgba(139, 92, 246, 0.36);
+      box-shadow: 0 14px 28px rgba(139, 92, 246, 0.2);
+    }
+
+    .artist-apply-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(420px, 1.1fr);
+      gap: var(--revo-space-5);
+      align-items: center;
+      min-height: 360px;
+      margin-bottom: var(--revo-space-7);
+      padding: var(--revo-space-6);
+      overflow: hidden;
+      background:
+        linear-gradient(90deg, #fff 0%, rgba(255, 255, 255, 0.96) 42%, rgba(255, 255, 255, 0.24) 78%),
+        url("assets/images/revo-art-apply-hero.png") right center / auto 100% no-repeat;
+      border: 1px solid rgba(139, 92, 246, 0.22);
+      border-radius: var(--revo-radius-card);
+      box-shadow: 0 24px 48px rgba(76, 29, 149, 0.08);
+    }
+
+    .artist-apply-hero__copy {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: var(--revo-space-3);
+      max-width: 640px;
+    }
+
+    .artist-apply-eyebrow,
+    .artist-apply-hero h1,
+    .artist-apply-lead,
+    .artist-apply-text,
+    .artist-apply-section h2,
+    .artist-apply-section h3,
+    .artist-apply-section p,
+    .artist-apply-card p,
+    .artist-apply-final h2,
+    .artist-apply-final p {
+      margin: 0;
+    }
+
+    .artist-apply-eyebrow {
+      color: var(--revo-color-art);
+      font-size: var(--revo-font-size-14);
+      font-weight: var(--revo-font-weight-bold);
+    }
+
+    .artist-apply-hero h1 {
+      color: #27133e;
+      font-size: clamp(2.25rem, 4vw, 4rem);
+      line-height: 1.1;
+    }
+
+    .artist-apply-hero h1 span {
+      display: block;
+    }
+
+    .artist-apply-lead {
+      color: var(--revo-color-text-main);
+      font-size: var(--revo-font-size-lead);
+      font-weight: var(--revo-font-weight-bold);
+    }
+
+    .artist-apply-text {
+      color: var(--revo-color-text-sub);
+      font-size: var(--revo-font-size-14);
+    }
+
+    .artist-apply-section {
+      display: grid;
+      gap: var(--revo-space-4);
+      margin-bottom: var(--revo-space-7);
+    }
+
+    .artist-apply-section__head {
+      display: grid;
+      gap: var(--revo-space-2);
+      max-width: 860px;
+    }
+
+    .artist-apply-section h2,
+    .artist-apply-final h2 {
+      font-size: var(--revo-font-size-26);
+      line-height: var(--revo-line-height-heading);
+    }
+
+    .artist-apply-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--revo-space-4);
+    }
+
+    .artist-apply-grid--four {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .artist-apply-card,
+    .artist-apply-panel,
+    .artist-apply-flow li,
+    .artist-apply-final {
+      min-width: 0;
+      padding: var(--revo-space-4);
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(139, 92, 246, 0.18);
+      border-radius: var(--revo-radius-card);
+      box-shadow: var(--revo-shadow-card);
+    }
+
+    .artist-apply-card {
+      display: grid;
+      gap: var(--revo-space-2);
+    }
+
+    .artist-apply-card__label {
+      display: inline-flex;
+      width: fit-content;
+      padding: var(--revo-space-1) var(--revo-space-3);
+      color: var(--revo-color-art);
+      background: var(--revo-color-bg-purple-soft);
+      border: 1px solid rgba(139, 92, 246, 0.24);
+      border-radius: var(--revo-radius-pill);
+      font-size: var(--revo-font-size-caption);
+      font-weight: var(--revo-font-weight-bold);
+    }
+
+    .artist-apply-card h3 {
+      font-size: var(--revo-font-size-18);
+      line-height: var(--revo-line-height-heading);
+    }
+
+    .artist-apply-card p,
+    .artist-apply-panel,
+    .artist-apply-flow p,
+    .artist-apply-final p {
+      color: var(--revo-color-text-sub);
+      font-size: var(--revo-font-size-14);
+    }
+
+    .artist-apply-panel {
+      display: grid;
+      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+      gap: var(--revo-space-5);
+      align-items: start;
+      padding: var(--revo-space-5);
+    }
+
+    .artist-apply-list,
+    .artist-apply-flow {
+      display: grid;
+      gap: var(--revo-space-2);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .artist-apply-list li {
+      padding: var(--revo-space-3);
+      color: var(--revo-color-text-main);
+      background: var(--revo-color-bg-purple-soft);
+      border: 1px solid rgba(139, 92, 246, 0.16);
+      border-radius: var(--revo-radius-sm);
+      font-size: var(--revo-font-size-14);
+      font-weight: var(--revo-font-weight-bold);
+    }
+
+    .artist-apply-flow {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+
+    .artist-apply-flow li {
+      display: grid;
+      gap: var(--revo-space-2);
+      box-shadow: none;
+    }
+
+    .artist-apply-flow span {
+      display: inline-grid;
+      width: 2rem;
+      aspect-ratio: 1;
+      place-items: center;
+      color: #fff;
+      background: var(--revo-color-art);
+      border-radius: var(--revo-radius-pill);
+      font-size: var(--revo-font-size-caption);
+      font-weight: var(--revo-font-weight-black);
+    }
+
+    .artist-apply-flow strong {
+      color: var(--revo-color-text-main);
+      font-size: var(--revo-font-size-14);
+      line-height: var(--revo-line-height-heading);
+    }
+
+    .artist-apply-final {
+      display: grid;
+      gap: var(--revo-space-3);
+      margin-bottom: var(--revo-space-5);
+      padding: var(--revo-space-5);
+      background:
+        radial-gradient(circle at 90% 10%, rgba(139, 92, 246, 0.18), transparent 32%),
+        linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(245, 243, 255, 0.84));
+    }
+
+    .artist-apply-note {
+      margin: 0;
+      padding: var(--revo-space-3) var(--revo-space-4);
+      color: var(--revo-color-text-muted);
+      background: var(--revo-color-bg-card);
+      border: 1px solid var(--revo-color-border);
+      border-radius: var(--revo-radius-card);
+      font-size: var(--revo-font-size-caption);
+    }
+
+    @media (max-width: 1100px) {
+      .artist-apply-grid,
+      .artist-apply-grid--four,
+      .artist-apply-flow {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .artist-apply-hero,
+      .artist-apply-panel {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .artist-apply-page {
+        width: min(100% - var(--revo-space-4), var(--revo-width-wide));
+        padding-block-start: var(--revo-space-6);
+      }
+
+      .artist-apply-hero {
+        min-height: 430px;
+        padding: var(--revo-space-5);
+        background:
+          linear-gradient(180deg, #fff 0%, rgba(255, 255, 255, 0.98) 58%, rgba(255, 255, 255, 0.3) 100%),
+          url("assets/images/revo-art-apply-hero.png") center bottom / auto 34% no-repeat;
+      }
+
+      .artist-apply-grid,
+      .artist-apply-grid--four,
+      .artist-apply-flow {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body class="rf-art-page-body">
+  <header class="rf-art-site-header">
+    <div class="rf-art-site-header__inner">
+      <a class="rf-art-site-header__brand" href="index.html" aria-label="レボファンディング トップ">
+        <span class="rf-art-site-header__mark">R</span>
+        <span>レボファンディング</span>
+      </a>
+      <label class="rf-art-site-search">
+        <input type="search" placeholder="キーワードでプロジェクトを検索" aria-label="キーワードでプロジェクトを検索">
+        <span class="rf-art-site-search__icon" aria-hidden="true">⌕</span>
+      </label>
+      <nav class="rf-art-site-nav" aria-label="主要ナビゲーション">
+        <a href="index.html">トップ</a>
+        <a href="list.html">参加入口</a>
+        <a href="spark.html">挑戦をはじめる</a>
+        <a href="revo-art.html">レボアート</a>
+        <details class="rf-art-site-nav-group">
+          <summary>全体メニュー</summary>
+          <div class="rf-art-site-nav-group__panel">
+            <a href="revolist.html">全体構造</a>
+            <a href="revolist-projects.html">プロジェクト紹介</a>
+            <a href="sparkers.html">スパーク一覧</a>
+            <a href="badge-sparkers.html">バッチスパーカー</a>
+            <a href="boosters.html">ブースト一覧</a>
+            <a href="revo-art-list.html">レボアート一覧</a>
+            <a href="certified-artists.html">認定アーティスト</a>
+            <a href="site-map.html">サイトマップ</a>
+          </div>
+        </details>
+      </nav>
+      <div class="rf-art-site-actions" aria-label="アカウントメニュー">
+        <a href="login.html">ログイン</a>
+        <a class="rf-art-site-actions__primary" href="register.html">新規登録</a>
+      </div>
+    </div>
+    <nav class="rf-art-category-nav" aria-label="カテゴリナビゲーション">
+      <div class="rf-art-category-nav__inner">
+        <a href="index.html">トップ</a>
+        <span>地域の挑戦</span>
+        <span>まちづくり</span>
+        <span>子ども・教育</span>
+        <span>環境・自然</span>
+        <span>福祉・医療</span>
+        <span>文化・アート</span>
+        <span>スポーツ</span>
+        <span>食・農業</span>
+        <span>テクノロジー</span>
+        <span>防災・災害</span>
+      </div>
+    </nav>
+  </header>
+
+  <main class="artist-apply-page">
+    <nav class="artist-apply-nav" aria-label="認定アーティスト申請の戻る導線">
+      <a class="artist-apply-link" href="certified-artists.html">認定アーティスト一覧へ</a>
+      <a class="artist-apply-link" href="revo-art.html">レボアート紹介へ</a>
+      <a class="artist-apply-link" href="revo-art-list.html">レボアート一覧へ</a>
+    </nav>
+
+    <header class="artist-apply-hero">
+      <div class="artist-apply-hero__copy">
+        <p class="artist-apply-eyebrow">認定アーティスト申請</p>
+        <h1><span>想いを、</span><span>社会に届く表現へ。</span></h1>
+        <p class="artist-apply-lead">レボアートやブーストの展開を、アートとデザインの力で支えてくださる方を募ります。</p>
+        <p class="artist-apply-text">作品をつくるだけでなく、地域や挑戦者の想いに寄り添い、活動を一緒に発信し、認知を広げていける関係を築くための申請ページです。</p>
+        <div class="artist-apply-hero__actions" aria-label="認定アーティスト申請の主要導線">
+          <a class="artist-apply-button artist-apply-button--primary" href="#artist-apply-requirements">募集要項を見る</a>
+          <a class="artist-apply-button" href="#artist-apply-form-items">申請内容を確認する</a>
+        </div>
+      </div>
+    </header>
+
+    <section class="artist-apply-section" aria-labelledby="artist-apply-role-title">
+      <div class="artist-apply-section__head">
+        <p class="artist-apply-eyebrow">役割</p>
+        <h2 id="artist-apply-role-title">認定アーティストとしてお願いしたいこと</h2>
+        <p class="artist-apply-text">レボファンディングでは、社会貢献活動に積極的に関わる表現者の活動を広く知ってもらえる場をつくります。</p>
+      </div>
+      <div class="artist-apply-grid artist-apply-grid--four">
+        <article class="artist-apply-card">
+          <span class="artist-apply-card__label">レボアート</span>
+          <h3>制作や表現のサポート</h3>
+          <p>ウォールアート、カーアート、ハットアートなどの企画で、制作方針や表現面の相談に関わります。</p>
+        </article>
+        <article class="artist-apply-card">
+          <span class="artist-apply-card__label">ブースト</span>
+          <h3>展開時のデザイン協力</h3>
+          <p>挑戦を広げるための見せ方、デザイン、告知素材、表現設計などに協力します。</p>
+        </article>
+        <article class="artist-apply-card">
+          <span class="artist-apply-card__label">発信</span>
+          <h3>活動を一緒に届ける</h3>
+          <p>制作過程や活動報告を、SNSや紹介ページを通じて継続的に発信していきます。</p>
+        </article>
+        <article class="artist-apply-card">
+          <span class="artist-apply-card__label">共創</span>
+          <h3>お互いに認知を広げる</h3>
+          <p>運営とコミュニケーションを取りながら、アーティスト自身の活動もより多くの人へ届けます。</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="artist-apply-requirements" class="artist-apply-section" aria-labelledby="artist-apply-requirements-title">
+      <div class="artist-apply-section__head">
+        <p class="artist-apply-eyebrow">募集要項</p>
+        <h2 id="artist-apply-requirements-title">想いのある方々を迎えるための基準</h2>
+        <p class="artist-apply-text">技術だけでなく、企画への共感、社会貢献への姿勢、公開後も一緒に広げていく意思を大切にします。</p>
+      </div>
+      <div class="artist-apply-panel">
+        <div>
+          <p class="artist-apply-eyebrow">対象となる方</p>
+          <h3>アートやデザインで、誰かの挑戦を支えたい方。</h3>
+        </div>
+        <ul class="artist-apply-list">
+          <li>レボアートや地域活動、社会貢献活動に共感していること</li>
+          <li>自身の作品、活動実績、制作領域を紹介できること</li>
+          <li>運営と丁寧にコミュニケーションを取りながら進められること</li>
+          <li>SNSや活動報告などで、関わった企画の発信に協力できること</li>
+          <li>公開できる情報と公開できない情報を分けて扱えること</li>
+          <li>お互いに協力し合い、認知を広げる関係を築く意思があること</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="artist-apply-form-items" class="artist-apply-section" aria-labelledby="artist-apply-form-items-title">
+      <div class="artist-apply-section__head">
+        <p class="artist-apply-eyebrow">申請内容</p>
+        <h2 id="artist-apply-form-items-title">申請時にお聞きしたいこと</h2>
+        <p class="artist-apply-text">候補者としての想いや活動理念が伝わる内容を、公開前提ではなく運営確認用として受け取ります。</p>
+      </div>
+      <div class="artist-apply-grid">
+        <article class="artist-apply-card">
+          <span class="artist-apply-card__label">想い</span>
+          <h3>活動理念と参加理由</h3>
+          <p>ご自身が大切にしている表現、社会貢献への考え、この企画に賛同してくださった理由。</p>
+        </article>
+        <article class="artist-apply-card">
+          <span class="artist-apply-card__label">実績</span>
+          <h3>これまでの活動</h3>
+          <p>作品、展示、制作、地域活動、デザイン協力など、紹介可能な活動実績。</p>
+        </article>
+        <article class="artist-apply-card">
+          <span class="artist-apply-card__label">作品</span>
+          <h3>公開できる作品情報</h3>
+          <p>作品画像、ポートフォリオURL、SNS、掲載可能なプロフィール情報。</p>
+        </article>
+        <article class="artist-apply-card">
+          <span class="artist-apply-card__label">協力領域</span>
+          <h3>関われる内容</h3>
+          <p>ウォールアート、カーアート、ハットアート、ブースト用デザイン、告知素材など。</p>
+        </article>
+        <article class="artist-apply-card">
+          <span class="artist-apply-card__label">発信</span>
+          <h3>認知活動への姿勢</h3>
+          <p>制作過程や活動報告を、どのように継続的に発信できるか。</p>
+        </article>
+        <article class="artist-apply-card">
+          <span class="artist-apply-card__label">連携</span>
+          <h3>運営との進め方</h3>
+          <p>連絡方法、対応可能な範囲、地域、スケジュール、公開範囲の確認。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="artist-apply-section" aria-labelledby="artist-apply-flow-title">
+      <div class="artist-apply-section__head">
+        <p class="artist-apply-eyebrow">流れ</p>
+        <h2 id="artist-apply-flow-title">申請後、公開まで一緒に整理します</h2>
+      </div>
+      <ol class="artist-apply-flow">
+        <li><span>1</span><strong>申請受付</strong><p>想い、活動実績、作品、協力できる領域を送ります。</p></li>
+        <li><span>2</span><strong>運営確認</strong><p>内容、公開範囲、連携できる企画を確認します。</p></li>
+        <li><span>3</span><strong>コミュニケーション</strong><p>活動理念や参加方法をすり合わせます。</p></li>
+        <li><span>4</span><strong>認定・掲載</strong><p>公開許可済みの範囲で一覧や詳細ページへ掲載します。</p></li>
+        <li><span>5</span><strong>共創・発信</strong><p>レボアートやブーストの企画で、協力しながら認知を広げます。</p></li>
+      </ol>
+    </section>
+
+    <section class="artist-apply-final" aria-labelledby="artist-apply-final-title">
+      <p class="artist-apply-eyebrow">申請準備</p>
+      <h2 id="artist-apply-final-title">あなたの表現を、応援の仕組みの中へ。</h2>
+      <p>認定アーティスト申請フォームには、上記の内容をもとに、候補者としての想い、作品、活動実績、発信姿勢、協力できる領域を整理して掲載します。</p>
+      <div class="artist-apply-final__actions">
+        <a class="artist-apply-button artist-apply-button--primary" href="#artist-apply-form-items">申請項目を確認する</a>
+        <a class="artist-apply-button" href="certified-artists.html">認定アーティスト一覧を見る</a>
+      </div>
+    </section>
+
+    <p class="artist-apply-note">このページは認定アーティスト申請の説明ページです。実名、顔写真、作品画像、SNS、連絡先などは、本人確認と公開許可を得た範囲だけ掲載します。申請フォーム本体は運営確認後に接続します。</p>
+  </main>
+</body>
+</html>

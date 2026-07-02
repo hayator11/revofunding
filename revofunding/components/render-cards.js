@@ -65,6 +65,23 @@
     return "";
   }
 
+  function remainingPeople(currentDisplay, targetDisplay, fallbackDisplay) {
+    const fallback = displayValue(fallbackDisplay);
+
+    if (fallback) {
+      return fallback;
+    }
+
+    const current = parseInt(displayValue(currentDisplay), 10);
+    const target = parseInt(displayValue(targetDisplay), 10);
+
+    if (Number.isFinite(current) && Number.isFinite(target)) {
+      return `${Math.max(0, target - current)}人`;
+    }
+
+    return "";
+  }
+
   function countPair(currentDisplay, targetDisplay, fallbackDisplay) {
     if (hasDisplayValue(currentDisplay) && hasDisplayValue(targetDisplay)) {
       return `${currentDisplay} / ${targetDisplay}`;
@@ -101,14 +118,15 @@
       return {
         progressRate: rate,
         primary: [
-          ["残り人数", displayValue(project.boostRemainingPeople) || "-"],
-          ["目標人数", displayValue(project.boostTargetPeople, project.targetSupporterCountDisplay) || "受付後に反映"]
+          ["残り", displayValue(project.boostRemainingPeople) || "-"],
+          ["目標", displayValue(project.boostTargetPeople, project.targetSupporterCountDisplay) || "受付後に反映"]
         ],
         secondary: [
           ["達成率", percentDisplay(project.boostAchievementRate, project.progressRate)],
-          ["達成回数", displayValue(project.boostAchievedCount) || "-"],
-          ["目標回数", displayValue(project.boostTargetCount) || "受付後に反映"],
-          ["目標期日", displayValue(project.boostTargetDate, project.remainingDaysDisplay) || "受付後に反映"]
+          ["達成", displayValue(project.boostAchievedCount) || "-"],
+          ["目標", displayValue(project.boostTargetCount) || "受付後に反映"],
+          ["残り", displayValue(project.remainingDaysDisplay, project.boostTargetDate) || "受付後に反映"],
+          ["目標", displayValue(project.targetAmountDisplay, project.currentAmountDisplay) || "集計準備中"]
         ]
       };
     }
@@ -118,15 +136,15 @@
       return {
         progressRate: rate,
         primary: [
-          ["達成人数", displayValue(project.sparkAchievedPeople, project.currentSupporterCountDisplay, project.supporterCountDisplay) || "集計準備中"],
-          ["目標人数", displayValue(project.sparkTargetPeople, project.targetSupporterCountDisplay) || "受付後に反映"]
+          ["残り", remainingPeople(project.sparkAchievedPeople, project.sparkTargetPeople, project.sparkRemainingPeople) || "集計準備中"],
+          ["目標", displayValue(project.sparkTargetPeople, project.targetSupporterCountDisplay) || "受付後に反映"]
         ],
         secondary: [
           ["達成率", percentDisplay(project.sparkAchievementRate, project.progressRate)],
-          ["目標期日", displayValue(project.sparkTargetDate, project.remainingDaysDisplay) || "受付後に反映"],
-          ["目標組数", displayValue(project.sparkTargetGroups, project.targetGroupCountDisplay) || "受付後に反映"],
-          ["達成組数", displayValue(project.sparkAchievedGroups, project.currentGroupCountDisplay) || "集計準備中"],
-          ["目標金額", displayValue(project.sparkTargetAmount, project.targetAmountDisplay, project.currentAmountDisplay) || "受付後に反映"]
+          ["達成", displayValue(project.sparkAchievedGroups, project.currentGroupCountDisplay) || "集計準備中"],
+          ["目標", displayValue(project.sparkTargetGroups, project.targetGroupCountDisplay) || "受付後に反映"],
+          ["残り", displayValue(project.remainingDaysDisplay, project.sparkTargetDate) || "受付後に反映"],
+          ["目標", displayValue(project.sparkTargetAmount, project.targetAmountDisplay, project.currentAmountDisplay) || "受付後に反映"]
         ]
       };
     }

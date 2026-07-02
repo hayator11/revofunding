@@ -77,5 +77,83 @@
     "displayOrder": 2,
     "createdAt": "2026-06-19",
     "updatedAt": "2026-06-19"
+  },
+  {
+    "id": "booster-sora-station-001",
+    "relatedProjectId": "project-boost-001",
+    "type": "booster",
+    "status": "preparing",
+    "title": "空の駅の応援を次へ広げる仲間募集",
+    "description": "空の駅の取り組みを、地域や参加者へ広げるためのブースター募集です。",
+    "boosterRole": "応援を次の場所へ届ける人",
+    "boosterTypes": [
+      "紹介ブースター",
+      "地域連携ブースター"
+    ],
+    "neededCount": 6,
+    "currentCount": 0,
+    "groupCount": 0,
+    "unitPackageAmount": "10000",
+    "packageUnitLabel": "1応援パッケージ",
+    "accumulatedPackageCount": "0",
+    "displayAccumulatedPackageCount": "0",
+    "milestonePackageCount": "100",
+    "displayMilestonePackageCount": "100",
+    "remainingToMilestone": "100",
+    "displayRemainingToMilestone": "100",
+    "achievementRateLabel": "0%",
+    "boostModelText": "応援の積み上がりを次の節目まで届けるためのブースト募集です。",
+    "isUnlimitedAccumulation": true,
+    "maxDisplayDigits": 12,
+    "flowText": "活動内容を読み、地域や関心のある人へ無理なく紹介する流れを想定しています。",
+    "cautionText": "受付状況は状態ラベルで確認できます。外部フォームや決済導線は設置していません。",
+    "labels": [
+      "順次受付予定",
+      "地域へ届ける"
+    ],
+    "ctaLabel": "順次受付予定",
+    "isReady": false,
+    "displayOrder": 3,
+    "createdAt": "2026-06-29",
+    "updatedAt": "2026-06-29"
+  },
+  {
+    "id": "booster-revo-art-001",
+    "relatedProjectId": "project-boost-001",
+    "type": "booster",
+    "status": "preparing",
+    "title": "レボアートを広げる応援仲間募集",
+    "description": "レボアートの公開や紹介を、次の地域へ届けるブースター募集です。",
+    "boosterRole": "表現を広げる人",
+    "boosterTypes": [
+      "拡散ブースター",
+      "アート応援ブースター"
+    ],
+    "neededCount": 6,
+    "currentCount": 0,
+    "groupCount": 0,
+    "unitPackageAmount": "10000",
+    "packageUnitLabel": "1応援パッケージ",
+    "accumulatedPackageCount": "0",
+    "displayAccumulatedPackageCount": "0",
+    "milestonePackageCount": "100",
+    "displayMilestonePackageCount": "100",
+    "remainingToMilestone": "100",
+    "displayRemainingToMilestone": "100",
+    "achievementRateLabel": "0%",
+    "boostModelText": "応援の積み上がりを次の節目まで届けるためのブースト募集です。",
+    "isUnlimitedAccumulation": true,
+    "maxDisplayDigits": 12,
+    "flowText": "レボアートの背景を読み、関心のある人や場所へ紹介する流れを想定しています。",
+    "cautionText": "受付状況は状態ラベルで確認できます。外部フォームや決済導線は設置していません。",
+    "labels": [
+      "順次受付予定",
+      "アートで応援"
+    ],
+    "ctaLabel": "順次受付予定",
+    "isReady": false,
+    "displayOrder": 4,
+    "createdAt": "2026-06-28",
+    "updatedAt": "2026-06-28"
   }
 ]

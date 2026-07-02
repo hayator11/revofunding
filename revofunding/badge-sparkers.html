@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>レボファンディング バッチスパーカー一覧</title>
+  <link rel="stylesheet" href="tokens/tokens.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="components/cards.css?v=badge-sparker-list-hero-001">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--revo-color-text-main);
+      background: var(--revo-color-bg-base);
+      font-family: var(--revo-font-family-base), var(--revo-font-family-jp);
+      line-height: var(--revo-line-height-body);
+    }
+
+    .revo-people-page {
+      width: min(100% - var(--revo-space-6), var(--revo-width-wide));
+      margin: 0 auto;
+      padding: var(--revo-space-8) 0 var(--revo-space-12);
+    }
+
+    .revo-people-page__nav,
+    .revo-people-page__actions,
+    .revo-people-page__next {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--revo-space-2);
+      margin-bottom: var(--revo-space-5);
+    }
+
+    .revo-people-page__next {
+      margin-top: var(--revo-space-6);
+      margin-bottom: var(--revo-space-4);
+    }
+
+    .revo-people-page__link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: var(--revo-space-6);
+      padding: var(--revo-space-2) var(--revo-space-4);
+      color: var(--revo-color-spark);
+      background: rgba(249, 115, 22, 0.1);
+      border: 1px solid rgba(249, 115, 22, 0.26);
+      border-radius: var(--revo-radius-pill);
+      font-size: var(--revo-font-size-14);
+      font-weight: var(--revo-font-weight-bold);
+      line-height: var(--revo-line-height-caption);
+      text-decoration: none;
+    }
+
+    .revo-people-page__actions {
+      margin: var(--revo-space-2) 0 0;
+    }
+
+    .revo-people-page__hero {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 0.96fr) minmax(360px, 1.04fr);
+      gap: var(--revo-space-3);
+      min-height: 248px;
+      margin-bottom: var(--revo-space-6);
+      overflow: hidden;
+      background: var(--revo-color-bg-card);
+      border: 1px solid rgba(255, 159, 67, 0.28);
+      border-radius: var(--revo-radius-card);
+      box-shadow: var(--revo-shadow-card);
+    }
+
+    .revo-people-page__hero::before {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      content: "";
+      background:
+        linear-gradient(90deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.94) 42%, rgba(255, 255, 255, 0.58) 66%, rgba(255, 255, 255, 0.08) 100%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0) 72%, rgba(255, 255, 255, 0.84) 100%);
+      pointer-events: none;
+    }
+
+    .revo-people-page__hero-copy {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      align-content: center;
+      gap: var(--revo-space-3);
+      max-width: 620px;
+      padding: var(--revo-space-5) var(--revo-space-6) var(--revo-space-5) 54px;
+    }
+
+    .revo-people-page__hero-visual {
+      position: relative;
+      min-height: 248px;
+    }
+
+    .revo-people-page__hero-visual img {
+      width: 100%;
+      height: 100%;
+      min-height: 248px;
+      object-fit: cover;
+      object-position: center right;
+      display: block;
+    }
+
+    .revo-people-page__guide {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(260px, 0.85fr);
+      gap: var(--revo-space-4);
+      margin-bottom: var(--revo-space-6);
+      align-items: stretch;
+    }
+
+    .revo-people-page__panel {
+      display: grid;
+      gap: var(--revo-space-3);
+      padding: var(--revo-space-5);
+      background: var(--revo-color-bg-card);
+      border: 1px solid var(--revo-color-border);
+      border-radius: var(--revo-radius-card);
+      box-shadow: var(--revo-shadow-card);
+    }
+
+    .revo-people-page__panel h2,
+    .revo-people-page__panel p {
+      margin: 0;
+    }
+
+    .revo-people-page__panel h2 {
+      font-size: var(--revo-font-size-22);
+      line-height: var(--revo-line-height-heading);
+    }
+
+    .revo-people-page__panel p {
+      color: var(--revo-color-text-sub);
+      font-size: var(--revo-font-size-14);
+    }
+
+    .revo-people-page__points {
+      display: grid;
+      gap: var(--revo-space-2);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .revo-people-page__points li {
+      padding: var(--revo-space-3);
+      color: var(--revo-color-text-main);
+      background: rgba(249, 115, 22, 0.08);
+      border: 1px solid rgba(249, 115, 22, 0.16);
+      border-radius: var(--revo-radius-sm);
+      font-size: var(--revo-font-size-14);
+      font-weight: var(--revo-font-weight-bold);
+    }
+
+    .revo-people-page__eyebrow {
+      margin: 0;
+      color: var(--revo-color-spark);
+      font-size: var(--revo-font-size-14);
+      font-weight: var(--revo-font-weight-bold);
+    }
+
+    .revo-people-page__hero h1 {
+      margin: 0;
+      font-size: var(--revo-font-size-heading);
+      line-height: var(--revo-line-height-heading);
+    }
+
+    .revo-people-page__lead,
+    .revo-people-page__message,
+    .revo-people-page__note {
+      color: var(--revo-color-text-sub);
+      font-size: var(--revo-font-size-14);
+    }
+
+    .revo-people-page__lead {
+      max-width: 780px;
+      margin: 0;
+      font-size: var(--revo-font-size-lead);
+    }
+
+    .revo-people-page__message,
+    .revo-people-page__note {
+      margin: 0 0 var(--revo-space-4);
+      padding: var(--revo-space-3) var(--revo-space-4);
+      border: 1px solid var(--revo-color-border);
+      border-radius: var(--revo-radius-card);
+      background: var(--revo-color-bg-card);
+    }
+
+    .revo-person-list {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 297px));
+      gap: 18px;
+      align-items: stretch;
+      justify-content: start;
+    }
+
+    @media (max-width: 1100px) {
+      .revo-person-list {
+        grid-template-columns: repeat(2, minmax(0, 297px));
+      }
+    }
+
+    @media (max-width: 760px) {
+      .revo-people-page {
+        width: min(100% - var(--revo-space-4), var(--revo-width-wide));
+        padding-block-start: var(--revo-space-6);
+      }
+
+      .revo-people-page__hero {
+        grid-template-columns: 1fr;
+        min-height: 0;
+      }
+
+      .revo-people-page__hero::before {
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(255, 255, 255, 0.88) 58%, rgba(255, 255, 255, 0.18) 100%);
+      }
+
+      .revo-people-page__hero-copy {
+        padding: var(--revo-space-5) var(--revo-space-4);
+      }
+
+      .revo-people-page__hero-visual {
+        min-height: 160px;
+      }
+
+      .revo-people-page__hero-visual img {
+        min-height: 160px;
+        object-position: center right;
+      }
+
+      .revo-people-page__guide {
+        grid-template-columns: 1fr;
+      }
+
+      .revo-person-list {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
+  <script src="components/render-people-cards.js?v=person-card-004" defer></script>
+  <script src="components/render-support-map.js" defer></script>
+</head>
+<body class="rf-art-page-body" data-people-page="badge-sparkers">
+  <header class="rf-art-site-header">
+    <div class="rf-art-site-header__inner">
+      <a class="rf-art-site-header__brand" href="index.html" aria-label="レボファンディング トップ">
+        <span class="rf-art-site-header__mark">R</span>
+        <span>レボファンディング</span>
+      </a>
+      <label class="rf-art-site-search">
+        <input type="search" placeholder="キーワードでプロジェクトを検索" aria-label="キーワードでプロジェクトを検索">
+        <span class="rf-art-site-search__icon" aria-hidden="true">⌕</span>
+      </label>
+      <nav class="rf-art-site-nav" aria-label="主要ナビゲーション">
+        <a href="index.html">トップ</a>
+        <a href="list.html">参加入口</a>
+        <a href="spark.html">挑戦をはじめる</a>
+        <a href="revo-art.html">レボアート</a>
+        <details class="rf-art-site-nav-group">
+          <summary>全体メニュー</summary>
+          <div class="rf-art-site-nav-group__panel">
+            <a href="revolist.html">全体構造</a>
+            <a href="revolist-projects.html">プロジェクト紹介</a>
+            <a href="sparkers.html">スパーク一覧</a>
+            <a href="badge-sparkers.html">バッチスパーカー</a>
+            <a href="boosters.html">ブースト一覧</a>
+            <a href="revo-art-list.html">レボアート一覧</a>
+            <a href="certified-artists.html">認定アーティスト</a>
+            <a href="site-map.html">サイトマップ</a>
+          </div>
+        </details>
+      </nav>
+      <div class="rf-art-site-actions" aria-label="アカウントメニュー">
+        <a href="login.html">ログイン</a>
+        <a class="rf-art-site-actions__primary" href="register.html">新規登録</a>
+      </div>
+    </div>
+    <nav class="rf-art-category-nav" aria-label="カテゴリナビゲーション">
+      <div class="rf-art-category-nav__inner">
+        <a href="index.html">トップ</a>
+        <span>地域の挑戦</span>
+        <span>まちづくり</span>
+        <span>子ども・教育</span>
+        <span>環境・自然</span>
+        <span>福祉・医療</span>
+        <span>文化・アート</span>
+        <span>スポーツ</span>
+        <span>食・農業</span>
+        <span>テクノロジー</span>
+        <span>防災・災害</span>
+      </div>
+    </nav>
+  </header>
+  <main class="revo-people-page">
+    <nav class="revo-people-page__nav" aria-label="バッチスパーカー一覧の戻る導線">
+      <a class="revo-people-page__link" href="sparkers.html">スパーク一覧へ戻る</a>
+      <a class="revo-people-page__link" href="certified-artists.html">認定アーティストを見る</a>
+      <a class="revo-people-page__link" href="list.html">参加の入口へ戻る</a>
+    </nav>
+
+    <header class="revo-people-page__hero">
+      <div class="revo-people-page__hero-copy">
+        <p class="revo-people-page__eyebrow">バッチスパーカー一覧</p>
+        <h1>挑戦のはじまりを支え続けるスパーカー。</h1>
+        <p class="revo-people-page__lead">バッチスパーカーは、複数回スパーク活動を行っている人のことです。</p>
+        <div class="revo-people-page__actions" aria-label="バッチスパーカー一覧の導線">
+          <a class="revo-people-page__link" href="sparkers.html">スパーク一覧を見る</a>
+          <a class="revo-people-page__link" href="spark.html">スパークについて見る</a>
+          <a class="revo-people-page__link" href="certified-artists.html">認定アーティストを見る</a>
+        </div>
+      </div>
+      <div class="revo-people-page__hero-visual" aria-hidden="true">
+        <img src="assets/images/badge-sparker-list-hero.png" alt="">
+      </div>
+    </header>
+
+    <section class="revo-people-page__guide" aria-label="バッチスパーカーの紹介">
+      <div class="revo-people-page__panel">
+        <p class="revo-people-page__eyebrow">掲載方針</p>
+        <h2>スパーカーが展開している回数とプロジェクトを紹介します。</h2>
+        <p>一覧カードでは活動回数と代表プロジェクトを確認できます。回数が増えてカードに収まりきらない履歴は、個別ページでまとめて見られるようにします。</p>
+      </div>
+      <div class="revo-people-page__panel">
+        <p class="revo-people-page__eyebrow">掲載内容</p>
+        <ul class="revo-people-page__points">
+          <li>公開名・活動地域</li>
+          <li>実施回数・バッチ種別</li>
+          <li>公開許可済みの応援スタイル</li>
+        </ul>
+      </div>
+    </section>
+
+    <div id="revo-badge-sparker-message" class="revo-people-page__message">バッチスパーカー情報を読み込み中です。</div>
+    <section aria-label="バッチスパーカー一覧">
+      <div id="revo-badge-sparker-list" class="revo-person-list"></div>
+    </section>
+
+    <section class="revo-support-map" aria-labelledby="revo-support-map-title">
+      <div class="revo-support-map__head">
+        <span class="revo-support-map__badge">公開許可済み地域</span>
+        <h2 id="revo-support-map-title" class="revo-support-map__title">全国応援Map</h2>
+        <p class="revo-support-map__lead">バッチスパーカー、スパーク、ブースト、レボアートの広がりを、公開許可済みの地域情報で確認できます。</p>
+        <p class="revo-support-map__note">詳細住所や連絡先は表示せず、市町村レベルの公開情報だけを扱います。</p>
+      </div>
+
+      <div id="revo-support-map-message" class="revo-support-map__message" aria-live="polite">全国応援Map情報を読み込み中です。</div>
+      <div id="revo-support-map" class="revo-support-map__body" aria-label="全国応援Map集計"></div>
+    </section>
+
+    <nav class="revo-people-page__next" aria-label="次に見るページ">
+      <a class="revo-people-page__link" href="sparkers.html">スパーク一覧へ戻る</a>
+      <a class="revo-people-page__link" href="certified-artists.html">認定アーティストを見る</a>
+    </nav>
+
+    <p class="revo-people-page__note">実名・実施回数は、公開許可と運営確認が取れたものだけ掲載します。</p>
+  </main>
+</body>
+</html>

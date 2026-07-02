@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  const DATA_URL = "../data/revo-support-map-data.json";
+  const DATA_URL = window.REVO_SUPPORT_MAP_DATA_URL || "../data/revo-support-map-data.json";
   const JAPAN_GEOJSON_URL = "https://raw.githubusercontent.com/codeforgermany/click_that_hood/main/public/data/japan.geojson";
   const TYPE_LABELS = {
     project: "起案者",
