@@ -1379,6 +1379,47 @@
   text-decoration: none;
 }
 
+.revo-spark-page__apply {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--revo-space-4);
+  align-items: center;
+  margin-bottom: var(--revo-space-4);
+  padding: var(--revo-space-5);
+  background:
+    radial-gradient(circle at 94% 8%, rgba(255, 190, 86, 0.22), transparent 34%),
+    linear-gradient(135deg, rgba(255, 245, 234, 0.98), rgba(255, 255, 255, 0.96));
+  border: 1px solid rgba(255, 159, 67, 0.28);
+  border-inline-start: var(--revo-card-accent-width) solid var(--revo-color-spark);
+  border-radius: var(--revo-radius-card);
+  box-shadow: var(--revo-shadow-card);
+}
+
+.revo-spark-page__apply h2 {
+  margin: var(--revo-space-2) 0 var(--revo-space-2);
+  font-size: var(--revo-font-size-20);
+  line-height: var(--revo-line-height-heading);
+}
+
+.revo-spark-page__apply-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--revo-space-7);
+  padding: var(--revo-space-3) var(--revo-space-5);
+  color: #fff;
+  background: linear-gradient(135deg, #ff4f3f, #ff9f43);
+  border: 1px solid rgba(249, 115, 22, 0.34);
+  border-radius: var(--revo-radius-pill);
+  box-shadow: 0 14px 30px rgba(249, 115, 22, 0.2);
+  font-size: var(--revo-font-size-15);
+  font-weight: var(--revo-font-weight-bold);
+  line-height: var(--revo-line-height-caption);
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
 .revo-spark-page__note {
   padding: var(--revo-space-3) var(--revo-space-4);
   background: var(--revo-color-bg-card);
@@ -1636,6 +1677,14 @@
   font-weight: var(--revo-font-weight-black);
 }
 
+.rf-art-site-header__logo-image {
+  display: block;
+  width: auto;
+  height: 44px;
+  max-width: 280px;
+  object-fit: contain;
+}
+
 .rf-art-site-search {
   display: flex;
   align-items: center;
@@ -1799,6 +1848,11 @@
     width: 28px;
     height: 28px;
     font-size: 16px;
+  }
+
+  .rf-art-site-header__logo-image {
+    height: 38px;
+    max-width: 238px;
   }
 
   .rf-art-site-search {
@@ -2096,6 +2150,54 @@
 
 .rf-art-section--wide {
   max-width: none;
+}
+
+.rf-art-image-showcase {
+  display: grid;
+  gap: var(--revo-space-3);
+  margin-bottom: var(--revo-space-6);
+}
+
+.rf-art-image-showcase__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--revo-space-3);
+}
+
+.rf-art-image-showcase-card {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  background: var(--revo-color-bg-card);
+  border: 1px solid rgba(139, 92, 246, 0.16);
+  border-radius: var(--revo-radius-card);
+  box-shadow: var(--revo-shadow-card);
+}
+
+.rf-art-image-showcase-card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 8.6;
+  object-fit: cover;
+}
+
+.rf-art-image-showcase-card__copy {
+  display: grid;
+  gap: var(--revo-space-1);
+  padding: var(--revo-space-3) var(--revo-space-4);
+}
+
+.rf-art-image-showcase-card__copy h3 {
+  margin: 0;
+  color: var(--revo-color-text-main);
+  font-size: var(--revo-font-size-18);
+  line-height: var(--revo-line-height-heading);
+}
+
+.rf-art-image-showcase-card__copy p {
+  margin: 0;
+  color: var(--revo-color-text-sub);
+  font-size: var(--revo-font-size-14);
 }
 
 .rf-art-feature {
@@ -3766,6 +3868,16 @@
     width: 100%;
   }
 
+  .revo-spark-page__apply {
+    grid-template-columns: 1fr;
+    padding: var(--revo-space-4);
+  }
+
+  .revo-spark-page__apply-button {
+    width: 100%;
+    white-space: normal;
+  }
+
   .revo-boost-page {
     width: min(100% - var(--revo-space-4), var(--revo-width-wide));
     padding-block-start: var(--revo-space-6);
@@ -3792,6 +3904,7 @@
 
   .rf-art-grid,
   .rf-art-application-category-grid,
+  .rf-art-image-showcase__grid,
   .rf-art-hero,
   .rf-art-feature,
   .rf-art-info-grid,
@@ -3843,5 +3956,493 @@
 
   .rf-art-detail__hero-action {
     justify-content: stretch;
+  }
+}
+
+.revo-register-page {
+  width: min(100% - var(--revo-space-6), var(--revo-width-wide));
+  margin: 0 auto;
+  padding: var(--revo-space-8) 0 var(--revo-space-12);
+}
+
+.revo-register-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.42fr);
+  gap: var(--revo-space-5);
+  align-items: center;
+  margin-bottom: var(--revo-space-6);
+  padding: var(--revo-space-6);
+  background:
+    radial-gradient(circle at 90% 12%, rgba(255, 89, 89, 0.16), transparent 34%),
+    linear-gradient(135deg, rgba(255, 247, 242, 0.98), rgba(255, 255, 255, 0.96));
+  border: 1px solid rgba(255, 89, 89, 0.2);
+  border-radius: var(--revo-radius-card);
+  box-shadow: var(--revo-shadow-card);
+}
+
+.revo-register-hero__copy {
+  display: grid;
+  gap: var(--revo-space-3);
+}
+
+.revo-register-hero__eyebrow,
+.revo-register-badge,
+.revo-register-card__label {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  max-width: 100%;
+  padding: var(--revo-space-1) var(--revo-space-3);
+  border-radius: var(--revo-radius-pill);
+  font-size: var(--revo-font-size-caption);
+  font-weight: var(--revo-font-weight-bold);
+  line-height: var(--revo-line-height-caption);
+}
+
+.revo-register-hero__eyebrow,
+.revo-register-badge {
+  color: #f43f5e;
+  background: rgba(255, 89, 89, 0.08);
+  border: 1px solid rgba(255, 89, 89, 0.2);
+}
+
+.revo-register-hero h1 {
+  margin: 0;
+  font-size: var(--revo-font-size-heading);
+  line-height: var(--revo-line-height-heading);
+}
+
+.revo-register-hero__lead {
+  margin: 0;
+  color: var(--revo-color-text-main);
+  font-size: var(--revo-font-size-lead);
+  font-weight: var(--revo-font-weight-bold);
+}
+
+.revo-register-hero__text,
+.revo-register-card p,
+.revo-register-flow__list p,
+.revo-register-cta p {
+  margin: 0;
+  color: var(--revo-color-text-sub);
+  font-size: var(--revo-font-size-14);
+  overflow-wrap: anywhere;
+}
+
+.revo-register-hero__panel {
+  display: grid;
+  gap: var(--revo-space-2);
+  padding: var(--revo-space-5);
+  background: rgba(255, 255, 255, 0.84);
+  border: 1px solid rgba(255, 89, 89, 0.18);
+  border-radius: var(--revo-radius-card);
+}
+
+.revo-register-hero__panel span {
+  color: #f43f5e;
+  font-size: var(--revo-font-size-caption);
+  font-weight: var(--revo-font-weight-bold);
+}
+
+.revo-register-hero__panel strong {
+  color: var(--revo-color-text-main);
+  font-size: var(--revo-font-size-20);
+  line-height: var(--revo-line-height-heading);
+}
+
+.revo-register-section-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--revo-space-2);
+  align-items: center;
+  margin-bottom: var(--revo-space-4);
+}
+
+.revo-register-section-head h2,
+.revo-register-card h3,
+.revo-register-cta h2 {
+  margin: 0;
+  font-size: var(--revo-font-size-20);
+  line-height: var(--revo-line-height-heading);
+}
+
+.revo-register-entry,
+.revo-register-flow {
+  margin-bottom: var(--revo-space-6);
+}
+
+.revo-register-entry__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--revo-space-4);
+}
+
+.revo-register-card {
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  gap: var(--revo-space-3);
+  min-width: 0;
+  padding: var(--revo-space-5);
+  background: var(--revo-color-bg-card);
+  border: 1px solid var(--revo-color-border);
+  border-inline-start: var(--revo-card-accent-width) solid rgba(255, 89, 89, 0.7);
+  border-radius: var(--revo-radius-card);
+  box-shadow: var(--revo-shadow-card);
+}
+
+.revo-register-card--primary {
+  background: linear-gradient(135deg, rgba(255, 245, 234, 0.98), rgba(255, 255, 255, 0.96));
+  border-color: rgba(255, 159, 67, 0.28);
+  border-inline-start-color: var(--revo-color-spark);
+}
+
+.revo-register-card__label {
+  color: #f97316;
+  background: rgba(249, 115, 22, 0.1);
+  border: 1px solid rgba(249, 115, 22, 0.22);
+}
+
+.revo-register-card__button,
+.revo-register-cta__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--revo-space-6);
+  padding: var(--revo-space-2) var(--revo-space-4);
+  color: #fff;
+  background: linear-gradient(135deg, #ff4f3f, #ff9f43);
+  border: 1px solid rgba(249, 115, 22, 0.34);
+  border-radius: var(--revo-radius-pill);
+  box-shadow: 0 12px 26px rgba(249, 115, 22, 0.18);
+  font-size: var(--revo-font-size-14);
+  font-weight: var(--revo-font-weight-bold);
+  line-height: var(--revo-line-height-caption);
+  text-align: center;
+  text-decoration: none;
+}
+
+.revo-register-badge--soft {
+  color: var(--revo-color-text-sub);
+  background: var(--revo-color-bg-soft);
+  border-color: var(--revo-color-border);
+}
+
+.revo-register-flow {
+  padding: var(--revo-space-5);
+  background: var(--revo-color-bg-card);
+  border: 1px solid var(--revo-color-border);
+  border-radius: var(--revo-radius-card);
+  box-shadow: var(--revo-shadow-card);
+}
+
+.revo-register-flow__list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--revo-space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.revo-register-flow__list li {
+  display: grid;
+  gap: var(--revo-space-2);
+  min-width: 0;
+  padding: var(--revo-space-4);
+  background: var(--revo-color-bg-soft);
+  border: 1px solid var(--revo-color-border);
+  border-radius: var(--revo-radius-card);
+}
+
+.revo-register-flow__list span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  color: #fff;
+  background: linear-gradient(135deg, #ff4f3f, #ff9f43);
+  border-radius: var(--revo-radius-pill);
+  font-weight: var(--revo-font-weight-bold);
+}
+
+.revo-register-flow__list strong {
+  color: var(--revo-color-text-main);
+  font-size: var(--revo-font-size-15);
+}
+
+.revo-register-cta {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--revo-space-4);
+  align-items: center;
+  padding: var(--revo-space-5);
+  background:
+    radial-gradient(circle at 94% 8%, rgba(255, 190, 86, 0.22), transparent 34%),
+    linear-gradient(135deg, rgba(255, 245, 234, 0.98), rgba(255, 255, 255, 0.96));
+  border: 1px solid rgba(255, 159, 67, 0.28);
+  border-radius: var(--revo-radius-card);
+  box-shadow: var(--revo-shadow-card);
+}
+
+@media (max-width: 960px) {
+  .revo-register-entry__grid,
+  .revo-register-flow__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.revo-login-page {
+  width: min(100% - var(--revo-space-6), var(--revo-width-wide));
+  margin: 0 auto;
+  padding: var(--revo-space-8) 0 var(--revo-space-12);
+}
+
+.revo-login-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(340px, 0.72fr);
+  gap: var(--revo-space-5);
+  align-items: stretch;
+  margin-bottom: var(--revo-space-6);
+  padding: var(--revo-space-6);
+  background:
+    radial-gradient(circle at 90% 12%, rgba(251, 56, 95, 0.14), transparent 24rem),
+    linear-gradient(135deg, #fff 0%, rgba(255, 247, 237, 0.88) 48%, rgba(239, 246, 255, 0.88) 100%);
+  border: 1px solid rgba(251, 56, 95, 0.12);
+  border-radius: var(--revo-radius-card);
+  box-shadow: var(--revo-shadow-card);
+}
+
+.revo-login-hero__copy {
+  display: grid;
+  align-content: center;
+  gap: var(--revo-space-3);
+  min-width: 0;
+}
+
+.revo-login-hero__eyebrow,
+.revo-login-card__label,
+.revo-login-panel span,
+.revo-login-section-head span {
+  color: var(--revo-color-primary);
+  font-size: var(--revo-font-size-14);
+  font-weight: var(--revo-font-weight-black);
+}
+
+.revo-login-hero h1 {
+  margin: 0;
+  color: var(--revo-color-text-main);
+  font-size: clamp(2.25rem, 5vw, 4.5rem);
+  line-height: var(--revo-line-height-heading);
+}
+
+.revo-login-hero__lead {
+  margin: 0;
+  color: var(--revo-color-text-main);
+  font-size: var(--revo-font-size-lead);
+  font-weight: var(--revo-font-weight-bold);
+}
+
+.revo-login-hero__text,
+.revo-login-card__note,
+.revo-login-panel p,
+.revo-login-after__grid p {
+  margin: 0;
+  color: var(--revo-color-text-sub);
+  font-size: var(--revo-font-size-14);
+}
+
+.revo-login-card {
+  display: grid;
+  gap: var(--revo-space-3);
+  min-width: 0;
+  padding: var(--revo-space-5);
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid var(--revo-color-border);
+  border-radius: var(--revo-radius-card);
+  box-shadow: 0 22px 54px rgba(15, 23, 42, 0.1);
+}
+
+.revo-login-card h2,
+.revo-login-panel h2,
+.revo-login-section-head h2 {
+  margin: 0;
+  color: var(--revo-color-text-main);
+  font-size: var(--revo-font-size-24);
+  line-height: var(--revo-line-height-heading);
+}
+
+.revo-login-field {
+  display: grid;
+  gap: var(--revo-space-1);
+  color: var(--revo-color-text-main);
+  font-size: var(--revo-font-size-13);
+  font-weight: var(--revo-font-weight-bold);
+}
+
+.revo-login-field input {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 var(--revo-space-3);
+  color: var(--revo-color-text-main);
+  background: #fff;
+  border: 1px solid #d7dde8;
+  border-radius: var(--revo-radius-sm);
+  font: inherit;
+}
+
+.revo-login-field input:focus {
+  border-color: rgba(251, 56, 95, 0.58);
+  box-shadow: 0 0 0 4px rgba(251, 56, 95, 0.12);
+  outline: 0;
+}
+
+.revo-login-card__options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--revo-space-2);
+  align-items: center;
+  justify-content: space-between;
+  color: var(--revo-color-text-sub);
+  font-size: var(--revo-font-size-13);
+}
+
+.revo-login-card__options label {
+  display: inline-flex;
+  gap: var(--revo-space-1);
+  align-items: center;
+}
+
+.revo-login-card__options a {
+  color: var(--revo-color-primary);
+  font-weight: var(--revo-font-weight-bold);
+  text-decoration: none;
+}
+
+.revo-login-button,
+.revo-login-panel a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 var(--revo-space-4);
+  color: #fff;
+  background: linear-gradient(135deg, #fb385f 0%, #ff8b3d 100%);
+  border: 0;
+  border-radius: var(--revo-radius-sm);
+  box-shadow: 0 14px 30px rgba(251, 56, 95, 0.2);
+  font: inherit;
+  font-weight: var(--revo-font-weight-black);
+  text-decoration: none;
+}
+
+.revo-login-panels {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--revo-space-3);
+  margin-bottom: var(--revo-space-6);
+}
+
+.revo-login-panel,
+.revo-login-after {
+  display: grid;
+  gap: var(--revo-space-3);
+  min-width: 0;
+  padding: var(--revo-space-5);
+  background: var(--revo-color-bg-card);
+  border: 1px solid var(--revo-color-border);
+  border-radius: var(--revo-radius-card);
+  box-shadow: var(--revo-shadow-card);
+}
+
+.revo-login-panel--primary {
+  background:
+    radial-gradient(circle at 94% 8%, rgba(251, 56, 95, 0.12), transparent 38%),
+    #fff;
+  border-color: rgba(251, 56, 95, 0.18);
+}
+
+.revo-login-after {
+  margin-bottom: var(--revo-space-6);
+}
+
+.revo-login-section-head {
+  display: grid;
+  gap: var(--revo-space-2);
+}
+
+.revo-login-after__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--revo-space-3);
+}
+
+.revo-login-after__grid div {
+  display: grid;
+  gap: var(--revo-space-2);
+  min-width: 0;
+  padding: var(--revo-space-4);
+  background: var(--revo-color-bg-soft);
+  border: 1px solid var(--revo-color-border);
+  border-radius: var(--revo-radius-sm);
+}
+
+.revo-login-after__grid strong {
+  color: var(--revo-color-text-main);
+  font-size: var(--revo-font-size-15);
+}
+
+@media (max-width: 760px) {
+  .revo-login-hero,
+  .revo-login-panels,
+  .revo-login-after__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 420px) {
+  .revo-login-page {
+    width: min(100% - var(--revo-space-4), var(--revo-width-wide));
+    padding-block-start: var(--revo-space-6);
+  }
+
+  .revo-login-hero,
+  .revo-login-card,
+  .revo-login-panel,
+  .revo-login-after {
+    padding: var(--revo-space-4);
+  }
+
+  .revo-login-button,
+  .revo-login-panel a {
+    width: 100%;
+  }
+}
+
+@media (max-width: 720px) {
+  .revo-register-page {
+    width: min(100% - var(--revo-space-4), var(--revo-width-wide));
+    padding-block-start: var(--revo-space-6);
+  }
+
+  .revo-register-hero,
+  .revo-register-cta {
+    grid-template-columns: 1fr;
+    padding: var(--revo-space-4);
+  }
+
+  .revo-register-entry__grid,
+  .revo-register-flow__list {
+    grid-template-columns: 1fr;
+  }
+
+  .revo-register-card,
+  .revo-register-flow {
+    padding: var(--revo-space-4);
+  }
+
+  .revo-register-card__button,
+  .revo-register-cta__button {
+    width: 100%;
   }
 }

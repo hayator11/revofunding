@@ -4,15 +4,17 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>レボファンディング 新規登録</title>
+  <link rel="icon" href="favicon.png?v=20260702" type="image/png" sizes="64x64">
+  <link rel="icon" href="favicon-32.png?v=20260702" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png?v=20260702">
   <link rel="stylesheet" href="tokens/tokens.css">
-  <link rel="stylesheet" href="components/cards.css?v=nav-fit-009">
+  <link rel="stylesheet" href="components/cards.css?v=login-page-20260702">
 </head>
 <body class="rf-art-page-body">
   <header class="rf-art-site-header">
     <div class="rf-art-site-header__inner">
       <a class="rf-art-site-header__brand" href="index.html" aria-label="レボファンディング トップ">
-        <span class="rf-art-site-header__mark">R</span>
-        <span>レボファンディング</span>
+        <img class="rf-art-site-header__logo-image" src="assets/images/revo-funding-logo.png?v=20260702" alt="レボファンディング">
       </a>
       <label class="rf-art-site-search">
         <input type="search" placeholder="キーワードでプロジェクトを検索" aria-label="キーワードでプロジェクトを検索">
@@ -58,16 +60,77 @@
       </div>
     </nav>
   </header>
-  <main class="rf-art-detail">
-    <section class="rf-art-detail__hero">
-      <p class="rf-art-detail__eyebrow">Join</p>
-      <h1 class="rf-art-detail__title">新規登録</h1>
-      <p class="rf-art-text">登録導線は、応援で参加する人と、挑戦をはじめる人の入口を分けて整理します。</p>
-      <div class="rf-art-detail__actions">
-        <a class="rf-art-detail__action" href="index.html#entry">応援で参加する</a>
-        <a class="rf-art-detail__action" href="spark.html">挑戦をはじめる</a>
-        <a class="rf-art-detail__action" href="revo-art.html">レボアートを申請する</a>
+  <main class="revo-register-page">
+    <section class="revo-register-hero">
+      <div class="revo-register-hero__copy">
+        <p class="revo-register-hero__eyebrow">Join RevoFunding</p>
+        <h1>参加の入口を選ぶ</h1>
+        <p class="revo-register-hero__lead">レボファンディングでは、挑戦を起こす人、応援で関わる人、アートや制作で支える人の入口を分けて整理しています。</p>
+        <p class="revo-register-hero__text">今の段階では、共通アカウント登録ではなく、参加したい内容に合わせて申請・応募・一覧確認へ進む設計です。</p>
       </div>
+      <div class="revo-register-hero__panel" aria-label="登録前に選ぶこと">
+        <span>まず選ぶこと</span>
+        <strong>どの立場で参加しますか？</strong>
+        <p>内容が決まっていなくても、近い入口から確認できます。</p>
+      </div>
+    </section>
+
+    <section class="revo-register-entry" aria-labelledby="revo-register-entry-title">
+      <div class="revo-register-section-head">
+        <span class="revo-register-badge">入口</span>
+        <h2 id="revo-register-entry-title">目的に合わせて進む</h2>
+      </div>
+      <div class="revo-register-entry__grid">
+        <article class="revo-register-card revo-register-card--primary">
+          <span class="revo-register-card__label">レボマイスター</span>
+          <h3>挑戦の起点を申請する</h3>
+          <p>最初の仲間を集めたい挑戦がある方は、レボマイスターとして申請します。申請後、レボスパークの応募を受けてブースト構築へ進みます。</p>
+          <a class="revo-register-card__button" href="spark.html">レボマイスター申請へ</a>
+        </article>
+
+        <article class="revo-register-card">
+          <span class="revo-register-card__label">レボスパーク</span>
+          <h3>挑戦に応募して関わる</h3>
+          <p>公開された挑戦に最初の応援や関わり方で参加します。応募してくれた方々の内容が、次のブースト設計につながります。</p>
+          <a class="revo-register-card__button" href="sparkers.html">スパーク一覧を見る</a>
+        </article>
+
+        <article class="revo-register-card">
+          <span class="revo-register-card__label">レボアート</span>
+          <h3>アート企画に応募する</h3>
+          <p>ウォールアート、カーアート、ハットアートなど、地域や活動の想いを表現として残す企画に応募できます。</p>
+          <a class="revo-register-card__button" href="revo-art.html">レボアート応募へ</a>
+        </article>
+
+        <article class="revo-register-card">
+          <span class="revo-register-card__label">認定アーティスト</span>
+          <h3>制作や表現で支える</h3>
+          <p>レボアートやブースト展開のデザイン面で協力できる方は、認定アーティストとして申請できます。</p>
+          <a class="revo-register-card__button" href="certified-artist-apply.html">認定アーティスト申請へ</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="revo-register-flow" aria-labelledby="revo-register-flow-title">
+      <div class="revo-register-section-head">
+        <span class="revo-register-badge revo-register-badge--soft">流れ</span>
+        <h2 id="revo-register-flow-title">申請から公開までの流れ</h2>
+      </div>
+      <ol class="revo-register-flow__list">
+        <li><span>1</span><strong>入口を選ぶ</strong><p>挑戦する、応援する、アートで関わるなど、近い参加方法を選びます。</p></li>
+        <li><span>2</span><strong>申請・応募する</strong><p>必要な内容をフォームや各ページの導線から送ります。</p></li>
+        <li><span>3</span><strong>運営確認</strong><p>公開範囲、関わり方、必要な準備を確認します。</p></li>
+        <li><span>4</span><strong>掲載・展開へ</strong><p>一覧ページやMap、ブースト設計へつなげていきます。</p></li>
+      </ol>
+    </section>
+
+    <section class="revo-register-cta" aria-labelledby="revo-register-cta-title">
+      <div>
+        <span class="revo-register-badge">迷ったら</span>
+        <h2 id="revo-register-cta-title">まずは参加入口から全体を確認できます。</h2>
+        <p>スパーク、ブースト、レボアート、認定アーティストの関係を見ながら、自分に近い入口を選んでください。</p>
+      </div>
+      <a class="revo-register-cta__button" href="list.html">参加入口を見る</a>
     </section>
   </main>
 </body>
