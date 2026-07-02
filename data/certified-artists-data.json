@@ -1,0 +1,78 @@
+[
+  {
+    "id": "certified-artist-ready-001",
+    "status": "preparing",
+    "name": "認定アーティスト 公開準備中",
+    "role": "レボアート制作パートナー",
+    "area": "公開許可後に掲載",
+    "description": "公開許可済みの認定アーティスト情報を、運営確認後に掲載します。",
+    "profile": "レボアートの制作パートナーとして、ウォールアート、カーアート、ハットアートなどの表現領域に関わる認定アーティスト枠です。実名や作品情報は、本人確認と公開許可が取れたものだけ掲載します。",
+    "worksNote": "制作実績、参加プロジェクト、公開可能な作品画像を掲載予定です。",
+    "collaborationNote": "レボアートの申請内容に応じて、制作相談や表現設計の候補として紹介します。",
+    "specialty": "ウォール / カー / ハット",
+    "activityCount": "公開準備中",
+    "labels": [
+      "認定アーティスト",
+      "公開準備中"
+    ],
+    "detailUrl": "certified-artist-detail.html?id=certified-artist-ready-001",
+    "displayOrder": 1
+  },
+  {
+    "id": "certified-artist-ready-002",
+    "status": "preparing",
+    "name": "地域連携アーティスト 公開準備中",
+    "role": "地域と表現をつなぐ人",
+    "area": "公開許可後に掲載",
+    "description": "地域や企業と連携する表現者情報を、公開許可の範囲で整理して掲載します。",
+    "profile": "地域、企業、施設とアーティストをつなぎ、公開できる場所や企画に合わせて表現を設計する認定アーティスト枠です。",
+    "worksNote": "地域連携の実績、制作相談の内容、公開可能な活動エリアを掲載予定です。",
+    "collaborationNote": "ウォールアートやイベント連動など、地域側との調整が必要な企画で紹介します。",
+    "specialty": "地域連携 / 制作相談",
+    "activityCount": "公開準備中",
+    "labels": [
+      "地域連携",
+      "公開準備中"
+    ],
+    "detailUrl": "certified-artist-detail.html?id=certified-artist-ready-002",
+    "displayOrder": 2
+  },
+  {
+    "id": "certified-artist-ready-003",
+    "status": "preparing",
+    "name": "クリエイター参加枠 公開準備中",
+    "role": "クリエイター参加候補",
+    "area": "公開許可後に掲載",
+    "description": "認定デザイナー / クリエイター参加フォームからの情報を、公開用に整理して掲載します。",
+    "profile": "デザイン、アート制作、装飾、ビジュアル設計など、レボアートの表現面を支えるクリエイター参加枠です。",
+    "worksNote": "公開可能な制作ジャンル、作品例、対応できる表現領域を掲載予定です。",
+    "collaborationNote": "ハットアートや小規模な装飾、ビジュアル制作を含む企画で紹介します。",
+    "specialty": "デザイン / アート制作",
+    "activityCount": "公開準備中",
+    "labels": [
+      "クリエイター",
+      "公開準備中"
+    ],
+    "detailUrl": "certified-artist-detail.html?id=certified-artist-ready-003",
+    "displayOrder": 3
+  },
+  {
+    "id": "certified-artist-ready-004",
+    "status": "preparing",
+    "name": "発信共創アーティスト 公開準備中",
+    "role": "活動発信パートナー",
+    "area": "公開許可後に掲載",
+    "description": "制作だけでなく、活動報告やSNS発信にも協力する表現者情報を掲載します。",
+    "profile": "レボアートやブーストの企画に関わりながら、制作過程、完成後の活動、社会貢献としての意義を一緒に届けていく認定アーティスト枠です。",
+    "worksNote": "公開可能な発信実績、活動レポート、作品紹介、SNSでの発信事例を掲載予定です。",
+    "collaborationNote": "企画の制作面だけでなく、活動報告や認知拡大に協力できる候補として紹介します。",
+    "specialty": "発信 / 企画伴走",
+    "activityCount": "公開準備中",
+    "labels": [
+      "発信共創",
+      "公開準備中"
+    ],
+    "detailUrl": "certified-artist-detail.html?id=certified-artist-ready-004",
+    "displayOrder": 4
+  }
+]

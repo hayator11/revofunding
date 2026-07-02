@@ -1,0 +1,194 @@
+[
+  {
+    "id": "badge-sparker-ready-001",
+    "status": "preparing",
+    "name": "継続スパーカー 公開準備中",
+    "role": "複数回スパーク活動を行っている人",
+    "area": "公開許可後に掲載",
+    "description": "複数のスパーク募集に参加し、挑戦の最初の応援を継続して届けているスパーカーを紹介します。",
+    "badgeType": "継続参加",
+    "activityCount": "8回",
+    "profile": "バッチスパーカーは、複数回スパーク活動を行っている人の呼び名です。公開許可後、どの挑戦にどのように関わってきたかを整理して掲載します。",
+    "worksNote": "カードには代表プロジェクトだけを表示し、回数が増えた場合はこの詳細ページで活動履歴を確認できるようにします。",
+    "collaborationNote": "挑戦者の最初の仲間として、共感、紹介、地域応援などの形でスパークの広がりを支えます。",
+    "labels": [
+      "バッチスパーカー",
+      "8回参加"
+    ],
+    "sparkProjects": [
+      {
+        "count": "1回目",
+        "title": "空の駅の応援をひらく仲間募集",
+        "role": "初期応援スパーカー",
+        "area": "宮城県東松島市",
+        "note": "公開前の応援導線づくりに参加。",
+        "url": "sparkers.html"
+      },
+      {
+        "count": "2回目",
+        "title": "おのくんキャラバンレボアート",
+        "role": "紹介スパーカー",
+        "area": "宮城県",
+        "note": "地域とアートをつなぐ紹介に協力。",
+        "url": "sparkers.html"
+      },
+      {
+        "count": "3回目",
+        "title": "最初の火を一緒につける仲間募集",
+        "role": "共感スパーカー",
+        "area": "公開許可後に掲載",
+        "note": "初期共感の拡散に参加。",
+        "url": "sparkers.html"
+      },
+      {
+        "count": "4回目以降",
+        "title": "地域の一歩を見守る仲間募集",
+        "role": "地域応援スパーカー",
+        "area": "公開許可後に掲載",
+        "note": "複数プロジェクトで継続参加予定。",
+        "url": "sparkers.html"
+      }
+    ],
+    "detailUrl": "badge-sparker-detail.html?id=badge-sparker-ready-001",
+    "actionLabel": "活動詳細を見る",
+    "displayOrder": 1
+  },
+  {
+    "id": "badge-sparker-ready-002",
+    "status": "preparing",
+    "name": "紹介スパーカー 公開準備中",
+    "role": "挑戦を周囲へ届ける人",
+    "area": "公開許可後に掲載",
+    "description": "関わったプロジェクトを周囲へ紹介し、最初の応援者との接点を増やすスパーカーを掲載します。",
+    "badgeType": "紹介参加",
+    "activityCount": "5回",
+    "profile": "紹介スパーカーは、複数のスパーク活動で挑戦の存在を周囲へ届けている人です。",
+    "worksNote": "紹介したプロジェクト、関わった回数、公開可能な活動メモを詳細ページにまとめます。",
+    "collaborationNote": "プロジェクトの想いや背景を身近な人に伝え、挑戦が孤立しない入口をつくります。",
+    "labels": [
+      "紹介",
+      "5回参加"
+    ],
+    "sparkProjects": [
+      {
+        "count": "1回目",
+        "title": "空の駅の応援を次へ届ける挑戦",
+        "role": "紹介スパーカー",
+        "area": "宮城県東松島市",
+        "note": "活動紹介の初期導線づくりに協力。",
+        "url": "sparkers.html"
+      },
+      {
+        "count": "2回目",
+        "title": "レボアートを広げる仲間募集",
+        "role": "紹介スパーカー",
+        "area": "公開許可後に掲載",
+        "note": "レボアート応募導線の紹介に参加。",
+        "url": "sparkers.html"
+      },
+      {
+        "count": "3回目以降",
+        "title": "地域の挑戦を見つけるスパーク",
+        "role": "紹介スパーカー",
+        "area": "公開許可後に掲載",
+        "note": "複数の挑戦紹介に継続参加予定。",
+        "url": "sparkers.html"
+      }
+    ],
+    "detailUrl": "badge-sparker-detail.html?id=badge-sparker-ready-002",
+    "actionLabel": "活動詳細を見る",
+    "displayOrder": 2
+  },
+  {
+    "id": "badge-sparker-ready-003",
+    "status": "preparing",
+    "name": "共感スパーカー 公開準備中",
+    "role": "最初の共感を届ける人",
+    "area": "公開許可後に掲載",
+    "description": "挑戦のはじまりに共感を届け、スパークの最初の火を一緒につける人を紹介します。",
+    "badgeType": "共感参加",
+    "activityCount": "3回",
+    "profile": "共感スパーカーは、挑戦の背景に共感し、最初の反応や応援を届ける役割を担います。",
+    "worksNote": "共感で関わったプロジェクトと応援履歴を公開許可後に掲載します。",
+    "collaborationNote": "初期段階の挑戦者にとって、最初の反応が次の一歩につながるよう支えます。",
+    "labels": [
+      "共感",
+      "3回参加"
+    ],
+    "sparkProjects": [
+      {
+        "count": "1回目",
+        "title": "最初の火を一緒につける仲間募集",
+        "role": "共感スパーカー",
+        "area": "公開許可後に掲載",
+        "note": "初期応援の声を届ける役割で参加。",
+        "url": "sparkers.html"
+      },
+      {
+        "count": "2回目",
+        "title": "おのくんキャラバンレボアート",
+        "role": "共感スパーカー",
+        "area": "宮城県",
+        "note": "アートを通じた応援に共感参加。",
+        "url": "sparkers.html"
+      },
+      {
+        "count": "3回目",
+        "title": "地域の一歩を見守る仲間募集",
+        "role": "共感スパーカー",
+        "area": "公開許可後に掲載",
+        "note": "地域活動の初期応援に参加。",
+        "url": "sparkers.html"
+      }
+    ],
+    "detailUrl": "badge-sparker-detail.html?id=badge-sparker-ready-003",
+    "actionLabel": "活動詳細を見る",
+    "displayOrder": 3
+  },
+  {
+    "id": "badge-sparker-ready-004",
+    "status": "preparing",
+    "name": "地域応援スパーカー 公開準備中",
+    "role": "地域の挑戦を見守る人",
+    "area": "公開許可後に掲載",
+    "description": "地域の挑戦に継続して関わり、最初の一歩を見守るスパーカーを掲載します。",
+    "badgeType": "地域応援",
+    "activityCount": "6回",
+    "profile": "地域応援スパーカーは、地域で始まる挑戦に複数回関わり、応援の入り口を育てる人です。",
+    "worksNote": "地域ごとのスパーク参加履歴や、関わったプロジェクトを個別ページで確認できるようにします。",
+    "collaborationNote": "地域の挑戦を継続的に見守り、次の参加者へつながる応援のきっかけをつくります。",
+    "labels": [
+      "地域応援",
+      "6回参加"
+    ],
+    "sparkProjects": [
+      {
+        "count": "1回目",
+        "title": "地域の一歩を見守る仲間募集",
+        "role": "地域応援スパーカー",
+        "area": "公開許可後に掲載",
+        "note": "地域の挑戦を見守る応援者として参加。",
+        "url": "sparkers.html"
+      },
+      {
+        "count": "2回目",
+        "title": "空の駅の応援をひらく仲間募集",
+        "role": "地域応援スパーカー",
+        "area": "宮城県東松島市",
+        "note": "地域拠点の応援導線づくりに参加。",
+        "url": "sparkers.html"
+      },
+      {
+        "count": "3回目以降",
+        "title": "次の地域へ応援の旗を広げる挑戦",
+        "role": "地域応援スパーカー",
+        "area": "公開許可後に掲載",
+        "note": "継続参加の履歴を公開許可後に追加予定。",
+        "url": "sparkers.html"
+      }
+    ],
+    "detailUrl": "badge-sparker-detail.html?id=badge-sparker-ready-004",
+    "actionLabel": "活動詳細を見る",
+    "displayOrder": 4
+  }
+]
