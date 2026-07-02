@@ -1260,6 +1260,40 @@
   margin-bottom: var(--revo-space-6);
 }
 
+.revo-spark-page__diagram {
+  display: grid;
+  gap: var(--revo-space-3);
+  margin-bottom: var(--revo-space-6);
+  padding: var(--revo-space-5);
+  background:
+    radial-gradient(circle at 8% 0, rgba(249, 115, 22, 0.1), transparent 24rem),
+    radial-gradient(circle at 92% 0, rgba(37, 99, 235, 0.1), transparent 24rem),
+    var(--revo-color-bg-card);
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  border-radius: var(--revo-radius-card);
+  box-shadow: var(--revo-shadow-card);
+}
+
+.revo-spark-page__diagram .revo-spark-page__section-head {
+  max-width: 860px;
+}
+
+.revo-spark-page__diagram-image {
+  min-width: 0;
+  margin: var(--revo-space-2) 0 0;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid rgba(148, 163, 184, 0.26);
+  border-radius: calc(var(--revo-radius-card) + var(--revo-space-1));
+  box-shadow: 0 24px 52px rgba(15, 23, 42, 0.08);
+}
+
+.revo-spark-page__diagram-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 .revo-spark-page__section-head {
   display: flex;
   flex-wrap: wrap;
@@ -3860,7 +3894,8 @@
   }
 
   .revo-spark-page__card,
-  .revo-spark-page__flow {
+  .revo-spark-page__flow,
+  .revo-spark-page__diagram {
     padding: var(--revo-space-4);
   }
 
