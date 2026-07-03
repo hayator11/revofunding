@@ -3,7 +3,7 @@
 
   const dataUrl = "../data/revo-art-data.json";
   const winningSpotsUrl = "../data/revo-art-winning-spots.json";
-  const applicationFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdII732mhijp5vlt-iWxg1qCv-Uli03VYySpiQ3EapsZy0O_w/viewform?usp=dialog";
+  const applicationFormUrl = "https://docs.google.com/forms/d/1gHZxvANtHPZqfqWWPjaMHH0rp9jVa-zWggF7ysfuhqU/viewform?usp=dialog";
   const sampleRevoArtProjects = [
     {
       id: "sample-sora-station-sakura-wall",

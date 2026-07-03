@@ -4,15 +4,17 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>レボファンディング ログイン</title>
+  <link rel="icon" href="favicon.png?v=20260702" type="image/png" sizes="64x64">
+  <link rel="icon" href="favicon-32.png?v=20260702" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png?v=20260702">
   <link rel="stylesheet" href="tokens/tokens.css">
-  <link rel="stylesheet" href="components/cards.css?v=nav-fit-009">
+  <link rel="stylesheet" href="components/cards.css?v=spark-diagram-20260702">
 </head>
 <body class="rf-art-page-body">
   <header class="rf-art-site-header">
     <div class="rf-art-site-header__inner">
       <a class="rf-art-site-header__brand" href="index.html" aria-label="レボファンディング トップ">
-        <span class="rf-art-site-header__mark">R</span>
-        <span>レボファンディング</span>
+        <img class="rf-art-site-header__logo-image" src="assets/images/revo-funding-logo.png?v=20260702" alt="レボファンディング">
       </a>
       <label class="rf-art-site-search">
         <input type="search" placeholder="キーワードでプロジェクトを検索" aria-label="キーワードでプロジェクトを検索">
@@ -58,14 +60,65 @@
       </div>
     </nav>
   </header>
-  <main class="rf-art-detail">
-    <section class="rf-art-detail__hero">
-      <p class="rf-art-detail__eyebrow">Account</p>
-      <h1 class="rf-art-detail__title">ログイン</h1>
-      <p class="rf-art-text">現在は本番認証の接続前です。確認用として、主要ページへ進める導線を用意しています。</p>
-      <div class="rf-art-detail__actions">
-        <a class="rf-art-detail__action" href="index.html">トップへ戻る</a>
-        <a class="rf-art-detail__action" href="register.html">新規登録へ進む</a>
+  <main class="revo-login-page">
+    <section class="revo-login-hero">
+      <div class="revo-login-hero__copy">
+        <p class="revo-login-hero__eyebrow">Account</p>
+        <h1>ログイン</h1>
+        <p class="revo-login-hero__lead">申請内容、応募状況、参加しているプロジェクトを確認するための入口です。</p>
+        <p class="revo-login-hero__text">現在は本番認証の接続前のため、確認用のログイン画面として設計しています。公開時には、ここからマイページや申請管理へ進めるようにします。</p>
+      </div>
+
+      <form class="revo-login-card" action="mypage.html" method="get" aria-label="ログインフォーム">
+        <span class="revo-login-card__label">Member Login</span>
+        <h2>登録済みの方</h2>
+        <label class="revo-login-field">
+          <span>メールアドレス</span>
+          <input type="email" name="email" placeholder="example@email.com" autocomplete="email">
+        </label>
+        <label class="revo-login-field">
+          <span>パスワード</span>
+          <input type="password" name="password" placeholder="パスワード" autocomplete="current-password">
+        </label>
+        <div class="revo-login-card__options">
+          <label><input type="checkbox" name="remember"> ログイン状態を保持</label>
+          <a href="register.html">パスワード再設定</a>
+        </div>
+        <button class="revo-login-button" type="submit">ログインしてマイページへ</button>
+        <p class="revo-login-card__note">本番認証接続前のため、確認用としてマイページへ進みます。</p>
+      </form>
+    </section>
+
+    <section class="revo-login-panels" aria-label="ログインページの補助導線">
+      <article class="revo-login-panel revo-login-panel--primary">
+        <span>はじめての方</span>
+        <h2>参加の入口を選んで登録する</h2>
+        <p>レボマイスター申請、レボスパーク、レボアート、認定アーティストなど、参加したい内容に合わせて入口を選べます。</p>
+        <a href="register.html">新規登録へ進む</a>
+      </article>
+      <article class="revo-login-panel">
+        <span>申請前に確認</span>
+        <h2>全体の参加入口を見る</h2>
+        <p>どの立場で参加するか迷っている場合は、まず全体の導線を確認してください。</p>
+        <a href="list.html">参加入口を見る</a>
+      </article>
+      <article class="revo-login-panel">
+        <span>公開中の内容</span>
+        <h2>プロジェクトを探す</h2>
+        <p>スパーク、ブースト、レボアートなど、現在確認できるプロジェクト一覧へ進めます。</p>
+        <a href="index.html">トップへ戻る</a>
+      </article>
+    </section>
+
+    <section class="revo-login-after" aria-labelledby="revo-login-after-title">
+      <div class="revo-login-section-head">
+        <span>ログイン後にできること</span>
+        <h2 id="revo-login-after-title">参加状況をひとつの場所で確認できるようにします。</h2>
+      </div>
+      <div class="revo-login-after__grid">
+        <div><strong>申請内容の確認</strong><p>レボマイスター、レボアート、認定アーティストなどの申請状況を確認。</p></div>
+        <div><strong>応募・応援の履歴</strong><p>スパークやブーストで関わったプロジェクトを整理。</p></div>
+        <div><strong>活動報告の管理</strong><p>SNS発信や活動報告、掲載内容の確認へつなげる予定です。</p></div>
       </div>
     </section>
   </main>
