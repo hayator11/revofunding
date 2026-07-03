@@ -2005,6 +2005,12 @@
   flex-wrap: wrap;
   gap: var(--revo-space-2);
   margin-top: var(--revo-space-2);
+  padding: var(--revo-space-3);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(250, 245, 255, 0.9));
+  border: 1px solid rgba(139, 92, 246, 0.18);
+  border-radius: var(--revo-radius-card);
+  box-shadow: 0 16px 32px rgba(139, 92, 246, 0.08);
 }
 
 .rf-art-hero__image {
@@ -2456,6 +2462,24 @@
   margin: 0;
   font-size: var(--revo-font-size-20);
   line-height: var(--revo-line-height-heading);
+}
+
+.rf-art-copy-panel {
+  display: grid;
+  flex-basis: 100%;
+  gap: var(--revo-space-2);
+  width: 100%;
+  max-width: 820px;
+  margin-top: var(--revo-space-1);
+  padding: var(--revo-space-4);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(250, 245, 255, 0.88));
+  border: 1px solid rgba(139, 92, 246, 0.16);
+  border-radius: var(--revo-radius-card);
+}
+
+.rf-art-copy-panel--wide {
+  max-width: none;
 }
 
 .rf-art-badge,
