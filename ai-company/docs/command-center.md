@@ -35,8 +35,8 @@ hayator は **つばさ1人に指示を出すだけ**。つばさが「どのツ
  （このコード環境）（Claude Code経由）（Grok経由）        （Codex）
    ▼            ▼               ▼                ▼
  レボ各リポの     おのくん4コマ      レボリンク         レボファンディング
- 直接開発        X・SNS投稿                          レボリスト診断
-                AIスタイル診断
+ 直接開発        X・SNS投稿                          （レボアート含む）
+                AIスタイル診断                       レボリスト診断
 ```
 
 ## 担当マップ（振り分け表）
@@ -45,7 +45,7 @@ hayator は **つばさ1人に指示を出すだけ**。つばさが「どのツ
 |----------------|-----------|-----------|------------------|----------------|
 | 4コマ制作 / SNS投稿 / スタイル診断 | **Cursor** | Claude Code | おのくん4コマ・X/SNS・AIスタイル診断 | `templates/work-order-cursor.md` |
 | レボリンク関連 | **エルメスエージェント** | Grok | レボリンク | `templates/work-order-hermes-grok.md` |
-| ファンディング / 診断の実装 | **codex** | Codex | レボファンディング・レボリスト診断 | `templates/work-order-codex.md` |
+| ファンディング / 診断の実装 | **codex** | Codex | レボファンディング（レボアート含む）・レボリスト診断 | `templates/work-order-codex.md` |
 | レボ各リポの直接コード変更 | **Claude Code** | Claude | revofunding / revolist-diagnosis | （この環境で直接） |
 | 予定・メール・資料 | **claude.ai（秘書つばさ）** | Claude | 全社共通 | schedule-intake ほか |
 
