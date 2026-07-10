@@ -31,3 +31,6 @@
 
 ## 完了条件（DoD）
 ローカルで動作確認済み・指定ブランチにコミット・変更概要が揃っている
+
+## よく使うプロンプト
+- レボアート企画ブレスト（Cursor起動）… `revoart-ideation-prompt.md` ／ Obsidian: [[revoart-ideation-prompt]]

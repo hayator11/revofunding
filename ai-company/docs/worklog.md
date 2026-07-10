@@ -4,6 +4,7 @@
 
 | 日付 | 担当 | 内容 | 結果 |
 |------|------|------|------|
+| 2026-07-09 | つばさ | レボアート企画ブレストのCursor起動プロンプトを companies/revofunding/revoart-ideation-prompt.md に保存。index・company から[[リンク]] | 完了 |
 | 2026-07-09 | つばさ | Obsidian用の入口ノート index.md 作成（会社全体を[[リンク]]で一望）。READMEから導線追加 | 完了 |
 | 2026-07-09 | つばさ | ガバナンス確立：AI部長(hayato代理・一次判断)を新設、最終判断は必ず hayato。governance.md・org-chart・README・operating-rules に反映 | 完了 |
 | 2026-07-09 | つばさ | 各プロジェクトを子会社化（companies/ に6社：4コマ/SNS/スタイル診断/レボリンク/ファンディング/レボリスト診断） | 完了 |

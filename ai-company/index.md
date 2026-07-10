@@ -22,6 +22,9 @@
 - [[companies/revofunding/company|📊 レボファンディング社（レボアート含む）]]
 - [[companies/revolist-shindan/company|🧭 レボリスト診断社]]
 
+## 💡 よく使うプロンプト
+- [[companies/revofunding/revoart-ideation-prompt|レボアート企画ブレスト（Cursor起動）]]
+
 ## 📝 作業指示書テンプレ（templates/）
 - [[templates/work-order-cursor|Cursor 用]]
 - [[templates/work-order-codex|codex 用]]
