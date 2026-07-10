@@ -38,11 +38,38 @@ hayator の仕事を、**役割分担された AI チーム**で回すための�
 
 ---
 
+---
+
+## 司令塔（つばさに指示を出して全体を動かす）
+
+hayator は **つばさ1人に指示**を出す。つばさが担当ツール（Cursor / codex / エルメス・Grok / Claude Code）を判定し、
+**作業指示書**を生成 → hayator が各ツールに渡す → つばさが結果を集約・報告する。
+
+| 用件 | 担当ツール | 対象プロジェクト |
+|------|-----------|------------------|
+| 4コマ / SNS / スタイル診断 | Cursor（Claude Code） | おのくん4コマ・X/SNS・AIスタイル診断 |
+| レボリンク | エルメスエージェント（Grok） | レボリンク |
+| ファンディング / 診断 実装 | codex（Codex） | レボファンディング・レボリスト診断 |
+| レボ各リポの直接開発 | Claude Code | revofunding / revolist-diagnosis |
+| 予定・メール・資料 | **claude.ai（秘書つばさ）** | 全社共通 |
+
+→ 詳細と標準フローは **[司令塔設計](docs/command-center.md)** を参照。
+
+---
+
 ## ドキュメント
 
+- [司令塔設計（全体を動かす仕組み）](docs/command-center.md)
 - [組織図と責任分担](docs/org-chart.md)
 - [全社共通ルール](docs/operating-rules.md)
 - [作業ログ](docs/worklog.md)
+
+## 作業指示書テンプレ（templates/）
+
+- [Cursor 用](templates/work-order-cursor.md)
+- [codex 用](templates/work-order-codex.md)
+- [エルメス・Grok 用](templates/work-order-hermes-grok.md)
+- [予定まとめ入力](templates/schedule-intake.md)
 
 ## 各担当の手順書（スキル）
 
