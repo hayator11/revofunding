@@ -30,3 +30,8 @@
 
 ## 完了条件（DoD）
 意思決定に使える形（企画メモ／投稿案／調査結果）でまとまっている
+
+## 進行中の企画
+- 社会貢献型 広告収入スポンサープログラム
+  - キャッチコピー検証・設計書 … `sekaiichi-yasashii-koukoku.md` ／ Obsidian: [[sekaiichi-yasashii-koukoku]]
+  - 状態：AI部長 条件付きGO。Q1〜Q3（断定形/掲出時期/おのくん起用）は hayato 最終判断待ち

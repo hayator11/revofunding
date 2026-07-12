@@ -4,6 +4,7 @@
 
 | 日付 | 担当 | 内容 | 結果 |
 |------|------|------|------|
+| 2026-07-12 | つばさ＋3部署＋AI部長 | 「世界一やさしい広告です。」を法務・コピー・マーケの3部署で検証、AI部長が条件付きGOの一次判断。設計書を companies/revolink/ に保存 | 完了（Q1〜Q3 hayato判断待ち） |
 | 2026-07-09 | つばさ | レボアート企画ブレストのCursor起動プロンプトを companies/revofunding/revoart-ideation-prompt.md に保存。index・company から[[リンク]] | 完了 |
 | 2026-07-09 | つばさ | Obsidian用の入口ノート index.md 作成（会社全体を[[リンク]]で一望）。READMEから導線追加 | 完了 |
 | 2026-07-09 | つばさ | ガバナンス確立：AI部長(hayato代理・一次判断)を新設、最終判断は必ず hayato。governance.md・org-chart・README・operating-rules に反映 | 完了 |

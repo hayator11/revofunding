@@ -22,8 +22,9 @@
 - [[companies/revofunding/company|📊 レボファンディング社（レボアート含む）]]
 - [[companies/revolist-shindan/company|🧭 レボリスト診断社]]
 
-## 💡 よく使うプロンプト
+## 💡 よく使うプロンプト・進行中の企画
 - [[companies/revofunding/revoart-ideation-prompt|レボアート企画ブレスト（Cursor起動）]]
+- [[companies/revolink/sekaiichi-yasashii-koukoku|「世界一やさしい広告です。」検証・設計書]] — ⏳ hayato判断待ち（Q1〜Q3）
 
 ## 📝 作業指示書テンプレ（templates/）
 - [[templates/work-order-cursor|Cursor 用]]
