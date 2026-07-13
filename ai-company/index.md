@@ -32,6 +32,7 @@
 - [[templates/work-order-codex|codex 用]]
 - [[templates/work-order-hermes-grok|エルメス・Grok 用]]
 - [[templates/schedule-intake|予定まとめ入力]]
+- [[templates/secretary-talk-templates|つばさ会話テンプレート集（日常秘書業務）]] ← 🆕
 
 ## 👥 人（AI）の定義
 > ⚠️ これらは `.claude/` フォルダ内（AIツール用）。Obsidian では隠れて見えないことがあります。
