@@ -12,6 +12,7 @@
 - [[docs/command-center|司令塔の仕組み]] — つばさが全体を動かす流れ
 - [[docs/operating-rules|全社共通ルール]] — 守ること
 - [[docs/worklog|作業ログ]] — やったことの記録
+- [[docs/brand-core|🚩 ブランドの核（一本化）]] — 旗「街でいちばん大きな看板に、挑戦する人を。」検証記録
 
 ## 🏬 子会社（companies/）
 - [[companies/README|子会社一覧]]
