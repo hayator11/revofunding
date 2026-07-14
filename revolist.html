@@ -16,7 +16,7 @@
   <link rel="icon" href="favicon.png?v=20260702" type="image/png" sizes="64x64">
   <link rel="icon" href="favicon-32.png?v=20260702" type="image/png" sizes="32x32">
   <link rel="apple-touch-icon" href="apple-touch-icon.png?v=20260702">
-    <meta name="description" content="東日本大震災のとき、世界中から届いたやさしさ。もらった人が、次に贈る人になる。レボリストLabから生まれる各プロジェクトの全体構造を紹介します。" />
+    <meta name="description" content="東日本大震災のとき、世界中から届いたやさしさ。受け取って、贈る人になる。レボリストLabから生まれる各プロジェクトの全体構造を紹介します。" />
     <meta property="og:title" content="世界一やさしい贈り物。 | レボリストLab 全体構造" />
     <meta property="og:description" content="受け取ったやさしさを、次へ贈る。おのくん、レボファンディング、レボアート、レボリンク、レボソング、防災×帽祭を一つの物語でつなぐ全体構造。" />
     <meta property="og:type" content="website" />
@@ -24,14 +24,14 @@
     <meta property="og:image" content="https://revofunding.onokun.com/RevoFunding.png" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="世界一やさしい贈り物。" />
-    <meta name="twitter:description" content="もらった人が、次に贈る人になる。レボリストLabから生まれる各プロジェクトを、一つの物語でつなぐ全体構造。" />
+    <meta name="twitter:description" content="受け取って、贈る人になる。レボリストLabから生まれる各プロジェクトを、一つの物語でつなぐ全体構造。" />
     <meta name="twitter:image" content="https://revofunding.onokun.com/RevoFunding.png" />
 <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "Article",
         "headline": "世界一やさしい贈り物。",
-        "description": "受け取ったやさしさを、次へ贈る。レボリストLabから生まれる各プロジェクトを、一つの物語でつなぐ全体構造を紹介します。",
+        "description": "受け取った贈り物を、次へ贈る。診断、応援、防災、アート、音楽、リンク、文化へ広がるレボリストLabの全体構造を紹介します。",
         "image": "https://revofunding.onokun.com/RevoFunding.png",
         "author": {
           "@type": "Person",
@@ -487,15 +487,17 @@
       }
 
       .revolist-modern .site-header {
-        gap: 16px;
-        padding: 12px clamp(16px, 4vw, 56px);
-        background: rgba(255, 255, 255, 0.96);
-        border-bottom: 1px solid #e5e7eb;
-        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.04);
-        backdrop-filter: blur(12px);
+        gap: 20px;
+        min-height: 72px;
+        padding: 14px clamp(18px, 5vw, 64px);
+        background: rgba(255, 255, 255, 0.94);
+        border-bottom: 1px solid #e2e8f0;
+        box-shadow: none;
+        backdrop-filter: blur(16px);
       }
 
       .revolist-modern .brand {
+        gap: 12px;
         min-width: 0;
       }
 
@@ -509,29 +511,33 @@
 
       .revolist-modern .brand strong {
         color: #111827;
-        font-size: 15px;
+        font-size: 18px;
+        font-weight: 900;
       }
 
       .revolist-modern .brand small {
         color: #64748b;
+        font-size: 12px;
+        font-weight: 800;
       }
 
       .revolist-modern .nav {
-        gap: 4px;
+        gap: clamp(12px, 2vw, 24px);
       }
 
       .revolist-modern .nav a {
-        min-height: 34px;
-        padding: 7px 10px;
-        color: #475569;
+        padding: 0;
+        color: #334155;
         background: transparent;
-        border-radius: 999px;
+        border-radius: 0;
+        font-size: 14px;
+        font-weight: 900;
       }
 
-      .revolist-modern .nav a:hover {
-        color: #8b5cf6;
-        background: #f5f3ff;
-        border-color: #ddd6fe;
+      .revolist-modern .nav a:hover,
+      .revolist-modern .nav a[aria-current="page"] {
+        color: #ff5a3d;
+        background: transparent;
       }
 
       .revolist-modern .nav-group {
@@ -542,10 +548,10 @@
       .revolist-modern .nav-group summary {
         display: inline-flex;
         align-items: center;
-        min-height: 34px;
-        padding: 7px 10px;
-        color: #475569;
-        border-radius: 999px;
+        min-height: 36px;
+        padding: 0;
+        color: #334155;
+        border-radius: 0;
         cursor: pointer;
         font-size: 14px;
         font-weight: 900;
@@ -566,9 +572,8 @@
 
       .revolist-modern .nav-group[open] summary,
       .revolist-modern .nav-group summary:hover {
-        color: #8b5cf6;
-        background: #f5f3ff;
-        border-color: #ddd6fe;
+        color: #ff5a3d;
+        background: transparent;
       }
 
       .revolist-modern .nav-group__panel {
@@ -636,40 +641,45 @@
       .revolist-modern .axis-hero {
         position: relative;
         isolation: isolate;
-        min-height: min(72vh, 680px);
+        display: grid;
+        grid-template-columns: minmax(0, 0.86fr) minmax(460px, 1.14fr);
+        gap: clamp(20px, 2.8vw, 36px);
+        align-items: center;
+        min-height: auto;
         width: min(100% - 32px, 1180px);
-        align-content: center;
         margin: 24px auto 0;
-        padding: clamp(30px, 5.6vw, 72px);
+        padding: clamp(26px, 4vw, 46px) 0 clamp(26px, 4vw, 46px) clamp(30px, 5vw, 58px);
         overflow: hidden;
-        color: #fff;
+        color: #111827;
         background:
-          linear-gradient(90deg, rgba(17, 24, 39, 0.92), rgba(17, 24, 39, 0.68) 58%, rgba(17, 24, 39, 0.2)),
-          url("RevoFunding.png") center / cover no-repeat;
-        border: 1px solid rgba(255, 255, 255, 0.12);
+          radial-gradient(circle at 82% 22%, rgba(251, 146, 60, 0.14), transparent 28%),
+          linear-gradient(135deg, #ffffff 0%, #fff7ed 100%);
+        border: 1px solid rgba(251, 146, 60, 0.2);
         border-left: 0;
         border-radius: 8px;
-        box-shadow: 0 24px 70px rgba(15, 23, 42, 0.24);
+        box-shadow: 0 24px 70px rgba(15, 23, 42, 0.12);
       }
 
       .revolist-modern .axis-hero::after {
-        content: "";
-        position: absolute;
-        inset: auto 0 0;
-        z-index: -1;
-        height: 40%;
-        background: linear-gradient(0deg, rgba(17, 24, 39, 0.78), transparent);
+        content: none;
+      }
+
+      .revolist-modern .axis-hero__copy {
+        display: grid;
+        gap: 14px;
+        min-width: 0;
       }
 
       .revolist-modern .axis-hero .eyebrow {
-        color: #ddd6fe;
+        color: #8b5cf6;
       }
 
       .revolist-modern .axis-hero h1 {
         max-width: 100%;
-        color: #fff;
-        font-size: clamp(42px, 5.1vw, 68px);
-        line-height: 1.16;
+        margin: 0;
+        color: #111827;
+        font-size: clamp(38px, 4.4vw, 56px);
+        line-height: 1.12;
       }
 
       .revolist-modern .axis-hero h1 span {
@@ -687,14 +697,34 @@
       }
 
       .revolist-modern .axis-hero .lead {
-        max-width: 720px;
-        color: rgba(255, 255, 255, 0.84);
-        font-size: clamp(16px, 2vw, 21px);
-        line-height: 1.78;
+        max-width: 620px;
+        margin: 0;
+        color: #475569;
+        font-size: clamp(16px, 1.7vw, 19px);
+        line-height: 1.68;
       }
 
       .revolist-modern .axis-hero__actions {
         align-items: center;
+      }
+
+      .revolist-modern .axis-hero__visual {
+        align-self: stretch;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        min-width: 0;
+        margin: 0;
+      }
+
+      .revolist-modern .axis-hero__visual img {
+        display: block;
+        width: 100%;
+        max-height: min(70vh, 520px);
+        object-fit: contain;
+        object-position: right center;
+        border-radius: 8px 0 0 8px;
+        filter: drop-shadow(0 18px 30px rgba(15, 23, 42, 0.14));
       }
 
       .revolist-modern .button {
@@ -710,9 +740,9 @@
       }
 
       .revolist-modern .button.secondary {
-        color: #fff;
-        background: rgba(255, 255, 255, 0.12);
-        border-color: rgba(255, 255, 255, 0.32);
+        color: #374151;
+        background: #ffffff;
+        border-color: #d1d5db;
       }
 
       .revolist-modern .axis-bridge {
@@ -866,11 +896,12 @@
 
       @media (max-width: 720px) {
         .revolist-modern .axis-hero {
+          grid-template-columns: 1fr;
+          gap: 22px;
           min-height: auto;
           width: min(100% - 20px, 1180px);
           margin-top: 10px;
-          padding: 42px 16px 28px;
-          background-position: center top;
+          padding: 28px 16px 16px;
         }
 
         .revolist-modern .section {
@@ -892,6 +923,16 @@
         .revolist-modern .axis-hero .lead {
           font-size: 15px;
           line-height: 1.78;
+        }
+
+        .revolist-modern .axis-hero__visual {
+          justify-content: center;
+        }
+
+        .revolist-modern .axis-hero__visual img {
+          max-height: 280px;
+          object-position: center;
+          border-radius: 8px;
         }
 
         .revolist-modern .axis-hero__actions {
@@ -970,11 +1011,11 @@
     <header class="site-header">
       <a class="brand" href="index.html" aria-label="レボファンディング トップへ">
         <img class="brand-logo-mark" src="assets/images/revo-funding-mark.png?v=20260702" alt="" aria-hidden="true">
-        <span><strong>全体図</strong><small>Revolist Map</small></span>
+        <span><strong>レボリストLab</strong><small>Revolist Map</small></span>
       </a>
       <nav class="nav" aria-label="主要ナビゲーション">
         <a href="index.html">トップ</a>
-        <a href="revolist.html">全体構造</a>
+        <a href="revolist.html" aria-current="page">全体構造</a>
         <a href="revolist-projects.html">プロジェクト紹介</a>
         <a href="list.html">参加入口</a>
         <details class="nav-group">
@@ -995,19 +1036,24 @@
 
     <main>
       <section class="page-hero authority-hero axis-hero">
-        <p class="eyebrow">Revolist Lab Structure</p>
-        <h1><span>世界一<span class="axis-hero__accent">やさしい</span>贈り物。</span></h1>
-        <p class="lead">
-          東日本大震災のとき、世界中から届いたやさしさ。
-          もらった人が、次に贈る人になる。
-          だから、レボリストLabのすべての活動は「受け取った贈り物を、次へ贈ること」から始まっています。
-        </p>
-        <div class="hero-actions axis-hero__actions">
-          <a class="button primary" href="#message">想いを読む</a>
-          <a class="button secondary" href="#site-map">全体図を見る</a>
-          <a class="button secondary" href="revolist-projects.html">プロジェクト紹介を見る</a>
-          <a class="button secondary" href="https://okurimono-psi.vercel.app/" target="_blank" rel="noreferrer">物語ページを見る</a>
+        <div class="axis-hero__copy">
+          <p class="eyebrow">Revolist Lab Structure</p>
+          <h1><span>世界一<span class="axis-hero__accent">やさしい</span>贈り物。</span></h1>
+          <p class="lead">
+            東日本大震災のとき、世界中から届いた。世界一やさしい贈り物。
+            やさしさは、集まるほど積み重なっていく。
+            受け取って、贈る人になる。
+          </p>
+          <div class="hero-actions axis-hero__actions">
+            <a class="button primary" href="#message">想いを読む</a>
+            <a class="button secondary" href="#site-map">全体図を見る</a>
+            <a class="button secondary" href="revolist-projects.html">プロジェクト紹介を見る</a>
+            <a class="button secondary" href="https://okurimono-psi.vercel.app/" target="_blank" rel="noreferrer">物語ページを見る</a>
+          </div>
         </div>
+        <figure class="axis-hero__visual" aria-label="レボリストLabの全体図">
+          <img src="RevoFunding.png" alt="レボリストLabの各プロジェクトがつながる全体図">
+        </figure>
       </section>
 
       <section id="message" class="section">
@@ -1027,10 +1073,12 @@
           </p>
           <p>
             やさしさは、使っても減りません。集まれば集まるほど、積み重なっていきます。
-            だから、これは胸を張って言えます。世界中からやさしさを受け取り続けてきた、おのくんは「世界一やさしい贈り物」です。
+            だから、これは胸を張って言えます。世界一やさしい贈り物。
+            世界中からやさしさを受け取り続けてきた、おのくんだからこそ言える言葉です。
           </p>
           <p>
-            もらった人は、次に贈る人になる。だから、防災をエンタメにする祭りが、社会課題を伝えるアートが、応援をつなぐ音楽が、一歩目を見つける診断が、挑戦を動かすファンディングが、日常を貢献に変えるリンクが生まれました。
+            受け取って、贈る人になる。だから、生まれた。
+            活動がいくつあっても、根っこは一つ。受け取った贈り物を、次へ贈ることです。
           </p>
         </div>
       </section>
@@ -1042,8 +1090,8 @@
         <div class="axis-structure">
           <article class="axis-card axis-card--root">
             <span class="axis-card__label">ROOT</span>
-            <h3>世界一やさしい贈り物。もらった人が、次に贈る人になる。</h3>
-            <p>おのくんと空の駅は、すべての活動の原点です。受け取ったやさしさが、帰ってこられる場所をつくりました。</p>
+            <h3>世界一やさしい贈り物。</h3>
+            <p>受け取って、贈る人になる。おのくんと空の駅は、すべての活動の根っこ・原点です。</p>
             <a href="https://onokun.com/" target="_blank" rel="noreferrer">おのくんへ</a>
           </article>
           <article class="axis-card axis-card--funding">
@@ -1060,8 +1108,8 @@
           </article>
           <article class="axis-card axis-card--link">
             <span class="axis-card__label">LINK</span>
-            <h3>だから、日常が誰かへの贈り物になる。</h3>
-            <p>レボリンク、レボソング、診断、レボハットが、違う入口から応援の輪を広げます。</p>
+            <h3>だから、つながりが次の扉を開く。</h3>
+            <p>レボリンク、レボソング、診断、レボハットが、違う入口から受け取った贈り物を次へ贈る流れを広げます。</p>
             <a href="#site-map">全体図へ</a>
           </article>
         </div>
@@ -1074,7 +1122,7 @@
             alt="レボファンディングを中心に、レボリストLab、おのくん、防災×帽祭、レボアート、レボリンク、レボソング、レボハットが社会貢献型プロジェクトとしてつながる全体図"
           />
           <figcaption>
-            おのくんから受け取ったやさしさを、レボリストLab、レボファンディング、レボアート、音楽、リンク、診断へ贈っていく全体図。
+            受け取ったやさしさを、診断、応援、つながり、防災、アート、ハット、音楽へ贈っていく全体図。
           </figcaption>
         </figure>
       </section>
@@ -1096,9 +1144,9 @@
               ここがあるから、レボリストLabの活動は「誰かを応援する」だけではなく、「受け取ったものを次へ贈る」活動として続いていきます。
             </p>
             <p>
-              一歩目を見つける入口として、<a href="https://revo.onokun.com/" target="_blank" rel="noreferrer">レボリスト診断</a>と<a href="https://ai.onokun.com/" target="_blank" rel="noreferrer">AI玉手箱診断</a>があります。
-              自分に合う参加の仕方や道具が見えると、応援も挑戦も少し軽くなります。
-              診断は、誰かの活動を知るだけで終わらせず、自分の一歩につなげるための入口です。
+              一歩目を見つける入口として、<a href="https://revo.onokun.com/diagnosis/entry" target="_blank" rel="noreferrer">レボリスト診断</a>と<a href="https://ai.onokun.com/" target="_blank" rel="noreferrer">AI玉手箱診断</a>があります。
+              レボリスト診断は、あなたの一歩を一緒に見つける入口です。診断が、動き出すきっかけになります。
+              AI玉手箱診断は、あなたに合うAIを見つけ、道具がわかることで一歩を軽くします。
             </p>
             <p>
               <a href="https://revofunding.onokun.com/" target="_blank" rel="noreferrer">レボファンディング</a>は、応援を形にする仕組みです。
@@ -1123,11 +1171,11 @@
             <p>
               そして、東日本大震災から15年。日本中で、世界中で、災害は今も起き続けています。
               あの日の私たちと同じように、孤独な挑戦者が生まれ続けています。
-              だから、最後にこの言葉を置きます。孤独な挑戦者を、減らしたい。
+              受け取ったやさしさを、今度はあなたと一緒に贈りたい。孤独な挑戦者を、減らしたい。
             </p>
           </div>
           <aside class="message-panel">
-            <p class="message-lead">もらった人は、次に贈る人になる。</p>
+            <p class="message-lead">受け取って、贈る人になる。</p>
             <p>レボリストLabの全体構造は、活動名を並べるための図ではありません。受け取ったやさしさを、どう次へ贈るかを整理するための地図です。</p>
             <div class="seo-keywords" aria-label="SEO主要キーワード">
               <span>世界一やさしい贈り物</span>
@@ -1235,7 +1283,7 @@
 
       <section id="site-map" class="section">
         <div class="section-head">
-          <div><p class="eyebrow">Site Diagram</p><h2>受け取ったやさしさが、各プロジェクトへ広がる。</h2></div>
+          <div><p class="eyebrow">Site Diagram</p><h2>受け取った贈り物を、次へ贈るための地図。</h2></div>
         </div>
         <div class="site-map-panel">
           <svg class="illustration-map" viewBox="0 0 1200 700" role="img" aria-labelledby="revo-map-title revo-map-desc">
@@ -1256,8 +1304,8 @@
             </defs>
 
             <rect x="18" y="18" width="1164" height="664" rx="28" fill="#f5f5f7" stroke="#d2d2d7" />
-            <text x="600" y="68" text-anchor="middle" class="map-title">応援・挑戦・表現が循環する全体構造</text>
-            <text x="600" y="98" text-anchor="middle" class="map-sub">世界中から届いたやさしさを、次の応援と活動へ贈っていく</text>
+            <text x="600" y="68" text-anchor="middle" class="map-title">受け取った贈り物を、次へ贈る全体構造</text>
+            <text x="600" y="98" text-anchor="middle" class="map-sub">世界中から届いたやさしさを、診断・応援・表現・防災・文化へつなぐ</text>
 
             <path d="M404 202 L435 202" stroke="#007aff" stroke-width="4" fill="none" marker-end="url(#arrowHead)" />
             <path d="M765 202 L796 202" stroke="#007aff" stroke-width="4" fill="none" marker-end="url(#arrowHead)" />
@@ -1281,8 +1329,8 @@
                 <rect x="435" y="122" width="330" height="156" rx="24" fill="#fff7ed" stroke="#f2c14e" stroke-width="2" />
                 <text x="600" y="154" text-anchor="middle" class="map-sub">HUB</text>
                 <text x="600" y="194" text-anchor="middle" font-size="30" font-weight="900" fill="#1d1d1f">レボリストLab</text>
-                <text x="600" y="224" text-anchor="middle" font-size="13" font-weight="800" fill="#5b6470">受け取った贈り物を次へ贈る場</text>
-                <text x="600" y="249" text-anchor="middle" font-size="12" font-weight="700" fill="#5b6470">診断・応援・表現をつなぐ中心</text>
+                <text x="600" y="224" text-anchor="middle" font-size="13" font-weight="800" fill="#5b6470">応援が人をつなぐ、未来をつくる</text>
+                <text x="600" y="249" text-anchor="middle" font-size="12" font-weight="700" fill="#5b6470">診断・応援・表現・文化をつなぐハブ</text>
               </g>
             </a>
 
@@ -1320,7 +1368,7 @@
                 <rect x="438" y="338" width="324" height="108" rx="22" fill="#ffffff" stroke="#111827" stroke-width="2" />
                 <text x="600" y="369" text-anchor="middle" class="map-sub">STORY</text>
                 <text x="600" y="401" text-anchor="middle" class="map-label">世界一やさしい贈り物</text>
-                <text x="600" y="426" text-anchor="middle" class="map-sub">もらった人が、次に贈る人になる</text>
+                <text x="600" y="426" text-anchor="middle" class="map-sub">やさしさは、集まるほど積み重なる</text>
               </g>
             </a>
 
@@ -1338,7 +1386,7 @@
                 <rect x="620" y="500" width="300" height="94" rx="22" fill="#ffffff" stroke="#111827" stroke-width="2" />
                 <text x="770" y="528" text-anchor="middle" class="map-sub">RELATED ACTION</text>
                 <text x="770" y="557" text-anchor="middle" class="map-label">防災×帽祭</text>
-                <text x="770" y="578" text-anchor="middle" class="map-sub">防災を身近に、楽しく</text>
+                <text x="770" y="578" text-anchor="middle" class="map-sub">防災をエンタメに変える</text>
               </g>
             </a>
 
@@ -1358,7 +1406,7 @@
             <a href="https://onokun.com/bosai/" target="_blank" rel="noreferrer">防災×帽祭</a>
             <a href="https://hayator.socialimagine.com/" target="_blank" rel="noreferrer">@hayator</a>
           </div>
-          <p class="diagram-caption"><a href="https://onokun.com/" target="_blank" rel="noreferrer">おのくん</a>から受け取ったやさしさを、レボリストLab、レボファンディング、レボアート、防災×帽祭へ贈っていく全体図です。</p>
+          <p class="diagram-caption"><a href="https://onokun.com/" target="_blank" rel="noreferrer">おのくん</a>から受け取ったやさしさを、レボリストLab、レボファンディング、レボアート、防災×帽祭、レボリンク、レボハット、レボソングへ贈っていく全体図です。</p>
         </div>
       </section>
 
@@ -1385,22 +1433,22 @@
           <article class="link-hub-card">
             <span>Bosai</span>
             <h3>防災を身近にする</h3>
-            <p><a href="https://onokun.com/bosai/" target="_blank" rel="noreferrer">防災×帽祭</a>は、防災を重く難しいものにせず、楽しく、話しやすく、身につけられる入口にします。</p>
+            <p><a href="https://onokun.com/bosai/" target="_blank" rel="noreferrer">防災×帽祭</a>は、防災をエンタメに変え、楽しいから参加したくなる入口をつくります。</p>
           </article>
           <article class="link-hub-card">
             <span>Hat</span>
             <h3>日本ならではのハット文化へ</h3>
-            <p><a href="https://onokun.com/revohat/" target="_blank" rel="noreferrer">レボハット</a>は、帽子をものづくり、想像性、ファッション、防災体験の入口として広げる構想です。</p>
+            <p><a href="https://onokun.com/revohat/" target="_blank" rel="noreferrer">レボハット</a>は、ハットの華やかさで心を動かし、文化が挑戦する空気をつくります。</p>
           </article>
           <article class="link-hub-card">
             <span>Company</span>
             <h3>企業協賛を意味ある形にする</h3>
-            <p><a href="https://onokun.com/revolink" target="_blank" rel="noreferrer">レボリンク</a>は、日常の行動や企業の協力を、地域や防災やアートを支える社会貢献の導線として見せます。</p>
+            <p><a href="https://onokun.com/revolink" target="_blank" rel="noreferrer">レボリンク</a>は、つながりが次の扉を開き、あなたの日常を誰かへの贈り物に変えていきます。</p>
           </article>
           <article class="link-hub-card">
             <span>Voice</span>
             <h3>想いを広げる</h3>
-            <p><a href="https://revosong.onokun.com/" target="_blank" rel="noreferrer">レボソング</a>は、活動の想いを音楽として届け、説明だけでは届かない共感を広げます。</p>
+            <p><a href="https://revosong.onokun.com/" target="_blank" rel="noreferrer">レボソング</a>は、想いを音楽に変え、歌が広がることで応援を広げていきます。</p>
           </article>
         </div>
       </section>
@@ -1428,12 +1476,12 @@
           <a class="link-hub-card" href="https://revo.onokun.com/" target="_blank" rel="noreferrer">
             <span>Diagnosis</span>
             <h3>レボリスト診断</h3>
-            <p>あなたの一歩を一緒に見つけ、動き出すきっかけをつくります。</p>
+            <p>だから、あなたの一歩を一緒に見つける。診断が、動き出すきっかけになります。</p>
           </a>
           <a class="link-hub-card" href="https://ai.onokun.com/" target="_blank" rel="noreferrer">
             <span>AI</span>
             <h3>AI玉手箱診断</h3>
-            <p>あなたに合うAIや道具を見つけ、一歩を軽くする診断です。</p>
+            <p>だから、あなたに合うAIを見つける。道具がわかれば、一歩が軽くなります。</p>
           </a>
           <a class="link-hub-card" href="https://revofunding.onokun.com/" target="_blank" rel="noreferrer">
             <span>Funding</span>
@@ -1443,12 +1491,12 @@
           <a class="link-hub-card" href="https://onokun.com/revolink" target="_blank" rel="noreferrer">
             <span>Link</span>
             <h3>レボリンク</h3>
-            <p>つながりが次の扉を開き、日常が誰かへの贈り物になります。</p>
+            <p>だから、つながりが次の扉を開く。あなたの日常が、誰かへの贈り物になります。</p>
           </a>
           <a class="link-hub-card" href="https://onokun.com/bosai/" target="_blank" rel="noreferrer">
             <span>Bosai</span>
             <h3>防災×帽祭</h3>
-            <p>防災をエンタメに変え、楽しいから参加したくなる入口をつくります。</p>
+            <p>だから、防災をエンタメに変える。楽しいから、参加したくなる入口をつくります。</p>
           </a>
           <a class="link-hub-card" href="revo-art-list.html">
             <span>Art</span>
@@ -1458,7 +1506,7 @@
           <a class="link-hub-card" href="https://onokun.com/revohat/" target="_blank" rel="noreferrer">
             <span>Hat</span>
             <h3>レボハット</h3>
-            <p>ハットの華やかさで心を動かし、文化が挑戦する空気をつくります。</p>
+            <p>だから、ハットの華やかさで心を動かす。文化が、挑戦する空気をつくります。</p>
           </a>
           <a class="link-hub-card" href="https://revosong.onokun.com/" target="_blank" rel="noreferrer">
             <span>Song</span>
