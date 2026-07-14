@@ -4,19 +4,19 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="google-site-verification" content="R_e8E9Ga3FSMDd3Z_H1SpU8hkM8lMW25IpkPWFbMAxM">
-  <title>レボリストLab プロジェクト紹介 | 運営構成</title>
+  <title>世界一やさしい贈り物。だから、各プロジェクトが生まれた。 | レボリストLab</title>
   <link rel="icon" href="favicon.png?v=20260702" type="image/png" sizes="64x64">
   <link rel="icon" href="favicon-32.png?v=20260702" type="image/png" sizes="32x32">
   <link rel="apple-touch-icon" href="apple-touch-icon.png?v=20260702">
-  <meta name="description" content="レボリストLabから生まれる各種プロジェクトを、思想、応援、表現、地域、発信の役割ごとに整理した運営向けの紹介ページです。">
-  <meta property="og:title" content="レボリストLab プロジェクト紹介">
-  <meta property="og:description" content="孤独な挑戦者を減らすために、レボリストLabの各プロジェクトがどの役割を担うのかを整理します。">
+  <meta name="description" content="世界中から届いたやさしさを、次へ贈るために生まれたレボリストLabの各プロジェクトを、思想、応援、表現、地域、発信の役割ごとに整理します。">
+  <meta property="og:title" content="世界一やさしい贈り物。だから、各プロジェクトが生まれた。">
+  <meta property="og:description" content="受け取ったやさしさを次へ贈るために、レボリストLabの各プロジェクトがどの役割を担うのかを整理します。">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://revofunding.onokun.com/revolist-projects.html">
   <meta property="og:image" content="https://revofunding.onokun.com/RevoFunding.png">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="レボリストLab プロジェクト紹介">
-  <meta name="twitter:description" content="レボリストLabの各プロジェクトを、運営の全体構成として確認できます。">
+  <meta name="twitter:title" content="世界一やさしい贈り物。だから、各プロジェクトが生まれた。">
+  <meta name="twitter:description" content="受け取ったやさしさを次へ贈るために生まれた各プロジェクトを、運営の全体構成として確認できます。">
   <meta name="twitter:image" content="https://revofunding.onokun.com/RevoFunding.png">
   <style>
     * {
@@ -60,7 +60,7 @@
       justify-content: space-between;
       gap: 20px;
       min-height: 72px;
-      padding: 14px clamp(18px, 5vw, 64px);
+      padding: 14px max(40px, calc((100vw - 1440px) / 2 + 40px));
       background: rgba(255, 255, 255, 0.94);
       border-bottom: 1px solid var(--line);
       backdrop-filter: blur(16px);
@@ -206,9 +206,9 @@
     .hero {
       position: relative;
       display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(260px, 42%);
-      gap: clamp(20px, 3.2vw, 38px);
-      align-items: center;
+      grid-template-columns: minmax(0, 0.9fr) minmax(360px, 0.6fr);
+      gap: clamp(24px, 3.6vw, 48px);
+      align-items: stretch;
       overflow: hidden;
       min-height: 260px;
       padding: clamp(20px, 3vw, 32px);
@@ -233,9 +233,9 @@
       align-items: center;
       justify-items: center;
       min-width: 0;
-      min-height: 190px;
+      min-height: 100%;
       overflow: hidden;
-      background: linear-gradient(135deg, #fff7ed, #f8fafc);
+      background: #fff;
       border: 1px solid rgba(251, 56, 95, 0.12);
       border-radius: var(--radius);
     }
@@ -243,7 +243,8 @@
     .hero__media img {
       display: block;
       width: 100%;
-      max-height: 220px;
+      height: 100%;
+      max-height: none;
       object-fit: contain;
       object-position: center;
     }
@@ -482,6 +483,7 @@
       .site-header {
         align-items: flex-start;
         flex-direction: column;
+        padding-inline: 24px;
       }
 
       .nav {
@@ -518,11 +520,11 @@
       }
 
       .hero__media {
-        min-height: 160px;
+        min-height: 210px;
       }
 
       .hero__media img {
-        max-height: 170px;
+        height: 100%;
       }
 
       .structure-grid,
@@ -568,8 +570,8 @@
     <section class="section hero">
       <div class="hero__content">
         <p class="eyebrow">Revolist Lab Projects</p>
-        <h1>孤独な挑戦者を、減らしたい。だから、つながる場をつくる。</h1>
-        <p class="lead">レボリストLabから生まれる各プロジェクトを、運営の全体構成として整理します。思想、応援、表現、地域、発信が別々に見えないように、役割と導線を一つのページで確認できます。</p>
+        <h1>世界一やさしい贈り物<br>だから、<br>各プロジェクトが生まれた。</h1>
+        <p class="lead">東日本大震災のとき、世界中から届いたやさしさ。受け取って、贈る人になる。その流れを、思想、応援、表現、地域、発信へ広げるために、レボリストLabの各プロジェクトを一つのページで整理します。</p>
         <div class="actions">
           <a class="button primary" href="revolist.html">全体構造を見る</a>
           <a class="button" href="list.html">参加入口を見る</a>
@@ -585,7 +587,7 @@
       <div class="section-head">
         <p class="eyebrow">Operating Structure</p>
         <h2>運営としての全体構成</h2>
-        <p>各プロジェクトは、単独の企画ではなく、挑戦者を孤立させないための役割を分担しています。入口を増やし、応援を集め、表現で広げ、地域と発信で循環させます。</p>
+        <p>各プロジェクトは、単独の企画ではありません。受け取ったやさしさを、次へ贈るための役割を分担しています。入口を増やし、応援を集め、表現で広げ、地域と発信で循環させます。</p>
       </div>
       <div class="structure-grid">
         <article class="split-panel" style="--accent:#111827">
@@ -625,13 +627,13 @@
       <div class="section-head">
         <p class="eyebrow">Project Lineup</p>
         <h2>各種プロジェクト紹介</h2>
-        <p>運営・参加者・協力者が、どの入口から関わればよいか判断できるように、プロジェクトごとの役割と次の導線を整理しています。</p>
+        <p>受け取って、贈る人になる。その動きを続けていくために、運営・参加者・協力者がどの入口から関わればよいか、プロジェクトごとの役割と次の導線を整理しています。</p>
       </div>
       <div class="project-grid">
         <article class="project-card" style="--accent:#111827">
           <p class="project-card__label">思想</p>
           <h3>レボリストLab</h3>
-          <p>すべてのプロジェクトの根っこにある考え方をまとめる実験場です。</p>
+          <p>受け取ったやさしさを、次へ贈るための考え方をまとめる実験場です。</p>
           <div class="project-card__meta">
             <span>役割: 理念と判断軸を共有</span>
             <span>関連: 思想ページ、全体構造</span>
@@ -643,7 +645,7 @@
         <article class="project-card" style="--accent:#ff5a3d">
           <p class="project-card__label">応援</p>
           <h3>レボファンディング</h3>
-          <p>挑戦をひとりにしないために、スパークとブーストで応援を集めます。</p>
+          <p>応援を形にする仕組みとして、スパークとブーストで挑戦を動かします。</p>
           <div class="project-card__meta">
             <span>役割: 挑戦と応援の入口</span>
             <span>関連: 参加入口、スパーク一覧、ブースト一覧</span>
@@ -751,7 +753,7 @@
         <article class="project-card" style="--accent:#10b981">
           <p class="project-card__label">原点 / 地域</p>
           <h3>おのくん</h3>
-          <p>東松島から育った持ち寄りの文化と、誰かを応援する関係性の原点です。</p>
+          <p>東松島から育った持ち寄りの文化と、受け取ったやさしさを次へ贈る関係性の原点です。</p>
           <div class="project-card__meta">
             <span>役割: 活動の原点と地域のつながり</span>
             <span>関連: おのくん公式サイト</span>
@@ -779,7 +781,7 @@
       <div class="section-head">
         <p class="eyebrow">Flow</p>
         <h2>運営導線</h2>
-        <p>各プロジェクトは、知る、応募する、応援する、表現する、広げる、記録するという流れでつながります。</p>
+        <p>各プロジェクトは、受け取る、知る、応募する、応援する、表現する、広げる、記録するという流れでつながります。</p>
       </div>
       <div class="flow-grid">
         <article class="flow-step">
@@ -818,7 +820,7 @@
     <section class="section callout">
       <div>
         <h2>全体構造と各ページの入口をつなぎました。</h2>
-        <p>このページは運営視点のプロジェクト紹介として、レボリストLabの思想ページ、全体構造、レボファンディング内の各ページをつなぐ役割を持ちます。</p>
+        <p>このページは運営視点のプロジェクト紹介として、世界一やさしい贈り物の物語、レボリストLabの全体構造、レボファンディング内の各ページをつなぐ役割を持ちます。</p>
       </div>
       <a class="button primary" href="site-map.html">サイトマップへ</a>
     </section>
