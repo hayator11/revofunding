@@ -4,13 +4,13 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>おのくんの4コママンガの部屋 | レボファンディング</title>
-    <meta name="description" content="おのくんの日常を4コママンガで届ける部屋。持ち寄り文化と応援の輪を、くすっと笑える物語で紹介します。" />
+    <meta name="description" content="おのくんの物語を4コママンガでお届けする部屋。「おのくんの日」シリーズを1話ずつ公開していきます。" />
     <link rel="stylesheet" href="styles.css" />
     <style>
       .manga-room {
         display: grid;
         gap: clamp(32px, 6vw, 64px);
-        max-width: 720px;
+        max-width: 640px;
         margin: 0 auto;
       }
       .manga-episode {
@@ -24,104 +24,31 @@
         display: flex;
         align-items: baseline;
         gap: 12px;
-        margin-bottom: 18px;
+        margin-bottom: 16px;
       }
-      .manga-episode-head .ep-number {
+      .manga-episode-head .ep-series {
         font-size: 13px;
         font-weight: 700;
         letter-spacing: 0.08em;
         color: var(--coral);
+        white-space: nowrap;
       }
       .manga-episode-head h3 {
         margin: 0;
         font-size: clamp(18px, 3vw, 22px);
       }
-      .manga-strip {
-        display: grid;
-        gap: 14px;
-        counter-reset: koma;
-      }
-      .manga-panel {
-        position: relative;
-        counter-increment: koma;
-        display: grid;
-        gap: 12px;
-        align-items: center;
-        grid-template-columns: minmax(90px, 130px) 1fr;
-        background: #fff;
-        border: 3px solid var(--ink);
-        border-radius: 6px;
-        padding: 16px;
-        min-height: 130px;
-      }
-      .manga-panel::before {
-        content: counter(koma);
-        position: absolute;
-        top: -1px;
-        left: -1px;
-        display: grid;
-        place-items: center;
-        width: 26px;
-        height: 26px;
-        border-radius: 6px 0 6px 0;
-        background: var(--ink);
-        color: #fff;
-        font-size: 13px;
-        font-weight: 700;
-      }
-      .manga-panel img {
-        width: 100%;
-        max-height: 120px;
-        object-fit: contain;
-      }
-      .manga-panel .flip {
-        transform: scaleX(-1);
-      }
-      .manga-panel .tilt {
-        transform: rotate(-6deg);
-      }
-      .manga-panel .zoom {
-        object-position: top;
-        object-fit: cover;
-        border-radius: 8px;
-      }
-      .manga-bubble {
-        position: relative;
-        background: #fff;
-        border: 2px solid var(--ink);
-        border-radius: 16px;
-        padding: 10px 14px;
-        font-weight: 600;
-        line-height: 1.6;
-      }
-      .manga-bubble::before {
-        content: "";
-        position: absolute;
-        left: -12px;
-        top: 50%;
-        width: 12px;
-        height: 12px;
-        transform: translateY(-50%);
-        background: #fff;
-        border-left: 2px solid var(--ink);
-        border-bottom: 2px solid var(--ink);
-        clip-path: polygon(0 50%, 100% 0, 100% 100%);
-      }
-      .manga-bubble small {
+      .manga-page {
         display: block;
-        margin-top: 4px;
-        font-weight: 500;
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fff;
+      }
+      .manga-reading-note {
+        margin: 12px 0 0;
+        font-size: 13px;
         color: var(--muted);
-      }
-      .manga-panel.narration {
-        grid-template-columns: 1fr;
         text-align: center;
-        background: var(--soft);
-      }
-      .manga-panel.narration p {
-        margin: 0;
-        font-weight: 700;
-        font-size: 17px;
       }
       .manga-coming-soon {
         border: 2px dashed var(--line);
@@ -135,12 +62,6 @@
         color: var(--ink);
         font-size: 17px;
         margin-bottom: 6px;
-      }
-      @media (max-width: 480px) {
-        .manga-panel {
-          grid-template-columns: 84px 1fr;
-          padding: 12px;
-        }
       }
     </style>
   </head>
@@ -166,8 +87,8 @@
         <p class="eyebrow">Onokun / 4-Koma Manga Room</p>
         <h1>おのくんの4コママンガの部屋</h1>
         <p class="lead">
-          おのくんの日常を、4コママンガでお届けする部屋です。
-          持ち寄り文化や応援の輪のことを、むずかしい言葉のかわりに、くすっと笑える物語で伝えていきます。
+          おのくんの物語を、4コママンガでお届けする部屋です。
+          「おのくんの日」シリーズを、1話ずつゆっくり公開していきます。
         </p>
         <div class="hero-actions">
           <a class="button primary" href="project-onokun.html">おのくんプロジェクトを見る</a>
@@ -179,56 +100,20 @@
         <div class="manga-room">
           <article class="manga-episode">
             <div class="manga-episode-head">
-              <span class="ep-number">第1話</span>
-              <h3>はじめまして、おのくん</h3>
+              <span class="ep-series">おのくんの日</span>
+              <h3>― 里帰り ―</h3>
             </div>
-            <div class="manga-strip">
-              <div class="manga-panel">
-                <img src="onokun.jpeg" alt="帽子をかぶったおのくん" />
-                <p class="manga-bubble">ぼく、おのくん。<small>「お」のゼッケンが目じるしだよ</small></p>
-              </div>
-              <div class="manga-panel">
-                <img class="flip" src="onokun.jpeg" alt="ふりむくおのくん" />
-                <p class="manga-bubble">ぼくたちは、ひとつずつ手づくりでうまれるんだ。</p>
-              </div>
-              <div class="manga-panel">
-                <img class="tilt" src="onokun-a.jpeg" alt="すこし表情のちがうおのくん" />
-                <p class="manga-bubble">だから、みんなちょっとずつ顔がちがう。きみのおのくんは、世界にひとりだけ。</p>
-              </div>
-              <div class="manga-panel">
-                <img src="onokun-b.jpeg" alt="キラキラにかがやくおのくん" />
-                <p class="manga-bubble">……たまに、ものすごくキラキラの日もある。<small>おわり</small></p>
-              </div>
-            </div>
-          </article>
-
-          <article class="manga-episode">
-            <div class="manga-episode-head">
-              <span class="ep-number">第2話</span>
-              <h3>もちよりの日</h3>
-            </div>
-            <div class="manga-strip">
-              <div class="manga-panel narration">
-                <p>きょうは、もちよりの日。</p>
-              </div>
-              <div class="manga-panel">
-                <img src="onokun.jpeg" alt="うれしそうなおのくん" />
-                <p class="manga-bubble">みんなが、すこしずつ持ってくるんだ。手づくりのもの、応援の気持ち、それぞれのできること。</p>
-              </div>
-              <div class="manga-panel">
-                <img class="flip" src="onokun-a.jpeg" alt="かんがえるおのくん" />
-                <p class="manga-bubble">ひとりぶんは、ちいさいけどね。</p>
-              </div>
-              <div class="manga-panel">
-                <img src="onokun.jpeg" alt="むねをはるおのくん" />
-                <p class="manga-bubble">あつまると、だれかにとどく大きな応援になる。<small>それが、もちより文化だよ</small></p>
-              </div>
-            </div>
+            <img
+              class="manga-page"
+              src="assets/onokun-manga/onokun-no-hi-satogaeri.png"
+              alt="4コママンガ「おのくんの日 ―里帰り―」。雪の残る東北の駅に降り立った里親さんが、おのくんを抱いて臨時住宅の東松島の道を歩き、おのくんの生まれた家で「おかえり」と迎えられるお話。"
+            />
+            <p class="manga-reading-note">読み方：右上 → 左上 → 右下 → 左下</p>
           </article>
 
           <div class="manga-coming-soon">
-            <strong>第3話 準備中</strong>
-            <p>おのくんの新しいおはなしは、これから少しずつ増えていきます。おたのしみに。</p>
+            <strong>次のおはなし 準備中</strong>
+            <p>「おのくんの日」シリーズは、これから少しずつ増えていきます。おたのしみに。</p>
           </div>
         </div>
       </section>
