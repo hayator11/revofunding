@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>レボアート Project作業ページ</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="container" style="padding:64px 20px;max-width:760px">
+    <h1>Project作業ページへ接続しています</h1>
+    <p id="workspace-message">申請内容を確認しています。</p>
+    <p><a href="revo-art-list.html">レボアート一覧へ戻る</a></p>
+  </main>
+  <script src="site-config.js?v=20260817"></script>
+  <script>
+    (() => {
+      const id = new URLSearchParams(location.search).get("id") || "";
+      const endpoint = window.REVO_ART_WORKSPACE_APP_URL || "";
+      const message = document.getElementById("workspace-message");
+      if (!id) { message.textContent = "Project IDが指定されていません。"; return; }
+      if (!endpoint) { message.textContent = "作業ページの接続準備中です。運営へProject IDを添えてご連絡ください。"; return; }
+      const target = new URL(endpoint);
+      target.searchParams.set("page", "workspace");
+      target.searchParams.set("id", id);
+      if (location.hash) target.hash = location.hash;
+      location.replace(target.toString());
+    })();
+  </script>
+</body>
+</html>

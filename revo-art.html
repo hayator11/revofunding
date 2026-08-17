@@ -11,7 +11,9 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="components/cards.css?v=spark-diagram-20260702">
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
-  <script src="components/render-revo-art.js?v=art-nav-006" defer></script>
+  <link rel="stylesheet" href="components/revo-art-public-updates.css?v=20260804">
+  <script src="site-config.js?v=20260817" defer></script>
+  <script src="components/render-revo-art.js?v=workspace-20260817" defer></script>
   <script src="components/render-support-map.js" defer></script>
 </head>
 <body class="rf-art-page-body">
@@ -45,8 +47,8 @@
         </details>
       </nav>
       <div class="rf-art-site-actions" aria-label="アカウントメニュー">
-        <a href="login.html">ログイン</a>
-        <a class="rf-art-site-actions__primary" href="register.html">新規登録</a>
+        <a href="revo-art-account.html">申請者ログイン</a>
+        <a class="rf-art-site-actions__primary" href="revo-art.html">申請する</a>
       </div>
     </div>
     <nav class="rf-art-category-nav" aria-label="カテゴリナビゲーション">
@@ -74,7 +76,7 @@
         <p class="rf-art-hero__lead">壁も、車も、帽子も。想いを描けば、いつもの景色が、人が立ち寄りたくなる場所に変わります。</p>
         <p class="rf-art-hero__text">レボアートは、地域の有志、認定アーティスト、塗料・ペンキメーカーさまの協力のもと、街に小さなアートスポットを増やしていくプロジェクトです。</p>
         <div class="rf-art-hero__actions" aria-label="レボアート特集の導線">
-          <a class="rf-art-action rf-art-action--link" href="https://docs.google.com/forms/d/1gHZxvANtHPZqfqWWPjaMHH0rp9jVa-zWggF7ysfuhqU/viewform?usp=dialog" target="_blank" rel="noopener noreferrer">レボアートに応募する</a>
+          <a class="rf-art-action rf-art-action--link" href="https://docs.google.com/forms/d/e/1FAIpQLSf9qATZlfFpGdNfCkIA0a7wjUOGR0pVjp43zlRzobPIM3sagA/viewform" target="_blank" rel="noopener noreferrer">レボアートに応募する</a>
           <a class="rf-art-card__detail-link" href="#rf-art-application-ready">応募前に確認する</a>
           <a class="rf-art-card__detail-link" href="#rf-art-application-categories">応募カテゴリを見る</a>
           <a class="rf-art-card__detail-link" href="revo-art-list.html">登録済み一覧を見る</a>
@@ -228,7 +230,7 @@
           <h3 class="rf-art-application-category__title">ウォールアート</h3>
           <p class="rf-art-application-category__text">壁や空間に、応援の物語や社会的メッセージを描く応募カテゴリです。実施場所の許可確認が必要です。</p>
           <div class="rf-art-application-category__actions">
-            <a class="rf-art-action rf-art-action--link" href="https://docs.google.com/forms/d/1gHZxvANtHPZqfqWWPjaMHH0rp9jVa-zWggF7ysfuhqU/viewform?usp=dialog" target="_blank" rel="noopener noreferrer">応募受付へ</a>
+            <a class="rf-art-action rf-art-action--link" href="https://docs.google.com/forms/d/e/1FAIpQLSf9qATZlfFpGdNfCkIA0a7wjUOGR0pVjp43zlRzobPIM3sagA/viewform" target="_blank" rel="noopener noreferrer">応募受付へ</a>
             <a class="rf-art-card__detail-link" href="revo-art-detail.html?id=wall">詳細を見る</a>
           </div>
         </article>
@@ -237,7 +239,7 @@
           <h3 class="rf-art-application-category__title">カーアート</h3>
           <p class="rf-art-application-category__text">車両や移動媒体に応援のメッセージをのせ、街へ届ける応募カテゴリです。公開範囲や走行時の見え方を確認します。</p>
           <div class="rf-art-application-category__actions">
-            <a class="rf-art-action rf-art-action--link" href="https://docs.google.com/forms/d/1gHZxvANtHPZqfqWWPjaMHH0rp9jVa-zWggF7ysfuhqU/viewform?usp=dialog" target="_blank" rel="noopener noreferrer">応募受付へ</a>
+            <a class="rf-art-action rf-art-action--link" href="https://docs.google.com/forms/d/e/1FAIpQLSf9qATZlfFpGdNfCkIA0a7wjUOGR0pVjp43zlRzobPIM3sagA/viewform" target="_blank" rel="noopener noreferrer">応募受付へ</a>
             <a class="rf-art-card__detail-link" href="revo-art-detail.html?id=car">詳細を見る</a>
           </div>
         </article>
@@ -246,7 +248,7 @@
           <h3 class="rf-art-application-category__title">ハットアート</h3>
           <p class="rf-art-application-category__text">帽子をキャンバスにして、個性や応援のメッセージを表現する応募カテゴリです。制作後の紹介や発信計画も確認します。</p>
           <div class="rf-art-application-category__actions">
-            <a class="rf-art-action rf-art-action--link" href="https://docs.google.com/forms/d/1gHZxvANtHPZqfqWWPjaMHH0rp9jVa-zWggF7ysfuhqU/viewform?usp=dialog" target="_blank" rel="noopener noreferrer">応募受付へ</a>
+            <a class="rf-art-action rf-art-action--link" href="https://docs.google.com/forms/d/e/1FAIpQLSf9qATZlfFpGdNfCkIA0a7wjUOGR0pVjp43zlRzobPIM3sagA/viewform" target="_blank" rel="noopener noreferrer">応募受付へ</a>
             <a class="rf-art-card__detail-link" href="revo-art-detail.html?id=hat">詳細を見る</a>
           </div>
         </article>
@@ -296,7 +298,7 @@
       <span class="rf-art-badge">応募受付中</span>
       <h2 id="rf-art-final-cta-title">有志が集まったら、レボアートに応募できます。</h2>
       <p class="rf-art-text">3名以上の有志、実施対象、発信計画が見えてきたら応募してください。運営確認・抽選・決定を経て、公開許可済みのレボアートスポットを順次掲載します。</p>
-      <a class="rf-art-action rf-art-action--link" href="https://docs.google.com/forms/d/1gHZxvANtHPZqfqWWPjaMHH0rp9jVa-zWggF7ysfuhqU/viewform?usp=dialog" target="_blank" rel="noopener noreferrer">レボアートに応募する</a>
+      <a class="rf-art-action rf-art-action--link" href="https://docs.google.com/forms/d/e/1FAIpQLSf9qATZlfFpGdNfCkIA0a7wjUOGR0pVjp43zlRzobPIM3sagA/viewform" target="_blank" rel="noopener noreferrer">レボアートに応募する</a>
       <a class="rf-art-card__detail-link" href="certified-artists.html">認定アーティストを見る</a>
     </section>
 

@@ -7,3 +7,8 @@ window.REVO_PROJECT_WORK_SAVE_ENDPOINT = "https://script.google.com/macros/s/AKf
 // 応援者マイページからSupportersシートの参加状況を確認するApps Script WebアプリURL。
 // 応援者フォーム側Apps Scriptをウェブアプリとしてデプロイしたあと、発行されたURLをここに入れます。
 window.REVO_SUPPORTER_STATUS_ENDPOINT = "https://script.google.com/macros/s/AKfycbwXKd6zVVn80RYQy8Qms7EJUb2YrI6tmDjv_Ef-lCCg0B_lBWtLXxagvSnS4fllc-tf-w/exec";
+
+// レボアート申請者用Project作業ページと公開データAPI。
+// 専用Apps Scriptをデプロイ後、同じWebアプリURLを設定します。
+window.REVO_ART_WORKSPACE_APP_URL = "https://script.google.com/macros/s/AKfycbzrX3ch9IwN7tqTcELblOWM8CIc2wLibma88K2CqOLGwXGx6Y7idNype_ZM7-0IIpf4/exec";
+window.REVO_ART_PUBLIC_DATA_URL = "https://script.google.com/macros/s/AKfycbzrX3ch9IwN7tqTcELblOWM8CIc2wLibma88K2CqOLGwXGx6Y7idNype_ZM7-0IIpf4/exec";

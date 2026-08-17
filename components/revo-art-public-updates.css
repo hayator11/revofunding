@@ -1,0 +1,46 @@
+.rf-art-activity-timeline {
+  display: grid;
+  gap: 18px;
+}
+
+.rf-art-activity-entry {
+  padding: 22px;
+  border: 1px solid #d9e0ea;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.rf-art-activity-entry__date {
+  color: #1769e0;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.rf-art-activity-entry__title {
+  margin: 7px 0 0;
+  color: #172033;
+  font-size: 21px;
+  letter-spacing: 0;
+}
+
+.rf-art-activity-entry__body {
+  margin: 10px 0 0;
+  color: #4d5a6d;
+  line-height: 1.8;
+  white-space: pre-wrap;
+}
+
+.rf-art-activity-entry__gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.rf-art-activity-entry__gallery img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  display: block;
+  border-radius: 6px;
+  object-fit: cover;
+}

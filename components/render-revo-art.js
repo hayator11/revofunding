@@ -3,7 +3,7 @@
 
   const dataUrl = "../data/revo-art-data.json";
   const winningSpotsUrl = "../data/revo-art-winning-spots.json";
-  const applicationFormUrl = "https://docs.google.com/forms/d/1gHZxvANtHPZqfqWWPjaMHH0rp9jVa-zWggF7ysfuhqU/viewform?usp=dialog";
+  const applicationFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSf9qATZlfFpGdNfCkIA0a7wjUOGR0pVjp43zlRzobPIM3sagA/viewform";
   const sampleRevoArtProjects = [
     {
       id: "sample-sora-station-sakura-wall",
@@ -78,6 +78,49 @@
 
     const data = await response.json();
     return Array.isArray(data) ? data : [];
+  }
+
+  function loadPublishedWorkspaceProjects() {
+    const endpoint = window.REVO_ART_PUBLIC_DATA_URL || "";
+    if (!endpoint) return Promise.resolve([]);
+
+    return new Promise((resolve, reject) => {
+      const callbackName = `revoArtProjects_${Date.now()}_${Math.floor(Math.random() * 10000)}`;
+      const script = document.createElement("script");
+      const timeout = window.setTimeout(() => finish(new Error("公開Project情報の読み込みがタイムアウトしました。")), 10000);
+      const finish = (error, projects) => {
+        window.clearTimeout(timeout);
+        script.remove();
+        delete window[callbackName];
+        if (error) reject(error); else resolve(Array.isArray(projects) ? projects : []);
+      };
+      window[callbackName] = (payload) => finish(null, payload && payload.projects);
+      script.onerror = () => finish(new Error("公開Project情報を読み込めませんでした。"));
+      const url = new URL(endpoint);
+      url.searchParams.set("action", "publicProjects");
+      url.searchParams.set("callback", callbackName);
+      url.searchParams.set("t", new URLSearchParams(location.search).get("t") || Date.now());
+      script.src = url.toString();
+      document.head.append(script);
+    });
+  }
+
+  function uniqueProjects(items) {
+    const seen = new Set();
+    return items.filter((item) => {
+      const id = item && item.id;
+      if (!id || seen.has(id)) return false;
+      seen.add(id);
+      return true;
+    });
+  }
+
+  function sortProjects(items) {
+    return items.slice().sort((a, b) => {
+      const featured = Number(Boolean(b.featured)) - Number(Boolean(a.featured));
+      if (featured) return featured;
+      return Number(a.displayOrder || 999) - Number(b.displayOrder || 999);
+    });
   }
 
   function getText(value, fallbackText) {
@@ -179,7 +222,7 @@
     visual.className = `rf-art-visual rf-art-visual--${categoryId} ${modifierClass}`;
     visual.setAttribute("aria-hidden", "true");
 
-    const imageSrc = getCategoryVisualImage(categoryId);
+    const imageSrc = getText(item && item.coverImageUrl, getCategoryVisualImage(categoryId));
     if (imageSrc) {
       const image = document.createElement("img");
       image.src = imageSrc;
@@ -602,7 +645,7 @@
     }
 
     const registeredProjects = filterRegisteredRevoArtProjects(winningSpots);
-    const displayProjects = registeredProjects.length > 0 ? registeredProjects : sampleRevoArtProjects;
+    const displayProjects = sortProjects(uniqueProjects([...registeredProjects, ...sampleRevoArtProjects]));
 
     const renderFilteredProjects = (categoryId) => {
       const selectedCategoryId = getText(categoryId, "all");
@@ -621,8 +664,8 @@
           message.textContent = "このカテゴリの登録済みレボアートは、公開許可後に掲載します。";
         } else {
           message.textContent = registeredProjects.length > 0
-            ? "プロジェクトとして始まった登録済みレボアートを表示しています。"
-            : "現在は表示確認用のサンプルカードです。公開許可済みの登録データが入ると、この一覧に差し替わります。";
+            ? "公開中のProjectと、展開イメージのカードを表示しています。"
+            : "現在は表示確認用のサンプルカードです。";
         }
       }
     };
@@ -727,6 +770,37 @@
     }
 
     return section;
+  }
+
+  function createPlatformUpdatesSection(item) {
+    const updates = Array.isArray(item.platformUpdates) ? item.platformUpdates : [];
+    if (updates.length === 0) return null;
+    const timeline = document.createElement("div");
+    timeline.className = "rf-art-activity-timeline";
+    for (const update of updates) {
+      const article = document.createElement("article");
+      article.className = "rf-art-activity-entry";
+      article.append(
+        createTextElement("time", "rf-art-activity-entry__date", new Intl.DateTimeFormat("ja-JP", { year: "numeric", month: "long", day: "numeric" }).format(new Date(update.activity_date))),
+        createTextElement("h3", "rf-art-activity-entry__title", update.title),
+        createTextElement("p", "rf-art-activity-entry__body", update.body)
+      );
+      if (Array.isArray(update.media) && update.media.length) {
+        const gallery = document.createElement("div");
+        gallery.className = "rf-art-activity-entry__gallery";
+        for (const media of update.media) {
+          const image = document.createElement("img");
+          image.src = media.signedUrl;
+          image.alt = getText(media.alt_text, update.title);
+          image.loading = "lazy";
+          image.decoding = "async";
+          gallery.append(image);
+        }
+        article.append(gallery);
+      }
+      timeline.append(article);
+    }
+    return createDetailSection("Projectの活動更新", [timeline], "rf-art-detail__section--wide");
   }
 
   function createDetailFlowList() {
@@ -897,7 +971,10 @@
 
     const related = createRelatedCategoryLinks(id, items);
 
-    container.append(header, detailLead, canDoSection, targetSection, stepsSection, publishSection, winning, cautionSection, actions, related);
+    const platformUpdatesSection = createPlatformUpdatesSection(item);
+    container.append(header, detailLead);
+    if (platformUpdatesSection) container.append(platformUpdatesSection);
+    container.append(canDoSection, targetSection, stepsSection, publishSection, winning, cautionSection, actions, related);
 
     if (message) {
       message.textContent = "レボアート詳細を表示しています。";
@@ -937,20 +1014,25 @@
     const pageType = pageRoot.getAttribute("data-revo-art-page");
 
     try {
-      const [data, winningSpots] = await Promise.all([
+      const [data, winningSpots, workspaceProjects] = await Promise.all([
         loadRevoArtData(),
         loadWinningRevoArtSpots().catch((error) => {
           console.error(error);
           return [];
+        }),
+        loadPublishedWorkspaceProjects().catch((error) => {
+          console.error(error);
+          return [];
         })
       ]);
+      const publicProjects = sortProjects(uniqueProjects([...workspaceProjects, ...winningSpots]));
 
       if (pageType === "detail") {
-        renderRevoArtDetail(data, winningSpots);
+        renderRevoArtDetail([...publicProjects, ...data], publicProjects);
       } else if (pageType === "project-list") {
-        renderRevoArtProjectList(winningSpots);
+        renderRevoArtProjectList(publicProjects);
       } else {
-        renderRevoArtList(data, winningSpots);
+        renderRevoArtList(data, publicProjects);
       }
     } catch (error) {
       if (pageType === "detail") {

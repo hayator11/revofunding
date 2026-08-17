@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <base target="_top">
+  <style>
+    :root { color-scheme: light; --ink:#101828; --muted:#475467; --line:#d0d5dd; --blue:#1e63eb; --soft:#f5f8fe; --ok:#067647; --warn:#b54708; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--soft); color:var(--ink); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif; }
+    button,input,textarea,select { font:inherit; }
+    .header { background:#fff; border-bottom:1px solid var(--line); }
+    .header__inner,.main { width:min(960px,calc(100% - 32px)); margin:auto; }
+    .header__inner { min-height:72px; display:flex; align-items:center; justify-content:space-between; gap:16px; }
+    .brand { font-weight:800; letter-spacing:0; }
+    .project-id { color:var(--muted); font-size:13px; overflow-wrap:anywhere; }
+    .main { padding:32px 0 64px; }
+    .panel { background:#fff; border:1px solid var(--line); border-radius:8px; padding:24px; margin-bottom:20px; }
+    .panel h1,.panel h2 { margin:0 0 8px; letter-spacing:0; }
+    .panel h1 { font-size:26px; }
+    .panel h2 { font-size:20px; }
+    .lead,.help,.status { color:var(--muted); line-height:1.7; }
+    .grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; }
+    .field { display:grid; gap:7px; }
+    .field--wide { grid-column:1/-1; }
+    label { font-size:14px; font-weight:700; }
+    input,textarea,select { width:100%; border:1px solid var(--line); border-radius:6px; padding:11px 12px; color:var(--ink); background:#fff; }
+    textarea { min-height:120px; resize:vertical; }
+    input:focus,textarea:focus,select:focus { outline:3px solid rgba(30,99,235,.18); border-color:var(--blue); }
+    .actions { display:flex; flex-wrap:wrap; gap:10px; margin-top:20px; }
+    .button { min-height:44px; border:1px solid var(--blue); border-radius:6px; padding:10px 16px; background:var(--blue); color:#fff; font-weight:750; cursor:pointer; }
+    .button--secondary { background:#fff; color:var(--blue); }
+    .button--quiet { border-color:var(--line); background:#fff; color:var(--ink); }
+    .button:disabled { opacity:.55; cursor:wait; }
+    .notice { min-height:24px; margin:14px 0 0; font-weight:650; }
+    .notice[data-kind="success"] { color:var(--ok); }
+    .notice[data-kind="error"] { color:#b42318; }
+    .badge { display:inline-block; border:1px solid var(--line); border-radius:999px; padding:4px 9px; font-size:12px; color:var(--muted); }
+    .updates,.projects { display:grid; gap:12px; margin-top:16px; }
+    .project { display:grid; grid-template-columns:1fr auto; align-items:center; gap:16px; border-top:1px solid var(--line); padding-top:14px; }
+    .update { border-top:1px solid var(--line); padding-top:14px; }
+    .update:first-child { border-top:0; padding-top:0; }
+    .update h3 { margin:5px 0; font-size:16px; }
+    .update p { margin:4px 0; line-height:1.65; }
+    .hidden { display:none !important; }
+    @media (max-width:680px) { .grid { grid-template-columns:1fr; } .header__inner { align-items:flex-start; flex-direction:column; justify-content:center; padding:14px 0; } .panel { padding:20px 16px; } }
+  </style>
+</head>
+<body>
+  <header class="header"><div class="header__inner"><div class="brand">REVO ART Project作業ページ</div><div class="project-id">Project ID: <span id="project-id"></span></div></div></header>
+  <main class="main">
+    <section id="login-panel" class="panel">
+      <h1>申請者ログイン</h1>
+      <p class="lead">申請者ごとのアカウントでログインすると、ご自身が関与するProjectだけを確認・更新できます。</p>
+      <div class="grid">
+        <div class="field field--wide"><label for="email">登録メールアドレス</label><input id="email" type="email" autocomplete="email" required></div>
+        <div class="field field--wide"><label for="password">パスワード</label><input id="password" type="password" autocomplete="current-password" required></div>
+      </div>
+      <div class="actions"><button id="login" class="button" type="button">ログイン</button><button id="show-setup" class="button button--quiet" type="button">初期設定・パスワード再設定</button></div>
+      <p id="login-notice" class="notice" role="status" aria-live="polite"></p>
+    </section>
+
+    <section id="setup-panel" class="panel hidden">
+      <h1>アカウント初期設定</h1>
+      <p class="lead">初回とパスワード再設定時だけ、申請時のメールアドレスへ本人確認コードを送ります。</p>
+      <div class="grid">
+        <div class="field field--wide"><label for="setup-email">登録メールアドレス</label><input id="setup-email" type="email" autocomplete="email"></div>
+        <div class="field"><label for="display-name">お名前・団体名</label><input id="display-name" maxlength="120"></div>
+        <div class="field"><label for="code">確認コード</label><input id="code" inputmode="numeric" autocomplete="one-time-code" maxlength="6"></div>
+        <div class="field field--wide"><label for="new-password">新しいパスワード</label><input id="new-password" type="password" autocomplete="new-password"><span class="help">英字と数字を含む10文字以上</span></div>
+      </div>
+      <div class="actions"><button id="send-code" class="button button--secondary" type="button">確認コードを送る</button><button id="complete-setup" class="button" type="button">アカウントを設定</button><button id="back-login" class="button button--quiet" type="button">ログインへ戻る</button></div>
+      <p id="setup-notice" class="notice" role="status" aria-live="polite"></p>
+    </section>
+
+    <section id="dashboard" class="panel hidden">
+      <h1>マイページ</h1>
+      <p id="account-label" class="lead"></p>
+      <div id="project-list" class="projects"></div>
+      <div class="actions"><button id="dashboard-logout" class="button button--quiet" type="button">ログアウト</button></div>
+    </section>
+
+    <div id="workspace" class="hidden">
+      <section class="panel">
+        <span id="publication-status" class="badge"></span>
+        <h1 id="workspace-title">Project情報</h1>
+        <p class="help">保存内容はすぐ公開されません。「運営確認へ送る」後、運営が公開許可を確認します。</p>
+        <div class="grid">
+          <div class="field field--wide"><label for="title">公開タイトル</label><input id="title" maxlength="120"></div>
+          <div class="field"><label for="public-name">公開する申請者・団体名</label><input id="public-name" maxlength="120"></div>
+          <div class="field"><label for="region">公開する地域名</label><input id="region" maxlength="120"></div>
+          <div class="field"><label for="schedule">開催日・活動期間</label><input id="schedule" maxlength="120"></div>
+          <div class="field"><label for="stage">現在のフェーズ</label><select id="stage"><option>企画準備</option><option>制作中</option><option>開催準備中</option><option>開催中</option><option>開催後の活動</option></select></div>
+          <div class="field field--wide"><label for="summary">一覧カードに載せる短い説明</label><textarea id="summary" maxlength="240"></textarea></div>
+          <div class="field field--wide"><label for="body">詳細ページに載せる本文</label><textarea id="body" maxlength="5000"></textarea></div>
+          <div class="field field--wide"><label for="cover-image">メイン画像</label><input id="cover-image" type="file" accept="image/jpeg,image/png,image/webp"><span class="help">JPEG・PNG・WebP、8MB以下。公開許可のある画像だけを選択してください。</span></div>
+        </div>
+        <div class="actions"><button id="save-draft" class="button button--secondary" type="button">下書き保存</button><button id="submit-review" class="button" type="button">運営確認へ送る</button><button id="logout" class="button button--quiet" type="button">ログアウト</button></div>
+        <p id="workspace-notice" class="notice" role="status" aria-live="polite"></p>
+      </section>
+
+      <section id="updates" class="panel">
+        <h2>活動の更新を送る</h2>
+        <p class="help">描き始め、制作途中、完成、開催当日、その後の活動を継続して記録できます。</p>
+        <div class="grid">
+          <div class="field"><label for="update-phase">フェーズ</label><select id="update-phase"><option>制作前</option><option>制作中</option><option>完成</option><option>開催当日</option><option>開催後</option></select></div>
+          <div class="field"><label for="preferred-date">希望公開日</label><input id="preferred-date" type="date"></div>
+          <div class="field field--wide"><label for="update-title">更新タイトル</label><input id="update-title" maxlength="160"></div>
+          <div class="field field--wide"><label for="update-body">更新本文</label><textarea id="update-body" maxlength="5000"></textarea></div>
+          <div class="field field--wide"><label for="update-images">写真</label><input id="update-images" type="file" accept="image/jpeg,image/png,image/webp" multiple><span class="help">1回5枚まで。各8MB以下。</span></div>
+          <div class="field"><label for="public-location">公開してよい場所名</label><input id="public-location" maxlength="180"></div>
+          <div class="field"><label for="private-note">運営だけに伝えること</label><input id="private-note" maxlength="600"></div>
+          <div class="field field--wide"><label><input id="image-permission" type="checkbox" style="width:auto"> 写真の公開許可を確認しました</label></div>
+        </div>
+        <div class="actions"><button id="submit-update" class="button" type="button">活動更新を送る</button></div>
+        <p id="update-notice" class="notice" role="status" aria-live="polite"></p>
+      </section>
+
+      <section class="panel"><h2>これまでの更新</h2><div id="update-history" class="updates"></div></section>
+    </div>
+  </main>
+  <script>
+    (() => {
+      const requestedProjectId = <?!= JSON.stringify(projectId || "") ?>;
+      const key = "revoArtApplicantSession";
+      let token = sessionStorage.getItem(key) || "";
+      let workspace = null;
+      let activeProjectId = "";
+      const $ = (id) => document.getElementById(id);
+      $("project-id").textContent = requestedProjectId || "マイページ";
+
+      function message(id, text, kind = "") { const node = $(id); node.textContent = text || ""; node.dataset.kind = kind; }
+      function busy(button, state) { button.disabled = state; }
+      function server(name, ...args) { return new Promise((resolve, reject) => google.script.run.withSuccessHandler(resolve).withFailureHandler((error) => reject(new Error(error && error.message ? error.message : String(error)) ))[name](...args)); }
+      function readFile(file, publicPermission) { return new Promise((resolve, reject) => { const reader = new FileReader(); reader.onload = () => resolve({ name:file.name, mimeType:file.type, base64:String(reader.result).split(",")[1], publicPermission }); reader.onerror = () => reject(new Error("画像を読み込めませんでした。")); reader.readAsDataURL(file); }); }
+      function values() { return { title:$("title").value, publicName:$("public-name").value, region:$("region").value, schedule:$("schedule").value, stage:$("stage").value, summary:$("summary").value, body:$("body").value, coverImageUrl:workspace && workspace.coverImageUrl || "" }; }
+      function showDashboard(data) {
+        $("login-panel").classList.add("hidden"); $("setup-panel").classList.add("hidden"); $("dashboard").classList.remove("hidden");
+        $("account-label").textContent = `${data.account.displayName || "申請者"} / ${data.account.email}`;
+        const list=$("project-list"); list.replaceChildren();
+        (data.projects||[]).forEach((project)=>{ const row=document.createElement("article"); row.className="project"; const copy=document.createElement("div"); const title=document.createElement("h3"); title.textContent=project.title||project.projectId; const meta=document.createElement("p"); meta.className="help"; meta.textContent=[project.region,project.stage,project.reviewStatus].filter(Boolean).join(" / "); copy.append(title,meta); const button=document.createElement("button"); button.className="button button--secondary"; button.type="button"; button.textContent="作業ページを開く"; button.addEventListener("click",()=>openProject(project.projectId)); row.append(copy,button); list.append(row); });
+        if(!(data.projects||[]).length) list.textContent="現在、このアカウントに割り当てられたProjectはありません。";
+        const requested=(data.projects||[]).find((project)=>project.projectId===requestedProjectId); if(requested) openProject(requested.projectId);
+      }
+      async function openProject(projectId) { const data=await server("openRevoArtWorkspace",projectId,token); activeProjectId=projectId; $("project-id").textContent=projectId; fill(data); }
+      function fill(data) {
+        workspace = data; $("title").value=data.title||""; $("public-name").value=data.publicName||""; $("region").value=data.region||""; $("schedule").value=data.schedule||""; $("stage").value=data.stage||"企画準備"; $("summary").value=data.summary||""; $("body").value=data.body||"";
+        $("workspace-title").textContent=data.title||"Project情報"; $("publication-status").textContent=`公開: ${data.publicationStatus||"draft"} / 確認: ${data.reviewStatus||"未提出"}`;
+        const history=$("update-history"); history.replaceChildren(); (data.updates||[]).forEach((entry)=>{ const box=document.createElement("article"); box.className="update"; const badge=document.createElement("span"); badge.className="badge"; badge.textContent=`${entry.reviewStatus||"確認中"} / ${entry.publicStatus||"確認中"}`; const title=document.createElement("h3"); title.textContent=entry.title||"活動更新"; const meta=document.createElement("p"); meta.className="help"; meta.textContent=[entry.date,entry.phase].filter(Boolean).join(" / "); const body=document.createElement("p"); body.textContent=entry.body||""; box.append(badge,title,meta,body); history.append(box); });
+        if (!(data.updates||[]).length) history.textContent="更新はまだありません。";
+        $("workspace").classList.remove("hidden");
+      }
+      async function uploadSelected(input, permission) { const files=Array.from(input.files||[]); if(files.length>5) throw new Error("写真は1回5枚までです。"); const urls=[]; for(const file of files){ const payload=await readFile(file,permission); const uploaded=await server("uploadRevoArtWorkspaceImage",activeProjectId,token,payload); urls.push(uploaded.url); } return urls; }
+
+      $("show-setup").addEventListener("click",()=>{ $("setup-email").value=$("email").value; $("login-panel").classList.add("hidden"); $("setup-panel").classList.remove("hidden"); });
+      $("back-login").addEventListener("click",()=>{ $("setup-panel").classList.add("hidden"); $("login-panel").classList.remove("hidden"); });
+      $("login").addEventListener("click", async () => { const button=$("login"); busy(button,true); message("login-notice","ログインしています..."); try { const result=await server("loginRevoArtApplicant",$("email").value,$("password").value); token=result.token; sessionStorage.setItem(key,token); showDashboard(result.dashboard); } catch(error){ message("login-notice",error.message,"error"); } finally{ busy(button,false); } });
+      $("send-code").addEventListener("click", async () => { const button=$("send-code"); busy(button,true); message("setup-notice","送信しています..."); try { const result=await server("requestRevoArtAccountSetup",$("setup-email").value); message("setup-notice",`${result.email}へ確認コードを送りました。`,"success"); } catch(error){ message("setup-notice",error.message,"error"); } finally{ busy(button,false); } });
+      $("complete-setup").addEventListener("click", async () => { const button=$("complete-setup"); busy(button,true); message("setup-notice","アカウントを設定しています..."); try { const result=await server("completeRevoArtAccountSetup",$("setup-email").value,$("code").value,$("new-password").value,$("display-name").value); token=result.token; sessionStorage.setItem(key,token); showDashboard(result.dashboard); } catch(error){ message("setup-notice",error.message,"error"); } finally{ busy(button,false); } });
+      async function save(submit,button){ busy(button,true); message("workspace-notice",submit?"運営確認へ送っています...":"保存しています..."); try { const files=$("cover-image").files; const payload=values(); if(files&&files[0]){ const uploaded=await uploadSelected($("cover-image"),true); payload.coverImageUrl=uploaded[0]||payload.coverImageUrl; } const result=await server("saveRevoArtWorkspace",activeProjectId,token,payload,submit); fill(result.workspace); message("workspace-notice",submit?"運営確認へ送りました。":"下書きを保存しました。","success"); } catch(error){ message("workspace-notice",error.message,"error"); } finally{ busy(button,false); } }
+      $("save-draft").addEventListener("click",()=>save(false,$("save-draft"))); $("submit-review").addEventListener("click",()=>save(true,$("submit-review")));
+      $("submit-update").addEventListener("click", async () => { const button=$("submit-update"); busy(button,true); message("update-notice","更新を送っています..."); try { const permitted=$("image-permission").checked; if($("update-images").files.length&&!permitted) throw new Error("写真の公開許可を確認してください。"); const imageUrls=await uploadSelected($("update-images"),permitted); const result=await server("submitRevoArtWorkspaceUpdate",activeProjectId,token,{ phase:$("update-phase").value,title:$("update-title").value,body:$("update-body").value,imageUrls,imagePermission:permitted,publicLocation:$("public-location").value,privateNote:$("private-note").value,preferredDate:$("preferred-date").value }); fill(result.workspace); $("update-title").value=""; $("update-body").value=""; $("update-images").value=""; message("update-notice","活動更新を送りました。運営確認後に公開されます。","success"); } catch(error){ message("update-notice",error.message,"error"); } finally{ busy(button,false); } });
+      function logout(){ sessionStorage.removeItem(key); location.reload(); }
+      $("logout").addEventListener("click",logout); $("dashboard-logout").addEventListener("click",logout);
+      if(token){ server("resumeRevoArtApplicant",token).then(showDashboard).catch(()=>{ sessionStorage.removeItem(key); token=""; }); }
+      if(location.hash==="#updates") setTimeout(()=>$("updates").scrollIntoView(),250);
+    })();
+  </script>
+</body>
+</html>

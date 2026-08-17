@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>レボアート 申請者マイページ</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="container" style="padding:64px 20px;max-width:760px">
+    <h1>申請者マイページへ接続しています</h1>
+    <p id="account-message">アカウント情報を確認しています。</p>
+    <p><a href="revo-art-list.html">レボアート一覧へ戻る</a></p>
+  </main>
+  <script src="site-config.js?v=20260817"></script>
+  <script>
+    (() => {
+      const endpoint = window.REVO_ART_WORKSPACE_APP_URL || "";
+      const message = document.getElementById("account-message");
+      if (!endpoint) { message.textContent = "申請者マイページの接続準備中です。"; return; }
+      const target = new URL(endpoint); target.searchParams.set("page", "workspace"); location.replace(target.toString());
+    })();
+  </script>
+</body>
+</html>
