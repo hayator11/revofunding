@@ -1,8 +1,8 @@
 (function () {
   "use strict";
 
-  const dataUrl = "../data/revo-art-data.json";
-  const winningSpotsUrl = "../data/revo-art-winning-spots.json";
+  const dataUrl = "../data/revo-art-data.json?v=20260817";
+  const winningSpotsUrl = "../data/revo-art-winning-spots.json?v=20260817";
   const applicationFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSf9qATZlfFpGdNfCkIA0a7wjUOGR0pVjp43zlRzobPIM3sagA/viewform";
   const sampleRevoArtProjects = [
     {
