@@ -30,6 +30,51 @@
   white-space: pre-wrap;
 }
 
+.rf-art-activity-entry__content {
+  display: grid;
+  gap: 14px;
+  margin-top: 12px;
+}
+
+.rf-art-activity-entry__content .rf-art-activity-entry__body {
+  margin: 0;
+}
+
+.rf-art-activity-entry__heading {
+  margin: 8px 0 0;
+  color: #172033;
+  font-size: 18px;
+  letter-spacing: 0;
+}
+
+.rf-art-activity-entry__figure {
+  margin: 4px 0;
+}
+
+.rf-art-activity-entry__figure img {
+  display: block;
+  width: 100%;
+  max-height: 680px;
+  border-radius: 6px;
+  object-fit: contain;
+  background: #f5f8fe;
+}
+
+.rf-art-activity-entry__caption {
+  margin-top: 7px;
+  color: #667085;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.rf-art-activity-entry__link {
+  justify-self: start;
+  color: #1769e0;
+  font-weight: 700;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
 .rf-art-activity-entry__gallery {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));

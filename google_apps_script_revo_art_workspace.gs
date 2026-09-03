@@ -49,7 +49,7 @@ function setupRevoArtWorkspaceApp() {
   ensureRevoArtSheet_(spreadsheet, REVO_ART_WORKSPACE_CONFIG.updateSheet, [
     "Update ID", "Project ID", "受付日時", "更新者", "フェーズ", "タイトル", "本文", "写真URL/Driveリンク",
     "写真掲載許可", "公開してよい地域/場所名", "公開NG情報", "希望公開日", "レビュー状態", "公開可否",
-    "公開反映日", "担当者", "備考", "公開ページ反映メモ"
+    "公開反映日", "担当者", "備考", "公開ページ反映メモ", "記事本文JSON", "記事概要"
   ]);
   const accountSheet = ensureRevoArtSheet_(spreadsheet, REVO_ART_WORKSPACE_CONFIG.accountSheet, REVO_ART_ACCOUNT_HEADERS);
   const memberSheet = ensureRevoArtSheet_(spreadsheet, REVO_ART_WORKSPACE_CONFIG.memberSheet, REVO_ART_MEMBER_HEADERS);
@@ -364,16 +364,60 @@ function submitRevoArtWorkspaceUpdate(projectId, token, values) {
   if (!workspace) throw new Error("Projectが見つかりません。");
   const safe = values || {};
   const sheet = getRevoArtSheet_(REVO_ART_WORKSPACE_CONFIG.updateSheet);
-  const row = [
-    nextRevoArtUpdateId_(sheet), normalizedProjectId, new Date(), workspace["申請者表示名"] || "申請者",
-    cleanRevoArtText_(safe.phase, 80), cleanRevoArtText_(safe.title, 160), cleanRevoArtText_(safe.body, 5000),
-    (Array.isArray(safe.imageUrls) ? safe.imageUrls : []).map(cleanRevoArtUrl_).filter(Boolean).join("\n"),
-    safe.imagePermission === true ? "許可済み" : "未許可", cleanRevoArtText_(safe.publicLocation, 180),
-    cleanRevoArtText_(safe.privateNote, 600), cleanRevoArtText_(safe.preferredDate, 80), "運営確認待ち", "確認中",
-    "", "", "申請者からの活動更新", "運営確認後に公開"
-  ];
-  sheet.appendRow(row);
+  const article = normalizeRevoArtArticle_(safe.articleBlocks, safe.body);
+  const valuesByHeader = {
+    "Update ID": nextRevoArtUpdateId_(sheet), "Project ID": normalizedProjectId, "受付日時": new Date(),
+    "更新者": workspace["申請者表示名"] || "申請者", "フェーズ": cleanRevoArtText_(safe.phase, 80),
+    "タイトル": cleanRevoArtText_(safe.title, 160), "本文": article.plainText,
+    "写真URL/Driveリンク": article.imageUrls.join("\n"),
+    "写真掲載許可": article.imageUrls.length ? (safe.imagePermission === true ? "許可済み" : "未許可") : "画像なし",
+    "公開してよい地域/場所名": cleanRevoArtText_(safe.publicLocation, 180),
+    "公開NG情報": cleanRevoArtText_(safe.privateNote, 600), "希望公開日": cleanRevoArtText_(safe.preferredDate, 80),
+    "レビュー状態": "運営確認待ち", "公開可否": "確認中", "公開反映日": "", "担当者": "",
+    "備考": "申請者からの活動更新", "公開ページ反映メモ": "運営確認後に公開",
+    "記事本文JSON": article.json, "記事概要": cleanRevoArtText_(safe.excerpt, 240)
+  };
+  const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getDisplayValues()[0];
+  sheet.appendRow(headers.map((header) => Object.prototype.hasOwnProperty.call(valuesByHeader, header) ? valuesByHeader[header] : ""));
   return { ok: true, workspace: getRevoArtWorkspaceData_(normalizedProjectId) };
+}
+
+function normalizeRevoArtArticle_(rawBlocks, fallbackBody) {
+  const source = Array.isArray(rawBlocks) ? rawBlocks : [];
+  if (source.length > 80) throw new Error("記事の内容が多すぎます。ブロックを80個以内にしてください。");
+  const imageUrls = [];
+  const blocks = source.map((block) => {
+    const type = String(block && block.type || "");
+    if (type === "paragraph" || type === "heading") {
+      const text = cleanRevoArtText_(block.text, type === "heading" ? 200 : 5000);
+      return text ? { type: type, text: text } : null;
+    }
+    if (type === "image") {
+      const url = cleanRevoArtUrl_(block.url);
+      if (!url) return null;
+      imageUrls.push(url);
+      return { type: "image", url: url, alt: cleanRevoArtText_(block.alt, 200), caption: cleanRevoArtText_(block.caption, 300) };
+    }
+    if (type === "link") {
+      const url = cleanRevoArtPublicLink_(block.url);
+      const label = cleanRevoArtText_(block.label, 160);
+      return url && label ? { type: "link", url: url, label: label } : null;
+    }
+    return null;
+  }).filter(Boolean);
+  if (!blocks.length && fallbackBody) blocks.push({ type: "paragraph", text: cleanRevoArtText_(fallbackBody, 5000) });
+  if (imageUrls.length > 8) throw new Error("画像は1記事8枚までです。");
+  const plainText = blocks.filter((block) => block.type === "paragraph" || block.type === "heading").map((block) => block.text).join("\n\n").slice(0, 12000);
+  const json = JSON.stringify(blocks);
+  if (json.length > 45000) throw new Error("記事が長すぎます。文章や画像説明を短くしてください。");
+  return { json: json, plainText: plainText, imageUrls: imageUrls };
+}
+
+function cleanRevoArtPublicLink_(value) {
+  const url = String(value || "").trim();
+  if (!url) return "";
+  if (!/^https:\/\//i.test(url)) throw new Error("リンク先はhttps://から始まるURLを指定してください。");
+  return url.slice(0, 1000);
 }
 
 function publishRevoArtProject(projectId) {
@@ -399,7 +443,8 @@ function getRevoArtWorkspaceData_(projectId) {
     .map((entry) => ({
       id: entry["Update ID"], phase: entry["フェーズ"], title: entry["タイトル"], body: entry["本文"],
       date: formatRevoArtDate_(entry["受付日時"]), reviewStatus: entry["レビュー状態"], publicStatus: entry["公開可否"],
-      imageUrls: String(entry["写真URL/Driveリンク"] || "").split(/\r?\n/).filter(Boolean)
+      imageUrls: String(entry["写真URL/Driveリンク"] || "").split(/\r?\n/).filter(Boolean),
+      articleBlocks: parseRevoArtArticleBlocks_(entry["記事本文JSON"]), excerpt: entry["記事概要"] || ""
     }));
   return {
     projectId: record["Project ID"], title: record["Public Title"] || record["作業ページ名"],
@@ -440,6 +485,7 @@ function createRevoArtPublicResponse_(callback) {
           .map((update) => ({
             id: update["Update ID"], title: update["タイトル"], body: update["本文"], phase: update["フェーズ"],
             activity_date: formatRevoArtDate_(update["受付日時"]),
+            excerpt: update["記事概要"] || "", articleBlocks: parseRevoArtArticleBlocks_(update["記事本文JSON"]),
             media: String(update["写真URL/Driveリンク"] || "").split(/\r?\n/).filter(Boolean).map((url) => ({ signedUrl: url, alt_text: update["タイトル"] }))
           }))
       };
@@ -449,6 +495,16 @@ function createRevoArtPublicResponse_(callback) {
   const safeCallback = /^[A-Za-z_$][0-9A-Za-z_$.]*$/.test(String(callback || "")) ? String(callback) : "";
   return ContentService.createTextOutput(safeCallback ? safeCallback + "(" + payload + ");" : payload)
     .setMimeType(safeCallback ? ContentService.MimeType.JAVASCRIPT : ContentService.MimeType.JSON);
+}
+
+function parseRevoArtArticleBlocks_(value) {
+  if (!value) return [];
+  try {
+    const parsed = JSON.parse(String(value));
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (error) {
+    return [];
+  }
 }
 
 function requireRevoArtWorkspaceSession_(projectId, token) {

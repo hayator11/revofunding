@@ -782,10 +782,12 @@
       article.className = "rf-art-activity-entry";
       article.append(
         createTextElement("time", "rf-art-activity-entry__date", new Intl.DateTimeFormat("ja-JP", { year: "numeric", month: "long", day: "numeric" }).format(new Date(update.activity_date))),
-        createTextElement("h3", "rf-art-activity-entry__title", update.title),
-        createTextElement("p", "rf-art-activity-entry__body", update.body)
+        createTextElement("h3", "rf-art-activity-entry__title", update.title)
       );
-      if (Array.isArray(update.media) && update.media.length) {
+      const articleBody = createActivityArticleBody(update);
+      if (articleBody.childElementCount) article.append(articleBody);
+      const hasBlockImages = Array.isArray(update.articleBlocks) && update.articleBlocks.some((block) => block && block.type === "image");
+      if (!hasBlockImages && Array.isArray(update.media) && update.media.length) {
         const gallery = document.createElement("div");
         gallery.className = "rf-art-activity-entry__gallery";
         for (const media of update.media) {
@@ -801,6 +803,44 @@
       timeline.append(article);
     }
     return createDetailSection("Projectの活動更新", [timeline], "rf-art-detail__section--wide");
+  }
+
+  function createActivityArticleBody(update) {
+    const body = document.createElement("div");
+    body.className = "rf-art-activity-entry__content";
+    const blocks = Array.isArray(update.articleBlocks) ? update.articleBlocks : [];
+    if (!blocks.length) {
+      if (update.body) body.append(createTextElement("p", "rf-art-activity-entry__body", update.body));
+      return body;
+    }
+    for (const block of blocks) {
+      if (!block || !block.type) continue;
+      if (block.type === "heading" && block.text) {
+        body.append(createTextElement("h4", "rf-art-activity-entry__heading", block.text));
+      } else if (block.type === "paragraph" && block.text) {
+        body.append(createTextElement("p", "rf-art-activity-entry__body", block.text));
+      } else if (block.type === "image" && /^https:\/\//i.test(String(block.url || ""))) {
+        const figure = document.createElement("figure");
+        figure.className = "rf-art-activity-entry__figure";
+        const image = document.createElement("img");
+        image.src = block.url;
+        image.alt = getText(block.alt, getText(block.caption, update.title));
+        image.loading = "lazy";
+        image.decoding = "async";
+        figure.append(image);
+        if (block.caption) figure.append(createTextElement("figcaption", "rf-art-activity-entry__caption", block.caption));
+        body.append(figure);
+      } else if (block.type === "link" && block.label && /^https:\/\//i.test(String(block.url || ""))) {
+        const link = document.createElement("a");
+        link.className = "rf-art-activity-entry__link";
+        link.href = block.url;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.textContent = block.label;
+        body.append(link);
+      }
+    }
+    return body;
   }
 
   function createDetailFlowList() {
