@@ -201,7 +201,7 @@
         if(type==="heading") { const input=document.createElement("input"); input.className="article-block__text"; input.maxLength=200; input.placeholder="見出しを入力"; input.value=data.text||""; block.append(input); }
         if(type==="link") {
           const label=document.createElement("input"); label.className="article-block__label"; label.maxLength=160; label.placeholder="リンクに表示する文字"; label.value=data.label||"";
-          const url=document.createElement("input"); url.className="article-block__url"; url.type="url"; url.placeholder="https://example.com"; url.value=data.url||""; block.append(label,url);
+          const url=document.createElement("input"); url.className="article-block__url"; url.type="url"; url.placeholder="リンク先URLを入力"; url.value=data.url||""; block.append(label,url);
         }
         if(type==="image") {
           const input=document.createElement("input"); input.className="article-block__file"; input.type="file"; input.accept="image/jpeg,image/png,image/webp";
